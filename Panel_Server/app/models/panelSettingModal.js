@@ -32,7 +32,7 @@ const valueArray = [["color_theme", "danger"],
 ["community_logo_url", ""],
 ["community_info", ""],
 ["community_website", ""],
-["platform_currency", "USD"],
+["platform_currency", "BRL"],
 ["hiddenadmin_login", "0"],
 ["salenotification_discord", "0"],
 ["disable_about", "0"]]
