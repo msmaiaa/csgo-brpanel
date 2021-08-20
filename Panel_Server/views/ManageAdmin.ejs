@@ -11,27 +11,27 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header card-header-<%=panelSetting.color_theme%>">
-            <h4 class="card-title">Add Admin</h4>
-            <p class="card-category">Form to add a new Admin in Server</p>
+            <h4 class="card-title">Adicionar Admin</h4>
+            <p class="card-category">Formulário para adicionar um novo admin no servidor</p>
           </div>
           <div class="card-body" style="min-height:360px;" id="addAdminDiv">
             <form id="myForm_addAdmin">
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group bmd-form-group">
-                    <label class="bmd-label-floating">Enter Steam ID</label>
+                    <label class="bmd-label-floating">Inserir Steam ID</label>
                     <input id="steamId_add" type="text" class="form-control" required>
                   </div>
                   <div class="form-group bmd-form-group">
-                    <label class="bmd-label-floating">Enter User Name</label>
+                    <label class="bmd-label-floating">Inserir usuário</label>
                     <input id="name_add" type="text" class="form-control" required>
                   </div>
                   <div class="form-group bmd-form-group">
-                    <label class="bmd-label-floating">Enter Immunity level for Admin</label>
+                    <label class="bmd-label-floating">Inserir nível de imunidade para o Admin</label>
                     <input id="immunity_admin" type="number" class="form-control" value="0" required>
                   </div>
                   <div class="form-group bmd-form-group">
-                    <label class="">Select Servers to add in</label>
+                    <label class="">Selecione os servidores para adicionar</label>
                     <div class="col-md-12 row">
                       <% if(serverList) {%>
                       <% for(let i=0; i < serverList.length; i++) { %>
@@ -61,19 +61,19 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header card-header-<%=panelSetting.color_theme%>">
-            <h4 class="card-title">Admin Access Define</h4>
-            <p class="card-category">Select flags to give access for</p>
+            <h4 class="card-title">Definir acesso do Admin</h4>
+            <p class="card-category">Selecione as flags</p>
           </div>
           <div class="card-body row scroller" style="height:360px;overflow: auto;" id="style-4">
             <div class="col-md-12">
-              <label class="">Admin Levels</label>
+              <label class="">Niveis do Admin</label>
               <div class="table-responsive">
                 <table class="table">
                   <thead class=" text-primary">
-                    <th>Check</th>
-                    <th>Name</th>
+                    <th>Checar</th>
+                    <th>Nome</th>
                     <th>Flag</th>
-                    <th>Purpose</th>
+                    <th>Funcionalidade</th>
                   </thead>
                   <%- include('TbodyAdminFlags.ejs') %>
                 </table>
@@ -85,8 +85,8 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-<%=panelSetting.color_theme%>">
-            <h4 class="card-title" id="manageCardTitle">View and Manage Admin</h4>
-            <p class="card-category">Select a server to view the list</p>
+            <h4 class="card-title" id="manageCardTitle">Ver e gerenciar Admin</h4>
+            <p class="card-category">Selecione um servidor para ver a lista</p>
           </div>
           <div class="card-body">
             <div class="col-md-12 row">
@@ -94,7 +94,7 @@
                 <div class="dropdown">
                   <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select Server
+                    Selecionar servidor
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <% if(serverList) {%>
@@ -112,7 +112,7 @@
               <div class="col-md-4">
                 <form class="form-inline col-md-12">
                   <div class="form-group has-<%=panelSetting.color_theme%>">
-                    <input type="text" class="form-control" placeholder="Search" id="adminSearchInput">
+                    <input type="text" class="form-control" placeholder="Pesquisar" id="adminSearchInput">
                   </div>
                   <button type="button"
                     class="btn btn-<%=panelSetting.color_theme%> btn-raised btn-fab btn-fab-mini btn-round"
