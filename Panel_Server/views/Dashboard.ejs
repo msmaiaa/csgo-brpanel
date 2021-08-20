@@ -44,12 +44,12 @@ function remainingDays(endEpoc){
                 <i class="material-icons">device_hub</i>
               </div>
             </a>
-            <p class="card-category">Total Servers</p>
+            <p class="card-category">Total de servidores</p>
             <h3 class="card-title"><%=adminStats.serverCount ?adminStats.serverCount :"NA" %></h3>
           </div>
           <div class="card-footer">
             <div class="stats text-warning">
-              <i class="material-icons">device_hub</i> My Total Servers
+              <i class="material-icons">device_hub</i> Meus total de servidores
             </div>
           </div>
         </div>
@@ -62,12 +62,12 @@ function remainingDays(endEpoc){
                 <i class="material-icons">sentiment_satisfied_alt</i>
               </div>
             </a>
-            <p class="card-category">Total Active Users</p>
+            <p class="card-category">Total de usuários ativos</p>
             <h3 class="card-title"><%= adminStats.userCount ?adminStats.userCount :"NA"  %></h3>
           </div>
           <div class="card-footer">
             <div class="stats text-warning">
-              <i class="material-icons">sentiment_satisfied_alt</i> My Total Happy Users
+              <i class="material-icons">sentiment_satisfied_alt</i> Meu total de usuários felizes
             </div>
           </div>
         </div>
@@ -80,12 +80,12 @@ function remainingDays(endEpoc){
                 <i class="material-icons">shopping_cart</i>
               </div>
             </a>
-            <p class="card-category">Total New VIP Purchased</p>
+            <p class="card-category">Total de compras de VIP</p>
             <h3 class="card-title"><%= adminStats.saleCount ?adminStats.saleCount :"NA"  %></h3>
           </div>
           <div class="card-footer">
             <div class="stats text-warning">
-              <i class="material-icons">shopping_cart</i> New Purchases
+              <i class="material-icons">shopping_cart</i> Novas compras
             </div>
           </div>
         </div>
@@ -98,12 +98,12 @@ function remainingDays(endEpoc){
                 <i class="material-icons">settings_backup_restore</i>
               </div>
             </a>
-            <p class="card-category">Total VIP Renewed</p>
+            <p class="card-category">Total de VIPs renovados</p>
             <h3 class="card-title"><%= adminStats.renewSaleCount ?adminStats.renewSaleCount :"NA"  %></h3>
           </div>
           <div class="card-footer">
             <div class="stats text-warning">
-              <i class="material-icons">settings_backup_restore</i> Renewals
+              <i class="material-icons">settings_backup_restore</i> Renovações
             </div>
           </div>
         </div>
@@ -150,11 +150,11 @@ function remainingDays(endEpoc){
           <div class="table-responsive">
             <table class="table">
               <thead class=" text-primary">
-                <th>Steam ID</th>
-                <th>Name</th>
-                <th>Sub. Start Date</th>
-                <th>Sub. End Date</th>
-                <th>Days Left</th>
+                <th>SteamID</th>
+                <th>Nome</th>
+                <th>Início</th>
+                <th>Fim</th>
+                <th>Dias restantes</th>
               </thead>
               <tbody>
                 <% if(vipData[i].data) {%>

@@ -5,31 +5,31 @@ function getPageHeading(route){
   let heading=""
 switch (route) {
   case "/dashboard":
-    heading = "Dashboard - "+panelSetting.community_name;
+    heading = "Painel de controle - "+panelSetting.community_name;
     break;
   case "/mydashboard":
-    heading = "My Dashboard - "+panelSetting.community_name;
+    heading = "Meu painel de controle - "+panelSetting.community_name;
     break;
   case "/managevip":
-    heading = "Manage Server VIPs (Add , Update or Delete) - "+panelSetting.community_name;
+    heading = "Gerenciar VIPs dos servidores (adicionar, atualizar ou deletar) - "+panelSetting.community_name;
     break;
   case "/manageadmin":
-    heading = "Manage Server Admins (Add or Delete) - "+panelSetting.community_name;
+    heading = "Gerenciar Admins dos servidores (adicionar ou deletar) - "+panelSetting.community_name;
     break;
   case "/panelsetting":
-    heading = "Setup/Settings for the VMPanel - "+panelSetting.community_name;
+    heading = "Configurações do VMPanel - "+panelSetting.community_name;
     break;
   case "/salesrecord":
-    heading = "VIP Sales Records";
+    heading = "Histório de vendas de VIP";
     break;
   case "/auditlogs":
-    heading = "VMPanel - Audit Logs";
+    heading = "VMPanel - LOGS";
     break;
   case "/sourcebans":
-    heading = "VMPanel SourceBans Integration";
+    heading = "Integração do VMPanel com Sourcebans";
     break;
   case "/aboutcreator":
-    heading = "About";
+    heading = "Sobre";
     break;
   case "/login":
     heading = "Login - "+panelSetting.community_name;
@@ -49,7 +49,7 @@ return heading
   <link rel="apple-touch-icon" sizes="76x76" href="./images/icon.png">
   <link rel="icon" type="image/png" href="./images/favicon.ico">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>VMP-SS</title>
+  <title>PepePanel</title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
     name='viewport' />
   <link rel="stylesheet" type="text/css"
@@ -87,14 +87,14 @@ return heading
           <li class="nav-item <%= (currentURL=='/dashboard' || currentURL=='/' ?'active':'') %>">
             <a class="nav-link" href="/dashboard">
               <i class="material-icons">dashboard</i>
-              <p>Dashboard</p>
+              <p>Painel de controle</p>
             </a>
           </li>
           <%if(sessionSteamId){%>
           <li class="nav-item <%= (currentURL=='/mydashboard' || currentURL=='/' ?'active':'') %>">
             <a class="nav-link" href="/mydashboard">
               <i class="material-icons">account_box</i>
-              <p>My Dashboard</p>
+              <p>Meu painel de controle</p>
             </a>
           </li>
           <%}%>
@@ -102,13 +102,13 @@ return heading
           <li class="nav-item <%= (currentURL=='/managevip'?'active':'') %>">
             <a class="nav-link" href="/managevip">
               <i class="material-icons">people</i>
-              <p>Manage VIP</p>
+              <p>Gerenciar VIP</p>
             </a>
           </li>
           <li class="nav-item <%= (currentURL=='/manageadmin'?'active':'') %>">
             <a class="nav-link" href="/manageadmin">
               <i class="material-icons">people</i>
-              <p>Manage Admin</p>
+              <p>Gerenciar Admins</p>
             </a>
           </li>
           <li class="nav-item <%= (currentURL=='/sourcebans'?'active':'') %>">
@@ -121,13 +121,13 @@ return heading
           <li class="nav-item <%= (currentURL=='/salesrecord'?'active':'') %>">
             <a class="nav-link" href="/salesrecord">
               <i class="material-icons">account_balance_wallet</i>
-              <p>Sales Record</p>
+              <p>Histórico de vendas</p>
             </a>
           </li>
           <li class="nav-item <%= (currentURL=='/auditlogs'?'active':'') %>">
             <a class="nav-link" href="/auditlogs">
               <i class="material-icons">analytics</i>
-              <p>Audit Logs</p>
+              <p>LOGS</p>
             </a>
           </li>
           <%}%>
@@ -135,21 +135,21 @@ return heading
           <li class="nav-item <%= (currentURL=='/panelsetting'?'active':'') %>">
             <a class="nav-link" href="/panelsetting">
               <i class="material-icons">settings</i>
-              <p>Panel Settings</p>
+              <p>Configurações do painel</p>
             </a>
           </li>
           <%}}%>
           <li class="nav-item <%= (currentURL=='/aboutcreator'?'active':'') %>">
             <a class="nav-link" href="/aboutcreator">
               <i class="material-icons">person</i>
-              <p>About</p>
+              <p>Sobre</p>
             </a>
           </li>
           <%if(sessionToken||sessionSteamId){%>
           <li class="nav-item <%= (currentURL=='/logout'?'active':'') %>">
             <a class="nav-link" href="/logout">
               <i class="material-icons">power_settings_new</i>
-              <p>Logout</p>
+              <p>Sair</p>
             </a>
           </li>
           <%}else{%>
@@ -191,7 +191,7 @@ return heading
                 <%}else if (sessionSteamId){%>
                 <%="User-("+steamName+")"%>
                 <%}else{%>
-                Guest
+                Convidado
                 <%}%>
               </p>
             </a>
