@@ -63,13 +63,13 @@ app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(express.json({
-  limit: '100',
+  limit: '100mb',
   extended: true
 }));
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({
-  limit: '100',
+  limit: '100mb',
   extended: true
 }));
 

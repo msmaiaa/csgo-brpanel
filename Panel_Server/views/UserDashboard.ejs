@@ -72,13 +72,13 @@ function remainingDays(endEpoc){
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
               <a class="nav-link active" id="serverVip-tab" data-toggle="tab" href="#serverVip" role="tab"
-                aria-controls="serverVip" aria-selected="true"><i class="material-icons">settings</i> Servers with VIP
-                Slots available to buy</a>
+                aria-controls="serverVip" aria-selected="true"><i class="material-icons">settings</i> Servidores com Slots VIP disponíveis para Compra
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" id="serverBundles-tab" data-toggle="tab" href="#serverBundles" role="tab"
                 aria-controls="serverBundles" aria-selected="false"><i class="material-icons">build</i>
-                Available Offers/Bundles to buy</a>
+                Cargos/Ofertas disponíveis</a>
             </li>
           </ul>
         </div>
@@ -94,7 +94,7 @@ function remainingDays(endEpoc){
                       <div class="card-icon">
                         <i class="material-icons">shopping_cart</i>
                       </div>
-                      <p class="card-category">Buy VIP For
+                      <p class="card-category">Comprar VIP para
                         <%=serverArray[i].server_name?serverArray[i].server_name:"NA"%></p>
                       <h3 class="card-title">
                         <%=serverArray[i].vip_price? serverArray[i].vip_price+" "+serverArray[i].vip_currency+" for "+serverArray[i].vip_days+" days"  :"NA"%>
@@ -142,7 +142,7 @@ function remainingDays(endEpoc){
                             <div class="card-icon">
                               <i class="material-icons">shopping_cart</i>
                             </div>
-                            <p class="card-category">Buy
+                            <p class="card-category">Comprar
                               <%=bundleArray[i].bundle_name?bundleArray[i].bundle_name:"NA"%></p>
                             <h3 class="card-title">
                               <%=bundleArray[i].bundle_price? bundleArray[i].bundle_price+" "+bundleArray[i].bundle_currency+" for "+bundleArray[i].bundle_sub_days+" days"  :"NA"%>
@@ -202,9 +202,9 @@ function remainingDays(endEpoc){
                     <div class="col-md-12 row">
                       <div class="col-md-11">
                         <h4 class="card-title ">
-                          <%=((sessionSteamId&&steamName)?steamName:'')+"'s - VIP/Admin Status for "+panelSetting.community_name+" Servers"%>
+                          <%= "Status de cargo do usuário " + ((sessionSteamId&&steamName)?steamName:'')%>
                         </h4>
-                        <p class="card-category">You have Vip/Admin roles in <%=userDataListing.length%> Servers
+                        <p class="card-category">Você tem cargos em <%=userDataListing.length%> servidores
                         </p>
                       </div>
                       <div class="col-md-1">
@@ -217,13 +217,13 @@ function remainingDays(endEpoc){
                     <div class="table-responsive">
                       <table class="table">
                         <thead class=" text-primary">
-                          <th>Server Name</th>
-                          <th>My Steam Id</th>
-                          <th>My Role</th>
-                          <th>Sub. Start Date</th>
-                          <th>Sub. End Date</th>
-                          <th>Days Left</th>
-                          <th>Renew VIP</th>
+                          <th>Servidor</th>
+                          <th>Meu steamid</th>
+                          <th>Meu cargo</th>
+                          <th>Data de início</th>
+                          <th>Data do término</th>
+                          <th>Dias restantes</th>
+                          <th>Renovar VIP</th>
                         </thead>
                         <tbody>
                           <% if(userDataListing) {%>
