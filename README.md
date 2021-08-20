@@ -1,14 +1,6 @@
 # CSGO Vip Management Panel
-
+# clonado no commit 8f03c45
 ### Single solution to manage VIPs and Admins in your CSGO servers.
-
--------------------------------------------------------------
-
-<p align="">
-<b>🙌 If you like my work, consider <a href="https://www.paypal.me/Shivam169">donating</a> to support the project. ! 🙌</b>
-</p>
-
-[![Donate](https://cdn2.iconfinder.com/data/icons/social-icons-circular-color/512/paypal-64.png)](https://www.paypal.me/Shivam169)  [![Donate](https://cdn2.iconfinder.com/data/icons/social-icons-circular-color/512/paytm-64.png)](https://drive.google.com/file/d/1ks_B3s9dNk_RPkDVf1DL1ITKe0mnrTRk/view)  [![Donate](https://cdn1.iconfinder.com/data/icons/logos-brands-in-colors/436/Google_Pay_GPay_Logo-128.png)](https://drive.google.com/file/d/1c5V8j0W9o23HBCgUiO1SWltR4ADvQTQW/view)  [![Discord](https://cdn3.iconfinder.com/data/icons/logos-and-brands-adobe/512/91_Discord-64.png)](https://discord.gg/HcCFa8q)  
 
 -------------------------------------------------------------
 
@@ -67,12 +59,6 @@
     -Note, Commands are case sensitive and the status command will not work for old entries, it will work for entries made with v1.8 and higher.
 
 ### I recommend using PayU for INR transactions (Indian payment gateway) and PayPal for USD transactions, Note: don't enable both with USD as PayU does not support USD.
-
--------------------------------------------------------------
-
-## Web panel Screenshots
-![ScreenShot](https://github.com/Summer-16/CSGO-VMP/blob/master/Screen_Shots/VMP_SS.jpg)
-[View All ScreenShots](https://github.com/Summer-16/CSGO-VMPanel/tree/master/Screen_Shots)
 
 -------------------------------------------------------------
 
