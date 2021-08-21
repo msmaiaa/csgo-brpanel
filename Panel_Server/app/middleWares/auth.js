@@ -29,13 +29,13 @@ const checkToken = (req, res, next) => {
                 if (req.body.apiCall) {
                     res.json({
                         success: false,
-                        data: { "error": err, "message": "Unauthorized Access, If you are an Admin try logging in" }
+                        data: { "error": err, "message": "Acesso não autorizado, se você for um admin, entre novamente." }
                     });
                 } else {
                     return res.render('Login', {
                         "steamLogin": (steamAPIKey ? true : false),
                         "adminRoute": isAdminRoute,
-                        "error": "Unauthorized Access, If you are an Admin try logging in"
+                        "error": "Acesso não autorizado, se você for um admin, entre novamente."
                     });
                 }
             } else {
@@ -47,14 +47,14 @@ const checkToken = (req, res, next) => {
         if (req.body.apiCall) {
             res.json({
                 success: false,
-                data: { "error": "Token Missing, Looks like Session expired", "message": "Unauthorized Access, If you are an Admin try logging in" }
+                data: { "error": "Token faltando, a sessão expirou", "message": "Acesso não autorizado, se você for um admin, entre novamente." }
             });
         }else{
         return res.render('Login',
             {
                 "steamLogin": (steamAPIKey ? true : false),
                 "adminRoute": isAdminRoute,
-                "error": "Unauthorized Access, If you are an Admin try logging in"
+                "error": "Acesso não autorizado, se você for um admin, entre novamente."
             });}
     }
 };
