@@ -10,15 +10,15 @@
         <div class="card">
           <div class="card-header card-header-<%=panelSetting.color_theme%> row">
             <div class="col-md-8">
-              <h4 class="card-title" id="manageCardTitle">Sales Record</h4>
-              <p class="card-category">All successfull transactions made by users to buy/renew VIP are logged here</p>
+              <h4 class="card-title" id="manageCardTitle">Histórico de vendas</h4>
+              <p class="card-category">Todas as transações de compra de cargo feitas com sucesso são salvas aqui</p>
             </div>
             <div class="col-md-2">
               <div class="form-group bmd-form-group mt-0 pt-0">
                 <select class="form-control" id="recordsPerPage" onchange="recordPerPageChanged()" required>
-                  <option value="10" selected>10 Records/page</option>
-                  <option value="15">15 Records/page</option>
-                  <option value="20">20 Records/page</option>
+                  <option value="10" selected>10 itens/página</option>
+                  <option value="15">15 itens/página</option>
+                  <option value="20">20 itens/página</option>
                 </select>
               </div>
             </div>
@@ -33,16 +33,16 @@
             <div class="table-responsive scroller" style="max-height:600px;overflow: auto;" id="style-4">
               <table class="table" id="salesrecords">
                 <thead class=" text-primary">
-                  <th>Order ID</th>
-                  <th>Payer ID</th>
-                  <th>Payer Steam ID</th>
-                  <th>Payer Name</th>
-                  <th>Payer Email</th>
-                  <th>Product Desc.</th>
-                  <th>Amount</th>
+                  <th>ID da compra</th>
+                  <th>ID do comprador</th>
+                  <th>STEAMID do comprador</th>
+                  <th>Nome do comprador</th>
+                  <th>Email do comprador</th>
+                  <th>Desc. do produto</th>
+                  <th>Quantidade</th>
                   <th>Status</th>
-                  <th>Sale type</th>
-                  <th>Dated</th>
+                  <th>Tipo de venda</th>
+                  <th>Data</th>
                 </thead>
                 <tbody id="salesRecordBody">
                 </tbody>
