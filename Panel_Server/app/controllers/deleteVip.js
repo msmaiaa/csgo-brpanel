@@ -24,7 +24,7 @@ exports.deleteVipData = async (req, res) => {
       success: true,
       data: {
         "res": result,
-        "message": "VIP deleted Successfully" + (rconStatus ? ", RCON Executed" : ", RCON Not Executed"),
+        "message": "VIP deletado com sucesso" + (rconStatus ? ", RCON executado" : ", RCON não executado"),
         "notifType": "success"
       }
     });
@@ -50,12 +50,12 @@ const deleteVipDataFunc = (reqBody, username) => {
           resolve(deleteRes)
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, Key faltando")
       }
 
     } catch (error) {
       logger.error("error in deleteVipDataFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }
@@ -72,15 +72,15 @@ exports.deleteOldVipData = async (req, res) => {
 
     let result = await deleteOldVipDataFunc(req.session.username, req.session.sec_key);
     logThisActivity({
-      "activity": "Manual Refresh Executed",
-      "additional_info": "Old VIPs and deleted and new data is updated in servers",
+      "activity": "Refresh manual executado",
+      "additional_info": "VIPs antigos deletados e os novos dados foram atualizados nos servidores",
       "created_by": req.session.username
     })
     res.json({
       success: true,
       data: {
         "res": result,
-        "message": "Operation Successfully Executed",
+        "message": "Operação executada com sucesso",
         "notifType": "success"
       }
     });
@@ -105,7 +105,7 @@ const deleteOldVipDataFunc = (username, secKey) => {
           resolve(deleteRes)
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, Key faltando")
       }
     } catch (error) {
       logger.error("error in deleteOldVipDataFunc->", error);

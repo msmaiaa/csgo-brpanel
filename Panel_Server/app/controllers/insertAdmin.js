@@ -32,7 +32,7 @@ exports.insertAdminData = async (req, res) => {
     req.body.secKey = req.session.sec_key
     let result = await insertAdminDataFunc(req.body, req.session.username);
     logThisActivity({
-      "activity": "New Admin added",
+      "activity": "Novo admin adicionado",
       "additional_info": `${req.body.name.replace("//", "")} ( ${req.body.steamId} )`,
       "created_by": req.session.username
     })
@@ -40,7 +40,7 @@ exports.insertAdminData = async (req, res) => {
       success: true,
       data: {
         "res": result,
-        "message": "New Admin added Successfully" + (rconStatus.includes(0) ? ", RCON Not Executed for all Servers" : ", RCON Executed for all Servers"),
+        "message": "Novo admin adicionado com sucesso" + (rconStatus.includes(0) ? ", RCON não executado em todos os servidores" : ", RCON executado em todos os servidores"),
         "notifType": "success"
       }
     });
@@ -63,19 +63,19 @@ const insertAdminDataFunc = (reqBody, username) => {
         if (reqBody.submit === "insert") {
 
           //validations
-          if (!reqBody.steamId) return reject("Operation Fail!, Steam Id Missing");
-          if (!reqBody.name) return reject("Operation Fail!, Name Missing");
-          if (!reqBody.flag) return reject("Operation Fail!, Flags Missing");
-          if (!reqBody.server) return reject("Operation Fail!, Server list Missing");
+          if (!reqBody.steamId) return reject("Operação falhou!, Steam Id faltando");
+          if (!reqBody.name) return reject("Operação falhou!, Nome faltando");
+          if (!reqBody.flag) return reject("Operação falhou!, Flags faltando");
+          if (!reqBody.server) return reject("Operação falhou!, lista de servidores faltando");
 
           let serverList = reqBody.server
-          if (!Array.isArray(serverList)) return reject("Operation Fail!, Server list is not an Array");
+          if (!Array.isArray(serverList)) return reject("Operação falhou!, lista de servidores não é um array");
           let allServersList = await panelServerModal.getPanelServersDisplayList();
           let serverListLength
           if (serverList.length <= allServersList.length) {
             serverListLength = serverList.length
           } else {
-            return reject("Length of given server list is more then max servers added in panel, something is fishy");
+            return reject("Length of given lista de servidores is more then max servers added in panel, something is fishy");
           }
 
           reqBody.name = "//" + reqBody.name;
@@ -93,7 +93,7 @@ const insertAdminDataFunc = (reqBody, username) => {
           }
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, Key faltando")
       }
     } catch (error) {
       logger.error("error in insertAdminDataFunc->", error);

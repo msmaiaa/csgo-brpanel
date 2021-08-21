@@ -16,14 +16,14 @@ exports.addPanelServer = async (req, res) => {
     let result = await addPanelServerFunc(req.body, req.session.username);
 
     logThisActivity({
-      "activity": req.body.submit === "insert" ? "New Server added in Panel" : "Panel Server Updated",
+      "activity": req.body.submit === "insert" ? "Novo servidor adicionado ao painel" : "Servidor do painel atualizado",
       "additional_info": req.body.servername,
       "created_by": req.session.username
     })
 
     res.json({
       success: true,
-      data: { "res": result, "message": req.body.submit === "insert" ? "New Server added Successfully" : "Server Data Updated Successfully" }
+      data: { "res": result, "message": req.body.submit === "insert" ? "Novo servidor adicionado com sucesso" : "Dados do servidor adicionados com sucesso" }
     });
   } catch (error) {
     logger.error("error in addPanelServer->", error);
@@ -39,8 +39,8 @@ const addPanelServerFunc = (reqBody, username) => {
     try {
 
       // validation
-      if (!reqBody.tablename) return reject("Operation Fail!, Table Name is not provided");
-      if (!reqBody.servername) return reject("Operation Fail!, Server Name is not provided");
+      if (!reqBody.tablename) return reject("Operação falhou!, nome da tabela faltando");
+      if (!reqBody.servername) return reject("Operação falhou!, nome do servidor faltando");
 
       let userData = await userModel.getUserDataByUsername(username)
 
@@ -57,11 +57,11 @@ const addPanelServerFunc = (reqBody, username) => {
           }
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, key faltando")
       }
     } catch (error) {
       logger.error("error in addPanelServerFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }
@@ -80,7 +80,7 @@ exports.getPanelServersList = async (req, res) => {
     let result = await getPanelServersListFunc(req.body);
     res.json({
       success: true,
-      data: { "res": result, "message": "Server List Fetched" }
+      data: { "res": result, "message": "Lista de servidores encontrada" }
     });
   } catch (error) {
     logger.error("error in getPanelServersList->", error);
@@ -98,13 +98,13 @@ const getPanelServersListFunc = (reqBody) => {
       let serverData = await panelServerModal.getPanelServersList()
       if (serverData) {
         for (let i = 0; i < serverData.length; i++) {
-          serverData[i].server_rcon_pass = serverData[i].server_rcon_pass ? "Available" : "NA"
+          serverData[i].server_rcon_pass = serverData[i].server_rcon_pass ? "Disponível" : "NA"
         }
         resolve(serverData)
       }
     } catch (error) {
       logger.error("error in getPanelServersListFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }
@@ -123,7 +123,7 @@ exports.getPanelServerSingle = async (req, res) => {
     let result = await getPanelServerSingleFunc(req.body);
     res.json({
       success: true,
-      data: { "res": result, "message": "Server Data Fetched" }
+      data: { "res": result, "message": "Dados dos servidores encontrados" }
     });
   } catch (error) {
     logger.error("error in getPanelServerSingle->", error);
@@ -142,7 +142,7 @@ const getPanelServerSingleFunc = (reqBody) => {
       resolve(serverData)
     } catch (error) {
       logger.error("error in getPanelServerSingleFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }
@@ -168,7 +168,7 @@ exports.deletePanelServers = async (req, res) => {
 
     res.json({
       success: true,
-      data: { "res": result, "message": "Server Deleted Successfully" }
+      data: { "res": result, "message": "Servidor deletado com sucesso" }
     });
   } catch (error) {
     logger.error("error in deletePanelServers->", error);
@@ -184,8 +184,8 @@ const deletePanelServersFunc = (reqBody, username) => {
     try {
 
       // validation
-      if (!reqBody.tablename) return reject("Operation Fail!, Table Name is not provided");
-      if (!reqBody.id) return reject("Operation Fail!, Id is not provided");
+      if (!reqBody.tablename) return reject("Operação falhou!, nome da tabela faltando");
+      if (!reqBody.id) return reject("Operação falhou!, id faltando");
 
       let userData = await userModel.getUserDataByUsername(username)
 
@@ -197,11 +197,11 @@ const deletePanelServersFunc = (reqBody, username) => {
           }
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, key faltando")
       }
     } catch (error) {
       logger.error("error in deletePanelServersFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }

@@ -63,7 +63,7 @@ exports.getVipsDataSingleServer = async (req, res) => {
     let result = await getVipsDataSingleServerFunc(req.body);
     res.json({
       success: true,
-      data: { "res": result, "message": "VIP Listing loaded for " + req.body.server.toUpperCase(), "notifType": "info" }
+      data: { "res": result, "message": "Listagem de VIPs carregada para " + req.body.server.toUpperCase(), "notifType": "info" }
     });
   } catch (error) {
     logger.error("error in getVipsDataSingleServer->", error);
@@ -79,7 +79,7 @@ const getVipsDataSingleServerFunc = (reqBody) => {
     try {
 
       //validations
-      if (!reqBody.server && !reqBody.searchKey) return reject("Operation Fail!, Server Missing");
+      if (!reqBody.server && !reqBody.searchKey) return reject("Operação falhou!, Server faltando");
       if (reqBody.server) {
         let data = await vipModel.getSingleServerData(reqBody.server, reqBody.searchKey, "vip")
 
@@ -102,7 +102,7 @@ const getVipsDataSingleServerFunc = (reqBody) => {
         }
         resolve(finalResult)
       } else {
-        return reject("Something went wrong")
+        return reject("Algo deu errado")
       }
 
     } catch (error) {
@@ -140,7 +140,7 @@ const getAdminsDataSingleServerFunc = (reqBody) => {
     try {
 
       //validations
-      if (!reqBody.server && !reqBody.searchKey) return reject("Operation Fail!, Server Missing");
+      if (!reqBody.server && !reqBody.searchKey) return reject("Operação falhou!, Server faltando");
       if (reqBody.server) {
         let data = await vipModel.getSingleServerData(reqBody.server, reqBody.searchKey, "admin")
 
@@ -163,7 +163,7 @@ const getAdminsDataSingleServerFunc = (reqBody) => {
         }
         resolve(finalResult)
       } else {
-        return reject("Something went wrong")
+        return reject("Algo deu errado")
       }
     } catch (error) {
       logger.error("error in getAdminsDataSingleServerFunc->", error);

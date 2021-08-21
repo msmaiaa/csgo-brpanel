@@ -89,10 +89,10 @@ async function sendBuyMessageOnDiscord(data, finalUserName) {
   try {
     let settingObj = await settingsModal.getAllSettings();
     if (!settingObj.webhook_url) {
-      return "Webhook not found"
+      return "Webhook não encontrado"
     }
     if (settingObj.salenotification_discord / 1) {
-      let saleType = (data.buyType === 'newPurchase') ? "VIP Purchased" : "VIP Renewed"
+      let saleType = (data.buyType === 'newPurchase') ? "VIP comprado" : "VIP renovado"
       let paymentId = (data.gateway === 'paypal') ? data.paymentData.id : (data.gateway === 'payu') ? data.paymentData.order_id : "NA"
       let serverName = data.serverData.server_name
       let productDesc = data.paymentData.product_desc
@@ -105,12 +105,12 @@ async function sendBuyMessageOnDiscord(data, finalUserName) {
       }
 
       let messageString = `**New ${saleType}**
-                          Buyer Name: ${finalUserName}
-                          Server Name: ${serverName}
-                          Product Desc: ${productDesc}
-                          Paid Amount: ${amount}
-                          Order/Txn Id: ${paymentId}
-                          Paymnet Through: ${data.gateway.toUpperCase()}
+                          Nome do comprador: ${finalUserName}
+                          Nome do servidor: ${serverName}
+                          Desc. do produto: ${productDesc}
+                          Quantidade paga: ${amount}
+                          Id da compra: ${paymentId}
+                          Gateway de pagamento: ${data.gateway.toUpperCase()}
                           `
 
       sendMessage([messageString], [(data.buyType === 'newPurchase') ? 3066993 : 3447003], settingObj.webhook_url)
@@ -138,22 +138,22 @@ async function sendMessage(message, color, webhook) {
       "embeds": [
         {
           "author": {
-            "name": "Notification by VMPanel",
+            "name": "Notificação do PepePanel",
             "url": "https://github.com/Summer-16/CSGO-VMPanel",
             "icon_url": "https://raw.githubusercontent.com/Summer-16/CSGO-VMPanel/master/panelServer/public/images/icon.png"
           },
           "timestamp": new Date(),
           "footer": {
-            "text": "VMPanel made with ❤️ by SummerSoldier"
+            "text": "VMPanel made with ❤️ by PepePanel"
           },
           "description": message[i],
           "color": color[i]
         }]
     }
-    logger.info("****Sending Message Payload****");
+    logger.info("****Enviando payload de mensagem****");
     try {
       const response = await needle('post', webhook, body, options);
-      logger.info("Discord send message request status-->", response.statusCode);
+      logger.info("Status de envio da mensagem no discord -->", response.statusCode);
       await wait(2000);
     } catch (error) {
       logger.error(error);

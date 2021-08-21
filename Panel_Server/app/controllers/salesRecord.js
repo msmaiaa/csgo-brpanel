@@ -35,10 +35,10 @@ exports.getSalesRecord = async (req, res) => {
       let result = await getSalesRecordFunc(req.body);
       res.json({
         success: true,
-        data: { "res": result, "message": "Sale Records Fetched" }
+        data: { "res": result, "message": "Histórico de vendas encontrado" }
       });
     } else {
-      return reject("You don't have permissions to access records")
+      return reject("Você não possui permissão para acessar isto.")
     }
   } catch (error) {
     logger.error("error in getSalesRecord->", error);

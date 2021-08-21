@@ -39,7 +39,7 @@ exports.getAuditRecord = async (req, res) => {
         data: { "res": result, "message": "Audit Logs Fetched" }
       });
     } else {
-      return reject("You don't have permissions to access records")
+      return reject("Você não tem permissão para acessar os registros")
     }
   } catch (error) {
     logger.error("error in getAuditRecord->", error);

@@ -42,13 +42,13 @@ exports.fetchPanelSettings = async (req, res) => {
     let result = await fetchPanelSettingsFunc(req.body);
     res.json({
       success: true,
-      data: { "res": result, "message": "Panel settings Fetched" }
+      data: { "res": result, "message": "Configurações do painel encontradas." }
     });
   } catch (error) {
     logger.error("error in add/update vip->", error);
     res.json({
       success: false,
-      data: { "error": error, "message": "Error in fetching Panel settings" }
+      data: { "error": error, "message": "Erro ao procurar informações do painel." }
     });
   }
 }
@@ -78,8 +78,8 @@ exports.updatePanelSettings = async (req, res) => {
     await updatePanelSettingsFunc(req.body, req.session.username);
 
     logThisActivity({
-      "activity": "Panel Settings Updated",
-      "additional_info": "Panel Settings Updated",
+      "activity": "Configuração do painel atualizada.",
+      "additional_info": "Configuração do painel atualizada.",
       "created_by": req.session.username
     })
 
@@ -106,7 +106,7 @@ const updatePanelSettingsFunc = (reqBody, username) => {
       }
     } catch (error) {
       logger.error("error in updatePanelSettingsFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }

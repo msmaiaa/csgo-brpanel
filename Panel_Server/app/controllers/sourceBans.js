@@ -33,17 +33,17 @@ exports.sourceBansAddBan = async (req, res) => {
     req.body.secKey = req.session.sec_key
     let result = await sourceBansAddBanFunc(req.body, req.session.username);
     logThisActivity({
-      "activity": req.body.bantype == "serverBan" ? "New Server Ban Added" : "New Comm Ban Added",
+      "activity": req.body.bantype == "serverBan" ? "Novo ban de servidor adicionado" : "Novo ban de comunicação adicionado",
       "additional_info": (req.body.bantype == "serverBan" ?
-        `${req.body.username} (${req.body.steamid}) banned for ${req.body.banlength} Minutes` :
-        `${req.body.username} (${req.body.steamid}) Comm Banned for ${req.body.banlength} Minutes`),
+        `${req.body.username} (${req.body.steamid}) banido por ${req.body.banlength} Minutos` :
+        `${req.body.username} (${req.body.steamid}) Comm ban por ${req.body.banlength} Minutos`),
       "created_by": req.session.username
     })
     res.json({
       success: true,
       data: {
         "res": result,
-        "message": req.body.bantype == "serverBan" ? "Server Ban added Successfully" : "Comm Ban added Successfully",
+        "message": req.body.bantype == "serverBan" ? "Ban de servidor adicionado com sucesso" : "Ban de comunicação adicionado com sucesso",
         "notifType": "success"
       }
     });
@@ -95,11 +95,11 @@ const sourceBansAddBanFunc = (reqBody, username) => {
           return reject("Wrong ban type passed in API")
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, key faltando")
       }
     } catch (error) {
       logger.error("error in sourceBansAddBanFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }

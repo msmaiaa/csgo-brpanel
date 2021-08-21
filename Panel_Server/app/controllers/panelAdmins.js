@@ -14,24 +14,24 @@ exports.addPanelAdmin = async (req, res) => {
   try {
     if (req.session.user_type === 0) {
       logThisActivity({
-        "activity": "Unauthorized Access",
-        "additional_info": "Someone tried to add Panel Admin",
+        "activity": "Acesso não autorizado",
+        "additional_info": "Alguém tentou acessar o painel de admin",
         "created_by": req.session.username ? req.session.username : "NA"
       })
-      throw "Unauthorized Access, You are not a Super Admin"
+      throw "Acesso não autorizado, você não é um Super Admin"
     }
 
     req.body.secKey = req.session.sec_key
     let result = await addPanelAdminFunc(req.body, req.session.username);
 
     logThisActivity({
-      "activity": "New Panel Admin added",
+      "activity": "Novo admin de painel adicionado",
       "additional_info": req.body.username,
       "created_by": req.session.username
     })
     res.json({
       success: true,
-      data: { "res": result, "message": req.body.submit == "insert" ? "New Admin added Successfully" : "Admin Updated Successfully", "notifType": "success" }
+      data: { "res": result, "message": req.body.submit == "insert" ? "Novo admin adicionado com sucesso" : "Admin atualizado com sucesso", "notifType": "success" }
     });
   } catch (error) {
     logger.error("error in addPanelAdmin->", error);
@@ -52,12 +52,12 @@ const addPanelAdminFunc = (reqBody, username) => {
         if (reqBody.submit === "insert") {
 
           //validations
-          if (!reqBody.username) return reject("Operation Fail!, Username Missing");
-          if (!reqBody.password) return reject("Operation Fail!, Password Missing");
+          if (!reqBody.username) return reject("Operação falhou!, Nome faltando");
+          if (!reqBody.password) return reject("Operação falhou!, Senha faltando");
 
           bcrypt.hash(reqBody.password, saltRounds, async function (err, hash) {
             if (err) {
-              return reject("Error in password Encryption, Try again")
+              return reject("Erro na encriptação da senha, tente novamente")
             } else {
               reqBody.password = hash
               let insertRes = await userModel.insertNewUser(reqBody)
@@ -70,12 +70,12 @@ const addPanelAdminFunc = (reqBody, username) => {
         } else if (reqBody.submit === "update") {
 
           //validations
-          if (!reqBody.username) return reject("Operation Fail!, Username Missing");
-          if (!reqBody.newpassword) return reject("Operation Fail!, Password Missing");
+          if (!reqBody.username) return reject("Operação falhou!, Nome faltando");
+          if (!reqBody.newpassword) return reject("Operação falhou!, Senha faltando");
 
           bcrypt.hash(reqBody.newpassword, saltRounds, async function (err, hash) {
             if (err) {
-              return reject("Error in password Encryption, Try again")
+              return reject("Erro na encriptação da senha, tente novamente")
             } else {
               reqBody.newpassword = hash
               let updateRes = await userModel.updateUserpassword({
@@ -90,11 +90,11 @@ const addPanelAdminFunc = (reqBody, username) => {
           });
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, key faltando")
       }
     } catch (error) {
       logger.error("error in addPanelAdminFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", Por favor tente novamente")
     }
   });
 }
@@ -108,12 +108,12 @@ exports.addPanelAdminFunc = addPanelAdminFunc;
 
 exports.getPanelAdminsList = async (req, res) => {
   try {
-    if (req.session.user_type === 0) { throw "Unauthorized Access, You are not a Super Admin" }
+    if (req.session.user_type === 0) { throw "Acesso não autorizado, você não é um super admin" }
     req.body.secKey = req.session.sec_key
     let result = await getPanelAdminsListFunc(req.body);
     res.json({
       success: true,
-      data: { "res": result, "message": "Admin List Fetched" }
+      data: { "res": result, "message": "Lista de admins recuperada com sucesso" }
     });
   } catch (error) {
     logger.error("error in getPanelAdminsList->", error);
@@ -134,7 +134,7 @@ const getPanelAdminsListFunc = (reqBody) => {
       }
     } catch (error) {
       logger.error("error in getPanelAdminsListFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }
@@ -150,24 +150,24 @@ exports.deletePanelAdmin = async (req, res) => {
   try {
     if (req.session.user_type === 0) {
       logThisActivity({
-        "activity": "Unauthorized Access",
-        "additional_info": "Someone tried to Delete Panel Admin",
+        "activity": "Acesso não autorizado",
+        "additional_info": "Alguém tentou deletar um admin do painel",
         "created_by": req.session.username ? req.session.username : "NA"
       })
-      throw "Unauthorized Access, You are not a Super Admin"
+      throw "Acesso não autorizado, você não é um super admin"
     }
 
     req.body.secKey = req.session.sec_key
     let result = await deletePanelAdminFunc(req.body, req.session.username);
 
     logThisActivity({
-      "activity": "Panel Admin Deleted",
+      "activity": "Admin do painel deletado!",
       "additional_info": req.body.username.split(':')[1],
       "created_by": req.session.username
     })
     res.json({
       success: true,
-      data: { "res": result, "message": "Admin Deleted Successfully", "notifType": "success" }
+      data: { "res": result, "message": "Admin deletado com sucesso", "notifType": "success" }
     });
   } catch (error) {
     logger.error("error in deletePanelAdmin->", error);
@@ -186,7 +186,7 @@ const deletePanelAdminFunc = (reqBody, username) => {
       } else {
 
         //validations
-        if (!reqBody.username) return reject("Operation Fail!, Username Missing");
+        if (!reqBody.username) return reject("Operação falhou!, Nome faltando");
 
         let userData = await userModel.getUserDataByUsername(username)
 
@@ -201,12 +201,12 @@ const deletePanelAdminFunc = (reqBody, username) => {
             }
           }
         } else {
-          reject("Unauthorized Access, Key Missing")
+          reject("Acesso não autorizado, key faltando")
         }
       }
     } catch (error) {
       logger.error("error in deletePanelAdminFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }

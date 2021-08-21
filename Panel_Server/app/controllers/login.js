@@ -24,7 +24,7 @@ exports.loginPage = async (req, res) => {
     res.render('Login', {
       "steamLogin": (steamApi ? true : false),
       "adminRoute": isAdminRoute,
-      "error": "Something went wrong contact Admin for more Info"
+      "error": "Algo deu errado, contate algum admin para mais informações."
     });
   }
 }
@@ -43,14 +43,14 @@ exports.authUserLogin = async (req, res) => {
       return res.render('Login', {
         "steamLogin": (steamApi ? true : false),
         "adminRoute": isAdminRoute,
-        "error": 'Authentication failed! Please check the request'
+        "error": 'Autenticação falhou!'
       });
     }
     bcrypt.compare(password, userData.password, function (err, result) {
       if (err || result != true) return res.render('Login', {
         "steamLogin": (steamApi ? true : false),
         "adminRoute": isAdminRoute,
-        "error": 'Incorrect Username or Password'
+        "error": 'Usuário ou senha incorretos'
       });
 
       const token = jwt.sign({ username: username },
@@ -71,7 +71,7 @@ exports.authUserLogin = async (req, res) => {
     res.render('Login', {
       "steamLogin": (steamApi ? true : false),
       "adminRoute": isAdminRoute,
-      "error": "Something went wrong contact Admin for more Info"
+      "error": "Algo deu errado, contate algum admin para mais informações."
     })
   }
 }

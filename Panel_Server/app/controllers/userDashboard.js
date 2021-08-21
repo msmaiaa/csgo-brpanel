@@ -132,7 +132,7 @@ exports.afterPaymentProcess = async (req, res) => {
     const finalUserName = userRealName + " - (" + (userDisplayName ? userDisplayName : "-_-") + ")"
 
     logThisActivity({
-      "activity": req.body.buyType === 'newPurchase' ? "New VIP Purchased" : "VIP renewed",
+      "activity": req.body.buyType === 'newPurchase' ? "Novo VIP comprado" : "VIP renovado",
       "additional_info": `${(req.body.gateway === 'paypal') ? req.body.paymentData.id : (req.body.gateway === 'payu') ? req.body.paymentData.order_id : "NA"} - ( ${finalUserName} )`,
       "created_by": finalUserName + " (Steam Login)"
     })
@@ -143,7 +143,7 @@ exports.afterPaymentProcess = async (req, res) => {
       success: true,
       data: {
         "res": result,
-        "message": "All Operations Done Successfully, Refreshing page in 5 Seconds",
+        "message": "Todas as operações concluídas com sucesso, recarregando a página em 5 segundos",
         "notifType": "success"
       }
     });
@@ -211,7 +211,8 @@ const afterPaymentProcessFunc = (reqBody, reqUser, secKey) => {
             sale_type: saleType
           }
         } else {
-          return reject("Payment Tempered!, Response HASH does not matches with payment HASH therefore payment failed, Contact Support")
+          return reject("O pagamento falhou!")
+          //return reject("Payment Tempered!, Response HASH does not matches with payment HASH therefore payment failed, Contact Support")
         }
       }
 
@@ -291,11 +292,11 @@ const afterPaymentProcessFunc = (reqBody, reqUser, secKey) => {
         }
         resolve(true)
       } else {
-        reject("Something Went Wrong")
+        reject("Algo deu errado!")
       }
     } catch (error) {
       logger.error("error in afterPaymentProcessFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }

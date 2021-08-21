@@ -32,7 +32,7 @@ exports.insertVipData = async (req, res) => {
     req.body.secKey = req.session.sec_key
     let result = await insertVipDataFunc(req.body, req.session.username);
     logThisActivity({
-      "activity": req.body.submit == "insert" ? "New VIP added" : "VIP Updated",
+      "activity": req.body.submit == "insert" ? "Novo VIP adicionado" : "VIP atualizado",
       "additional_info": `${(req.body.name) ? req.body.name.replace("//", "") : "-_-"} ( ${req.body.steamId} )`,
       "created_by": req.session.username
     })
@@ -40,8 +40,8 @@ exports.insertVipData = async (req, res) => {
       success: true,
       data: {
         "res": result,
-        "message": req.body.submit == "insert" ? "New VIP added Successfully" + (rconStatus.includes(0) ? ", RCON Not Executed for all Servers" : ", RCON Executed for all Servers") :
-          "VIP Updated Successfully" + (rconStatus.includes(0) ? ", RCON Not Executed for all Servers" : ", RCON Executed for all Servers"),
+        "message": req.body.submit == "insert" ? "Novo VIP adicionado com sucesso" + (rconStatus.includes(0) ? ", RCON não executado em todos os servidores" : ", RCON executado em todos os servidores") :
+          "VIP Updated Successfully" + (rconStatus.includes(0) ? ", RCON não executado em todos os servidores" : ", RCON executado em todos os servidores"),
         "notifType": "success"
       }
     });
@@ -65,20 +65,20 @@ const insertVipDataFunc = (reqBody, username) => {
         if (reqBody.submit === "insert") {
 
           //validations
-          if (!reqBody.steamId) return reject("Operation Fail!, Steam Id Missing");
-          if (!reqBody.name) return reject("Operation Fail!, Name Missing");
-          if (!reqBody.flag) return reject("Operation Fail!, Flags Missing");
-          if (!reqBody.day) return reject("Operation Fail!, No of Days Missing");
-          if (!reqBody.server) return reject("Operation Fail!, Server list Missing");
+          if (!reqBody.steamId) return reject("Operação falhou!, Steam Id faltando");
+          if (!reqBody.name) return reject("Operação falhou!, Nome faltando");
+          if (!reqBody.flag) return reject("Operação falhou!, Flags faltando");
+          if (!reqBody.day) return reject("Operação falhou!, Numero de dias faltando");
+          if (!reqBody.server) return reject("Operação falhou!, lista de servidores faltando");
 
           let serverList = reqBody.server
-          if (!Array.isArray(serverList)) return reject("Operation Fail!, Server list is not an Array");
+          if (!Array.isArray(serverList)) return reject("Operação falhou!, lista de servidores is not an Array");
           let allServersList = await panelServerModal.getPanelServersDisplayList();
           let serverListLength
           if (serverList.length <= allServersList.length) {
             serverListLength = serverList.length
           } else {
-            return reject("Length of given server list is more then max servers added in panel, something is fishy");
+            return reject("Length of given lista de servidores is more then max servers added in panel, something is fishy");
           }
 
           reqBody.day = epochTillExpiry(reqBody.day);
@@ -97,18 +97,18 @@ const insertVipDataFunc = (reqBody, username) => {
         } else if (reqBody.submit === "update") {
 
           //validations
-          if (!reqBody.steamId) return reject("Operation Fail!, Steam Id Missing");
-          if (!reqBody.day) return reject("Operation Fail!, No of Days Missing");
-          if (!reqBody.server) return reject("Operation Fail!, Server list Missing");
+          if (!reqBody.steamId) return reject("Operação falhou!, Steam Id faltando");
+          if (!reqBody.day) return reject("Operação falhou!, número de dias faltando");
+          if (!reqBody.server) return reject("Operação falhou!, lista de servidores faltando");
 
           let serverList = reqBody.server
-          if (!Array.isArray(serverList)) return reject("Operation Fail!, Server list is not an Array");
+          if (!Array.isArray(serverList)) return reject("Operação falhou!, lista de servidores is not an Array");
           let allServersList = await panelServerModal.getPanelServersDisplayList();
           let serverListLength
           if (serverList.length <= allServersList.length) {
             serverListLength = serverList.length
           } else {
-            return reject("Length of given server list is more then max servers added in panel, something is fishy");
+            return reject("Length of given lista de servidores is more then max servers added in panel, something is fishy");
           }
 
           reqBody.day = Math.floor(reqBody.day * 86400);
@@ -123,14 +123,14 @@ const insertVipDataFunc = (reqBody, username) => {
             resolve(updateRes)
           }
         } else {
-          reject("Something Went Wrong")
+          reject("Algo deu errado")
         }
       } else {
-        reject("Unauthorized Access, Key Missing")
+        reject("Acesso não autorizado, key faltando")
       }
     } catch (error) {
       logger.error("error in insertVipDataFunc->", error);
-      reject(error + ", Please try again")
+      reject(error + ", por favor tente novamente")
     }
   });
 }
