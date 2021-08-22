@@ -1,4 +1,4 @@
-Global variables
+//Global variables
 var record_per_page = $('#recordsPerPage').val(), current_page = 1, max_pages = 1, old_page = 0
 
 //-----------------------------------------------------------------------------------------------------

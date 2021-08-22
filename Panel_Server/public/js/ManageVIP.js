@@ -138,7 +138,6 @@ function updateOldVIPajax() {
 // 
 
 function deleteVIPajax(tableName, primaryKey) {
-
   let htmlString = `<p>You Sure !</p><p>Please Confirm delete Operation for Steam Id: ${primaryKey}</p>`
 
   custom_confirm(htmlString, (Mresponse) => {

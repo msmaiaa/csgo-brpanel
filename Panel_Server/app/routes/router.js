@@ -7,7 +7,6 @@ module.exports = app => {
   // Middleware Import
   const authMiddleware = require('../middleWares/auth');
   const passport = require('passport');
-
   // Controllers Import
   const { dashboard, getVipsDataSingleServer, getAdminsDataSingleServer } = require("../controllers/vipController.js");
   const { insertVipData, formVIP } = require("../controllers/insertVip.js");
@@ -39,6 +38,8 @@ module.exports = app => {
     req.session.destroy();
     res.redirect('/');
   });
+
+
 
   //route to fetch user data from steam profile
   app.post('/fetchsteamprofiledata', fetchProfileData);

@@ -545,7 +545,7 @@ function addNewPanelServerBundle() {
     });
 
     let formError = ""
-    if (serverArray.length < 2) {
+    if (serverArray.length < 1) {
       formError = "Select atleast two servers to create a bundle"
     } else if (!$('#bundle_name_add').val()) {
       formError = "Bundle name is mandatory"
