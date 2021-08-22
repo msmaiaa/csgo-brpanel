@@ -31,6 +31,10 @@
     "paypal": {
       "paypal_client_id": "Your paypal client id here (Leave Empty to disable Paypal Feature)"
     },
+    "stripe": {
+      "api_key": "dashboard.stripe.com/apikeys",
+      "webhook_secret": "xxxxxxxxxxxxxxxx"
+    },
     "payU": {
       "enabled": "write true to enable payu and false to disable payu, make sure to write true or false without double codes as it is boolean value",
       "environment": "write test to run payu in test environment, live to make payu work with live payments",

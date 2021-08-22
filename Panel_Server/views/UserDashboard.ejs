@@ -161,6 +161,9 @@ function remainingDays(endEpoc){
                             <img src
                               onerror="setPayPalButton('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``) +`buy`: `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')"
                               alt />
+                              <form action="/api/create-checkout-session" method="POST">
+                                <button type="submit">Checkout</button>
+                              </form>
                             <div
                               id="<%=bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``)+'buy' : 'buy'+i %>"
                               class="col-md-12 text-center">

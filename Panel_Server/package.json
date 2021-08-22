@@ -29,7 +29,8 @@
     "passport": "^0.4.1",
     "passport-steam": "^1.0.15",
     "rcon": "^1.0.3",
-    "sourcequery": "0.0.2"
+    "sourcequery": "0.0.2",
+    "stripe": "^8.170.0"
   },
   "devDependencies": {
     "eslint": "^7.15.0",

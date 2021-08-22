@@ -9,6 +9,8 @@ const session = require('express-session');
 const passport = require('passport');
 const SteamStrategy = require('passport-steam');
 const cors = require('cors');
+const { initStripePayment, handleStripeWebhook } = require("./app/controllers/stripe")
+
 
 const requestMiddleware = require('./app/middleWares/request');
 const notFoundMiddleware = require('./app/middleWares/not_found');
@@ -61,6 +63,10 @@ app.use(passport.session());
 app.options('*', cors());
 app.use(cors());
 
+//Stripe
+app.post('/api/create-checkout-session', initStripePayment)
+app.post('/api/stripe-webhook', express.raw({type: "*/*"}), handleStripeWebhook)
+
 // parse requests of content-type - application/json
 app.use(express.json({
   limit: '100mb',
@@ -72,6 +78,7 @@ app.use(express.urlencoded({
   limit: '100mb',
   extended: true
 }));
+
 
 cron.schedule(`0 */${scheduleConfig.delete} * * *`, async () => {
   logger.info("****Schedule call Deleting old VIP****");
@@ -106,6 +113,7 @@ app.use(notFoundMiddleware.notFound);
 
 // Start the server after db bootstrapping
 dbBootstrap().then(() => {
+  
   // set port, listen for requests
   const PORT = process.env.PORT || config.serverPort;
   app.listen(PORT, () => {

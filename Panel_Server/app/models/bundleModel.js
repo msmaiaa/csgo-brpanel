@@ -28,6 +28,7 @@ var bundleModel = {
                                     bundle_desc VARCHAR(255) NULL,
                                     bundle_sub_days INT(11) NULL,
                                     bundle_flags VARCHAR(50) NULL,
+                                    stripe_price_id VARCHAR(50),
                                     created_at datetime DEFAULT NULL,
                                     PRIMARY KEY (id)
                                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
@@ -63,7 +64,7 @@ var bundleModel = {
       try {
 
         // validation
-        if (dataObj.bundleserverarray < 2) return reject("Operation Fail!, Select atleast two servers to create a bundle");
+        if (dataObj.bundleserverarray < 1) return reject("Operation Fail!, Select atleast two servers to create a bundle");
         if (!dataObj.bundlename) return reject("Operation Fail!, Bundle name is Missing");
         if (!dataObj.bundleprice) return reject("Operation Fail!, Bundle Price is Missing");
         if (!dataObj.bundlecurrency) return reject("Operation Fail!, Bundle Currency is Missing");
