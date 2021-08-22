@@ -546,17 +546,19 @@ function addNewPanelServerBundle() {
 
     let formError = ""
     if (serverArray.length < 1) {
-      formError = "Select atleast two servers to create a bundle"
+      formError = "Selecione ao menos um servidor para criar um bundle"
     } else if (!$('#bundle_name_add').val()) {
-      formError = "Bundle name is mandatory"
+      formError = "O nome do bundle é mandatório"
     } else if (!$('#bundle_price_add').val()) {
-      formError = "Bundle Price is mandatory"
+      formError = "O preço do bundle é mandatório"
     } else if (!$('#bundle_currency_add').val()) {
-      formError = "Bundle Currency is mandatory"
+      formError = "A moeda do bundle é mandatória"
     } else if (!$('#bundle_subdays_add').val()) {
-      formError = "Bundle Subscription days are mandatory"
+      formError = "Os dias de assinatura do bundle são mandatórios"
     } else if (!$('#bundle_flags_add').val()) {
-      formError = "Bundle VIP Flag is mandatory"
+      formError = "As flags do bundle são mandatórias"
+    } else if (!$('#bundle_stripe_add').val()) {
+      formError = "O price id do Stripe é mandatório"
     }
 
     if (formError == "") {
@@ -573,6 +575,7 @@ function addNewPanelServerBundle() {
           "bundlecurrency": $('#bundle_currency_add').val(),
           "bundlesubdays": $('#bundle_subdays_add').val(),
           "bundlevipflag": $('#bundle_flags_add').val(),
+          "bundlestripeid": $('#bundle_stripe_add').val(),
           "submit": "insert",
           "apiCall": true
         })

@@ -45,6 +45,7 @@ const addPanelServerBundleFunc = (reqBody, username) => {
       if (!reqBody.bundlecurrency) return reject("Operação falhou!, moeda do bundle está faltando");
       if (!reqBody.bundlesubdays) return reject("Operação falhou!, dias de assinatura do bundle estão faltando");
       if (!reqBody.bundlevipflag) return reject("Operação falhou!, flags de vip do bundle está faltando");
+      if (!reqBody.bundlestripeid) return reject("Operação falhou!, o id do stripe está faltando");
 
       let userData = await userModel.getUserDataByUsername(username)
 

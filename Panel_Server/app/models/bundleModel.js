@@ -28,8 +28,8 @@ var bundleModel = {
                                     bundle_desc VARCHAR(255) NULL,
                                     bundle_sub_days INT(11) NULL,
                                     bundle_flags VARCHAR(50) NULL,
-                                    stripe_price_id VARCHAR(50),
                                     created_at datetime DEFAULT NULL,
+                                    stripe_price_id VARCHAR(50),
                                     PRIMARY KEY (id)
                                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
         let queryRes = await db.query(query, true);
@@ -70,6 +70,7 @@ var bundleModel = {
         if (!dataObj.bundlecurrency) return reject("Operation Fail!, Bundle Currency is Missing");
         if (!dataObj.bundlesubdays) return reject("Operation Fail!, Bundle Subscription days are Missing");
         if (!dataObj.bundlevipflag) return reject("Operation Fail!, Bundle VIP Flag is Missing");
+        if (!dataObj.bundlestripeid) return reject("Operação falhou!, o id do stripe está faltando");
 
         let query = db.queryFormat(`INSERT INTO ${table} 
                                     (bundle_name, 
@@ -78,8 +79,10 @@ var bundleModel = {
                                     bundle_desc,
                                     bundle_sub_days,
                                     bundle_flags,
-                                    created_at) VALUES (?, ?, ?, ?, ? ,?,?)`,
-          [dataObj.bundlename, dataObj.bundleprice, dataObj.bundlecurrency, dataObj.bundlename, dataObj.bundlesubdays, ('"' + dataObj.bundlevipflag + '"'), new Date()]);
+                                    created_at,
+                                    stripe_price_id
+                                    ) VALUES (?, ?, ?, ?, ? ,?, ?, ?)`,
+          [dataObj.bundlename, dataObj.bundleprice, dataObj.bundlecurrency, dataObj.bundlename, dataObj.bundlesubdays, ('"' + dataObj.bundlevipflag + '"'), new Date(), ( '"' + dataObj.bundlestripeid + '"')]);
         let queryRes = await db.query(query, true);
         if (!queryRes) {
           return reject("Error in insertion bundle");
