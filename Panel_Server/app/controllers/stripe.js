@@ -1,18 +1,61 @@
 const config = require("../config/config.json")
+const jwt = require('jsonwebtoken')
+const db = require('../db/db_bridge');
+const SteamIDConverter = require('../utils/steamIdConvertor')
+const vipModel = require("../models/vipModel.js");
+const { refreshAdminsInServer } = require("../utils/refreshCFGInServer")
+
 const stripe = require('stripe')(config.payment_gateways.stripe.api_key);
 const YOUR_DOMAIN = 'http://' + config.hostname + ':3535';
-const SUCCESS_CALLBACK_URL = `${YOUR_DOMAIN}`
-const CANCEL_CALLBACK_URL = `${YOUR_DOMAIN}`
+const SUCCESS_CALLBACK_URL = `${YOUR_DOMAIN}`///api/stripeSuccess
+const CANCEL_CALLBACK_URL = `${YOUR_DOMAIN}`//api/stripeCancel
 
 const endpointSecret = config.payment_gateways.stripe.webhook_secret
 
+function epochTillExpiry(days) {
+  let currentEpoch = Math.floor(Date.now() / 1000)
+  let daysInSec = Math.floor(days * 86400)
+  return (currentEpoch + daysInSec)
+}
+
+const getBundleByName = async(name) => {
+  try{
+    const bundle_table = config.bundletable
+    const query = db.queryFormat(`
+    SELECT * FROM ${bundle_table} WHERE bundle_name='${name}'
+    `)
+    let queryRes = await db.query(query, true);
+    return queryRes
+  }catch(e) {
+    console.error(e)
+  }
+}
+
 exports.initStripePayment = async(req, res) => {
   try{
+    //need to integrate with sales logging
+    const user = req.session.passport.user
+    const bundleInfo = await getBundleByName(req.body.bundleName)
+    const parsedServersArray = req.body.serverData.tbl_name.split(',')
+
+    const newToken = await jwt.sign({
+      bundle: {
+        name: bundleInfo.bundle_name,
+        sub_days: bundleInfo.bundle_sub_days,
+        flags: bundleInfo.bundle_flags
+      },
+      user: {
+        steamid: SteamIDConverter.toSteamID(user.id),
+        name: user._json.personaname ? user._json.personaname : user._json.displayName,
+      },
+      server: {
+        tbl_name: parsedServersArray
+      }
+    }, config.jwt.key)
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          // TODO: replace this with the `price` of the product you want to sell
-          price: 'price_1JR6VUGt95CU1XW7vjBxmnDU',
+          price: bundleInfo.stripe_price_id,
           quantity: 1,
         },
       ],
@@ -23,28 +66,77 @@ exports.initStripePayment = async(req, res) => {
       mode: 'payment',
       locale: 'pt-BR',
       success_url: SUCCESS_CALLBACK_URL,
-      cancel_url: CANCEL_CALLBACK_URL,
+      cancel_url: CANCEL_CALLBACK_URL ,
+      metadata: {
+        token: newToken
+      }
     });
-    res.redirect(303, session.url)
+    res.status(200).json({url: session.url})
   }catch(e) {
     console.error(e)
   }
 }
 
-const fulfillOrder = (session) => {
-  // TODO: fill me in
-  console.log("Fulfilling order");
+const fulfillOrder = async (session) => {
+  try{
+    const decodedToken = jwt.decode(session.metadata.token, config.jwt.key)
+    if(!decodedToken) return
+    console.log("Fulfilling order")
+    console.log(decodedToken)
+
+    const newVipInsertObj = {
+      day: epochTillExpiry(decodedToken.bundle.sub_days),
+      name: "//" + decodedToken.user.name,
+      steamId: '"' + decodedToken.user.steamid + '"',
+      userType: 0,
+      flag: decodedToken.bundle.flags,
+      server: decodedToken.server.tbl_name,
+      secKey: decodedToken.user.steamid
+    }
+
+    let insertRes = await vipModel.insertVIPData(newVipInsertObj)
+    if (insertRes) {
+      for (let i = 0; i < newVipInsertObj.server.length; i++) {
+        await refreshAdminsInServer(newVipInsertObj.server[i]);
+      }
+    }
+  }catch(e) {
+    console.error(e)
+  }
 }
 
-const createOrder = (session) => {
-  // TODO: fill me in
+const createOrder = async (session) => {
+  //not needed?
   console.log("Creating order");
 }
 
-const emailCustomerAboutFailedPayment = (session) => {
-  // TODO: fill me in
+const emailCustomerAboutFailedPayment = async (session) => {
+  //TODO
   console.log("Emailing customer");
 }
+
+exports.stripeCancelCallback = async (req, res) => {
+  try{
+    console.log('Receiving stripe cancel callback')
+    return res.status(200).json({
+      received: true
+    })
+  }catch(e) {
+    console.error(e)
+  }
+}
+
+exports.stripeSuccessCallback = async (req, res) => {
+  try{
+    console.log('Receiving stripe success callback')
+    return res.status(200).json({
+      received: true
+    })
+  }catch(e) {
+    console.error(e)
+  }
+}
+
 
 
 exports.handleStripeWebhook = async(req, res) => {
@@ -62,35 +154,23 @@ exports.handleStripeWebhook = async(req, res) => {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object;
-        // Save an order in your database, marked as 'awaiting payment'
-        createOrder(session);
-  
-        // Check if the order is paid (e.g., from a card payment)
-        //
-        // A delayed notification payment will have an `unpaid` status, as
-        // you're still waiting for funds to be transferred from the customer's
-        // account.
+        await createOrder(session);
         if (session.payment_status === 'paid') {
-          fulfillOrder(session);
+          await fulfillOrder(session);
         }
-  
         break;
       }
   
       case 'checkout.session.async_payment_succeeded': {
         const session = event.data.object;
-  
-        // Fulfill the purchase...
-        fulfillOrder(session);
+        await fulfillOrder(session);
   
         break;
       }
   
       case 'checkout.session.async_payment_failed': {
         const session = event.data.object;
-  
-        // Send an email to the customer asking them to retry their order
-        emailCustomerAboutFailedPayment(session);
+        await emailCustomerAboutFailedPayment(session);
   
         break;
       }

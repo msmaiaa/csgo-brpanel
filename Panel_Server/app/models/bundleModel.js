@@ -82,7 +82,7 @@ var bundleModel = {
                                     created_at,
                                     stripe_price_id
                                     ) VALUES (?, ?, ?, ?, ? ,?, ?, ?)`,
-          [dataObj.bundlename, dataObj.bundleprice, dataObj.bundlecurrency, dataObj.bundlename, dataObj.bundlesubdays, ('"' + dataObj.bundlevipflag + '"'), new Date(), ( '"' + dataObj.bundlestripeid + '"')]);
+          [dataObj.bundlename, dataObj.bundleprice, dataObj.bundlecurrency, dataObj.bundlename, dataObj.bundlesubdays, ('"' + dataObj.bundlevipflag + '"'), new Date(), dataObj.bundlestripeid]);
         let queryRes = await db.query(query, true);
         if (!queryRes) {
           return reject("Error in insertion bundle");

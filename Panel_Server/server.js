@@ -9,8 +9,9 @@ const session = require('express-session');
 const passport = require('passport');
 const SteamStrategy = require('passport-steam');
 const cors = require('cors');
-const { initStripePayment, handleStripeWebhook } = require("./app/controllers/stripe")
 
+
+const { initStripePayment, handleStripeWebhook, stripeSuccessCallback, stripeCancelCallback } = require("./app/controllers/stripe")
 
 const requestMiddleware = require('./app/middleWares/request');
 const notFoundMiddleware = require('./app/middleWares/not_found');
@@ -64,7 +65,8 @@ app.options('*', cors());
 app.use(cors());
 
 //Stripe
-app.post('/api/create-checkout-session', initStripePayment)
+app.get('/api/stripeSuccess', stripeSuccessCallback)
+app.get('/api/stripeCancel', stripeCancelCallback)
 app.post('/api/stripe-webhook', express.raw({type: "*/*"}), handleStripeWebhook)
 
 // parse requests of content-type - application/json
@@ -72,6 +74,10 @@ app.use(express.json({
   limit: '100mb',
   extended: true
 }));
+
+//Stripe part 2
+const authMiddleware = require('./app/middleWares/auth')
+app.post('/api/create-checkout-session', authMiddleware.checkSteamAuthenticated, initStripePayment)
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({

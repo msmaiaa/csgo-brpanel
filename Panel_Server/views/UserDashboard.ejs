@@ -161,11 +161,11 @@ function remainingDays(endEpoc){
                               <%}}%>
                             </div>
                           </div>
-                          <div class="card-footer text-primary text-center">
+                          <div class="card-footer text-primary text-center" style="display: flex; justify-content: center;">
                             <!-- <img src
                               onerror="setPayPalButton('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``) +`buy`: `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')"
                               alt /> -->
-                              <a onclick="startStripePayment('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``): `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')">Teste</a>
+                              <a class="btn btn-primary" onclick="startStripePayment('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``): `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')">Comprar</a>
                             <!-- <div
                               id="<%=bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``)+'buy' : 'buy'+i %>"
                               class="col-md-12 text-center">
