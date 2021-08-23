@@ -44,6 +44,10 @@ function remainingDays(endEpoc){
 <script src="./js/paypalPayment.js"></script>
 <!-- Paypal SDK Settings end -->
 
+<!-- Stripe start -->
+<script src="./js/stripe.js"></script>
+<!-- Stripe end -->
+
 <!-- PayU SDK Settings start -->
 <script>
   var payuActive = <%=payuActive%>;
@@ -158,16 +162,14 @@ function remainingDays(endEpoc){
                             </div>
                           </div>
                           <div class="card-footer text-primary text-center">
-                            <img src
+                            <!-- <img src
                               onerror="setPayPalButton('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``) +`buy`: `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')"
-                              alt />
-                              <form action="/api/create-checkout-session" method="POST">
-                                <button type="submit">Checkout</button>
-                              </form>
-                            <div
+                              alt /> -->
+                              <a onclick="startStripePayment('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``): `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')">Teste</a>
+                            <!-- <div
                               id="<%=bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``)+'buy' : 'buy'+i %>"
                               class="col-md-12 text-center">
-                            </div>
+                            </div> -->
                           </div>
                           <%if(payuActive && panelSetting.platform_currency==="INR"){%>
                           <div class="card-footer text-primary text-center">
@@ -226,7 +228,7 @@ function remainingDays(endEpoc){
                           <th>Data de início</th>
                           <th>Data do término</th>
                           <th>Dias restantes</th>
-                          <th>Renovar VIP</th>
+                          <!-- <th>Renovar VIP</th> -->
                         </thead>
                         <tbody>
                           <% if(userDataListing) {%>
@@ -248,34 +250,6 @@ function remainingDays(endEpoc){
                             <td
                               class="text-<%= ((remainingDays(userDataListing[j].data.expireStamp)/1)<10)?'warning':((remainingDays(userDataListing[j].data.expireStamp)/1)<5)?'danger':'primary' %>">
                               <%=(userDataListing[j].data&&userDataListing[j].data.expireStamp)?remainingDays(userDataListing[j].data.expireStamp):"NA"%>
-                            </td>
-                            <td>
-                              <% if(userDataListing[j].data && userDataListing[j].data.type==0 && userDataListing[j].serverdata){ %>
-                              <div class="col-md-12 row">
-                                <!-- class="col-md-6 ml-0 pl-0" -->
-                                <img src
-                                  onerror="setPayPalButton('<%= (userDataListing[j].serverdata && userDataListing[j].serverdata.tbl_name) ? userDataListing[j].serverdata.tbl_name + `renew`: `renew`+j %>', <%= JSON.stringify(userDataListing[j].serverdata) %>,'renewPurchase')"
-                                  alt />
-                                <%if(payuActive && panelSetting.platform_currency==="INR"){%>
-                                <div class="<%= (payuActive&&paypalActive) ? 'col-md-6' : 'col-md-12' %>">
-                                  <button type="button" class="btn btn-success text-center col-md-12 m-0"
-                                    onclick="initPayUpayment(<%= JSON.stringify(userDataListing[j].serverdata) %>,'renewPurchase')">
-                                    <img
-                                      src="<%= (payuActive&&paypalActive) ? './images/payumini.png' : './images/payumoney.png' %>"
-                                      height='11' alt="payu" class="pt-0 pb-0">
-                                  </button>
-                                </div>
-                                <%}%>
-                            <div
-                              id="<%=(userDataListing[j].serverdata && userDataListing[j].serverdata.tbl_name) ? userDataListing[j].serverdata.tbl_name+'renew' : 'renew'+j %>"
-                                class="<%= (payuActive&&paypalActive) ? 'col-md-6' : 'col-md-12' %>">
-                              </div>
-                    </div>
-                    <%}else{%>
-                    <div class="text-center">
-                      <button class="text-warning btn" disabled>Something Wrong</button>
-                    </div>
-                    <%}%>
                             </td>
                           </tr>
                           <%}}%>
