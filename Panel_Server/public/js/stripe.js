@@ -1,5 +1,5 @@
 
-const startStripePayment = (bundleName, serverData, type) => {
+const startStripeBundlePayment = (bundleName, serverData, type) => {
   fetch('/api/create-checkout-session', {
     method: 'POST',
     headers: {
@@ -12,4 +12,16 @@ const startStripePayment = (bundleName, serverData, type) => {
   .then((data) => {
     window.location = data.url
   })
+}
+
+const handleStripeRenew = (serverData, type) => {
+  fetch('/api/create-checkout-session', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({serverData, type})
+  })
+  .then((response) => console.log(response))
 }

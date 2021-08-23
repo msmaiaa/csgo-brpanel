@@ -33,45 +33,66 @@ const getBundleByName = async(name) => {
 
 exports.initStripePayment = async(req, res) => {
   try{
-    //need to integrate with sales logging
     const user = req.session.passport.user
-    const bundleInfo = await getBundleByName(req.body.bundleName)
-    const parsedServersArray = req.body.serverData.tbl_name.split(',')
+    const type = req.body.type
+    let sessionUrl = ''
+    switch(type) {
+      case 'newPurchaseBundle': {
+        //need to integrate with sales logging
+        const bundleInfo = await getBundleByName(req.body.bundleName)
+        const parsedServersArray = req.body.serverData.tbl_name.split(',')
 
-    const newToken = await jwt.sign({
-      bundle: {
-        name: bundleInfo.bundle_name,
-        sub_days: bundleInfo.bundle_sub_days,
-        flags: bundleInfo.bundle_flags
-      },
-      user: {
-        steamid: SteamIDConverter.toSteamID(user.id),
-        name: user._json.personaname ? user._json.personaname : user._json.displayName,
-      },
-      server: {
-        tbl_name: parsedServersArray
+        const newToken = await jwt.sign({
+          bundle: {
+            name: bundleInfo.bundle_name,
+            sub_days: bundleInfo.bundle_sub_days,
+            flags: bundleInfo.bundle_flags
+          },
+          user: {
+            steamid: SteamIDConverter.toSteamID(user.id),
+            name: user._json.personaname ? user._json.personaname : user._json.displayName,
+          },
+          server: {
+            tbl_name: parsedServersArray
+          },
+          type: "newPurchaseBundle"
+        }, config.jwt.key)
+        const session = await stripe.checkout.sessions.create({
+          line_items: [
+            {
+              price: bundleInfo.stripe_price_id,
+              quantity: 1,
+            },
+          ],
+          payment_method_types: [
+            'boleto',
+            'card',
+          ],
+          mode: 'payment',
+          locale: 'pt-BR',
+          success_url: SUCCESS_CALLBACK_URL,
+          cancel_url: CANCEL_CALLBACK_URL ,
+          metadata: {
+            token: newToken
+          }
+        });
+        sessionUrl = session.url
       }
-    }, config.jwt.key)
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: bundleInfo.stripe_price_id,
-          quantity: 1,
-        },
-      ],
-      payment_method_types: [
-        'boleto',
-        'card',
-      ],
-      mode: 'payment',
-      locale: 'pt-BR',
-      success_url: SUCCESS_CALLBACK_URL,
-      cancel_url: CANCEL_CALLBACK_URL ,
-      metadata: {
-        token: newToken
+      case 'renewPurchase': {
+        //TODO
+        // const newToken = await jwt.sign({
+        //   bundle: {
+        //     name: bundleInfo.bundle_name,
+        //     sub_days: bundleInfo.bundle_sub_days,
+        //     flags: bundleInfo.bundle_flags
+        //   },
+        //   steamid: SteamIDConverter.toSteamID(user.id),
+        //   server: parsedServersArray
+        // }, config.jwt.key)
+        // console.log(req.body)
       }
-    });
-    res.status(200).json({url: session.url})
+    }
+    res.status(200).json({url: sessionUrl})
   }catch(e) {
     console.error(e)
   }
@@ -81,24 +102,39 @@ const fulfillOrder = async (session) => {
   try{
     const decodedToken = jwt.decode(session.metadata.token, config.jwt.key)
     if(!decodedToken) return
-    console.log("Fulfilling order")
-    console.log(decodedToken)
-
-    const newVipInsertObj = {
-      day: epochTillExpiry(decodedToken.bundle.sub_days),
-      name: "//" + decodedToken.user.name,
-      steamId: '"' + decodedToken.user.steamid + '"',
-      userType: 0,
-      flag: decodedToken.bundle.flags,
-      server: decodedToken.server.tbl_name,
-      secKey: decodedToken.user.steamid
-    }
-
-    let insertRes = await vipModel.insertVIPData(newVipInsertObj)
-    if (insertRes) {
-      for (let i = 0; i < newVipInsertObj.server.length; i++) {
-        await refreshAdminsInServer(newVipInsertObj.server[i]);
+    switch(decodedToken.type) {
+      case 'newPurchaseBundle': {
+        //this will add the user cargo if it doesn't exists, else it will add the days to the table
+        for(server of decodedToken.server.tbl_name) {
+          const hasVipOnServer = await vipModel.checkVipExists({server, steamId: '"' + decodedToken.user.steamid + '"'})
+          if(hasVipOnServer) {
+            await vipModel.updateVIPData({
+              secKey: decodedToken.user.steamid,
+              steamId: '"' + decodedToken.user.steamid + '"',
+              day: Math.floor(decodedToken.bundle.sub_days * 86400),
+              server: [server],
+            })
+          }else{
+            await vipModel.insertVIPData({
+              day: epochTillExpiry(decodedToken.bundle.sub_days),
+              name: "//" + decodedToken.user.name,
+              steamId: '"' + decodedToken.user.steamid + '"',
+              userType: 0,
+              flag: decodedToken.bundle.flags,
+              server:[server],
+              secKey: decodedToken.user.steamid
+            })
+          }
+        }
+        // if (insertRes) {
+        //   for (let i = 0; i < newVipInsertObj.server.length; i++) {
+        //     await refreshAdminsInServer(newVipInsertObj.server[i]);
+        //   }
+        // }
       }
+      // case 'renewPurchase': {
+
+      // }
     }
   }catch(e) {
     console.error(e)

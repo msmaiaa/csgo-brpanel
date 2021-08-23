@@ -162,25 +162,8 @@ function remainingDays(endEpoc){
                             </div>
                           </div>
                           <div class="card-footer text-primary text-center" style="display: flex; justify-content: center;">
-                            <!-- <img src
-                              onerror="setPayPalButton('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``) +`buy`: `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')"
-                              alt /> -->
-                              <a class="btn btn-primary" onclick="startStripePayment('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``): `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')">Comprar</a>
-                            <!-- <div
-                              id="<%=bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``)+'buy' : 'buy'+i %>"
-                              class="col-md-12 text-center">
-                            </div> -->
+                              <a class="btn btn-primary" onclick="startStripeBundlePayment('<%= bundleArray[i].bundle_name ? bundleArray[i].bundle_name.split(` `).join(``): `buy`+i %>',<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')">Comprar</a>
                           </div>
-                          <%if(payuActive && panelSetting.platform_currency==="INR"){%>
-                          <div class="card-footer text-primary text-center">
-                            <div id="" class="col-md-12 text-center">
-                              <button type="button" class="btn btn-success text-center col-md-12 m-0"
-                                onclick="initPayUpayment(<%= JSON.stringify(bundleArray[i].serverDataObj) %>,'newPurchaseBundle')">
-                                <img src="./images/payumoney.png" height='20' alt="payu">
-                              </button>
-                            </div>
-                          </div>
-                          <%}%>
                           </div>
                         </div>
                         <%}}%>
@@ -250,6 +233,17 @@ function remainingDays(endEpoc){
                             <td
                               class="text-<%= ((remainingDays(userDataListing[j].data.expireStamp)/1)<10)?'warning':((remainingDays(userDataListing[j].data.expireStamp)/1)<5)?'danger':'primary' %>">
                               <%=(userDataListing[j].data&&userDataListing[j].data.expireStamp)?remainingDays(userDataListing[j].data.expireStamp):"NA"%>
+                            </td>
+                            <td>
+                              <% if(userDataListing[j].data && userDataListing[j].data.type==0 && userDataListing[j].serverdata){ %>
+                                <div class="col-md-12 row">
+                                <!-- <button class="btn btn-primary" onclick="handleStripeRenew(<%= JSON.stringify(userDataListing[j].serverdata) %>, 'renewPurchase')">Renovar</button> -->
+                              </div>
+                              <%}else{%>
+                                <div class="text-center">
+                                  <button class="text-warning btn" disabled>Something Wrong</button>
+                                </div>
+                              <%}%>
                             </td>
                           </tr>
                           <%}}%>
