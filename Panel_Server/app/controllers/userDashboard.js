@@ -58,6 +58,7 @@ const myDashboardFunc = (reqBody, reqUser) => {
         for (let l = 0; l < allServerList.length; l++) {
           if (userDataListing[k].servername == allServerList[l].server_name) {
             userDataListing[k].serverdata = allServerList[l]
+            delete userDataListing[k].serverdata.server_rcon_pass
           }
         }
       }
