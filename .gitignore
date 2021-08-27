@@ -1,5 +1,7 @@
 config.json
 node_modules
+.env
 .vscode
+.next
 VMPanel.log
 package-lock.json
