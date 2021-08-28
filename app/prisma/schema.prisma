@@ -1,0 +1,61 @@
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id  Int @default(autoincrement()) @id
+  steamid String @unique
+  user_type Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user_cargo User_Cargo[]
+
+  @@map(name: "users")
+}
+
+model Server {
+  id  Int @default(autoincrement()) @id
+  name String @unique
+  full_name String @unique
+  ip String
+  port String
+  rcon_pass String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user_cargos User_Cargo[]
+
+  @@map(name: "servers")
+}
+
+model Cargo{
+  id  Int @default(autoincrement()) @id
+  stripe_id String @unique
+  name String @unique
+  full_name String 
+  price Int
+  currency String
+  flags String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user_cargos User_Cargo[]
+  
+  @@map(name: "cargos")
+}
+
+model User_Cargo  {
+  id  Int @default(autoincrement()) @id
+  expire_stamp BigInt
+  cargo_name String
+  flags String
+  server_name String
+  steamid String
+  cargo Cargo @relation(fields: [cargo_name], references: [name])
+  server Server @relation(fields: [server_name], references: [name])
+  user User @relation(fields: [steamid], references: [steamid])
+}

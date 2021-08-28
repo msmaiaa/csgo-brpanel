@@ -1,3 +1,6 @@
+import React from 'react';
+//import './index.css'
+
 import Link from "next/link";
 import router from "../lib/router";
 
