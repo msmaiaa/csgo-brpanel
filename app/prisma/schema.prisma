@@ -28,7 +28,9 @@ model Server {
   rcon_pass String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
   user_cargos User_Cargo[]
+  cargo_server Cargo_Server[]
 
   @@map(name: "servers")
 }
@@ -43,7 +45,9 @@ model Cargo{
   flags String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
   user_cargos User_Cargo[]
+  cargo_server Cargo_Server[]
   
   @@map(name: "cargos")
 }
@@ -58,4 +62,12 @@ model User_Cargo  {
   cargo Cargo @relation(fields: [cargo_name], references: [name])
   server Server @relation(fields: [server_name], references: [name])
   user User @relation(fields: [steamid], references: [steamid])
+}
+
+model Cargo_Server {
+  id  Int @default(autoincrement()) @id
+  cargo_id Int
+  server_id Int 
+  cargo Cargo @relation(fields: [cargo_id], references: [id])
+  server Server @relation(fields: [server_id], references: [id])
 }
