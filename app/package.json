@@ -10,6 +10,9 @@
     "database:setup": "npx prisma db push && npx prisma generate"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.15",
     "@node-steam/id": "^1.2.0",
     "@prisma/client": "^2.30.0",
     "@types/node": "^16.7.2",
@@ -23,6 +26,7 @@
     "rcon": "^1.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-pro-sidebar": "^0.6.0",
     "reflect-metadata": "^0.1.13",
     "sourcequery": "0.0.2",
     "stripe": "^8.170.0",
