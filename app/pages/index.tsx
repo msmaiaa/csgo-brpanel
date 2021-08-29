@@ -1,14 +1,20 @@
-import Layout from "../components/Layout"
+import { FC } from "react";
+import Layout from "../components/Layout";
+import router from "../lib/router";
 
-export default function Index() {
-	return (
-		<Layout>
-			<p>Hello world</p>
-		</Layout>
-	)
+const HomePage: FC<any> = (props) => {
+  return (
+    <>
+      <Layout user={props.user}>
+        <p>HomePage</p>
+      </Layout>
+    </>
+  )
 }
 
-// export async function getServerSideProps({ req, res}) {
-// 	await router.run(req, res);
-// 	return { props: { user: req.user || null } };
-// }
+export default HomePage
+
+export async function getServerSideProps({ req, res}) {
+	await router.run(req, res);
+	return { props: { user: req.user || null } };
+}
