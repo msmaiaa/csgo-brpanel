@@ -1,0 +1,3 @@
+{
+  "superAdminSteamId": "STEAM_0:1:16861077" // É necessário colocar um steamid inicial para a configuração do painel se tornar possível sem possuir um admin no banco de dados
+}
