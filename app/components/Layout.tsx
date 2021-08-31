@@ -27,8 +27,8 @@ export default function Layout(children) {
   }
 
   return (
-    <div style={{display: 'flex', height: '100%'}}>
-    <ProSidebar style={{height: '100%'}}>
+    <div style={{display: 'flex', height: '100%', width: '100%', justifyContent: 'space-evenly', alignItems: 'center'}}>
+    <ProSidebar style={{height: '95%', marginLeft: '15px'}}>
       <Menu iconShape="round">
         <MenuItem icon={<FontAwesomeIcon icon={faHome} />}>
           <Link href="/">Início</Link>
@@ -41,15 +41,22 @@ export default function Layout(children) {
             <MenuItem icon={<FontAwesomeIcon icon={faListAlt} />}>
               <Link href="/managecargos">Gerenciar cargos</Link>
             </MenuItem>
+            <MenuItem icon={<FontAwesomeIcon icon={faListAlt} />}>
+              <Link href="/manageservers">Gerenciar servidores</Link>
+            </MenuItem>
             <MenuItem icon={<FontAwesomeIcon icon={faCog} />}>
               <Link href="/panelsettings">Configurações do painel</Link>
             </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faFileInvoiceDollar} />}>
-              <Link href="/salesrecord">Histórico de vendas</Link>
-            </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faHistory} />}>
-              <Link href="/logs">Logs</Link>
-            </MenuItem>
+            {children.user.user_type > 1 &&
+              <>
+                <MenuItem icon={<FontAwesomeIcon icon={faFileInvoiceDollar} />}>
+                  <Link href="/salesrecord">Histórico de vendas</Link>
+                </MenuItem>
+                <MenuItem icon={<FontAwesomeIcon icon={faHistory} />}>
+                  <Link href="/logs">Logs</Link>
+                </MenuItem>
+              </>
+            }
             <MenuItem icon={<FontAwesomeIcon icon={faInfoCircle} />}>
               <Link href="/about">Sobre</Link>
             </MenuItem>
@@ -64,7 +71,9 @@ export default function Layout(children) {
         }
       </Menu>
     </ProSidebar>
-    {children.children}
+    <div style={{width: '80%', height: '95%'}}>
+      {children.children}
+    </div>
     </div>
   )
 }

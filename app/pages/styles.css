@@ -55,4 +55,10 @@ div#__next,
 div#__next > div {
 	height: 100%;
 	font-family: 'Josefin Sans', sans-serif;
+	background-color: #161616;
 }
+
+.pro-sidebar-inner {
+	border-radius: 25px;
+}
+
