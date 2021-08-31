@@ -6,6 +6,8 @@ import Card from "../../components/Card/Card";
 import Layout from "../../components/Layout";
 import router from "../../lib/router";
 
+import { useContext } from "react";
+import ToastContext from "../../context/ToastContext";
 import { addServer } from '../../services/ServerService'
 
 const CustomTextField = withStyles({
@@ -29,6 +31,8 @@ const CustomTextField = withStyles({
 })(TextField);
 
 const ManageServers: FC<any> = (props) => {
+  const toast = useContext(ToastContext)
+
   const [addInputs, setAddInputs] = useState<any>({});
   const handleAddChange = e => setAddInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
 
@@ -38,9 +42,9 @@ const ManageServers: FC<any> = (props) => {
   const handleAddServer = async() => {
     try{
       const addedServer = await addServer(addInputs)
-      console.log(addedServer)
+      toast.success(addedServer.data.message)
     }catch(e){
-      console.log(e.response)
+      toast.error(e.response.data.message)
     }
   }
 

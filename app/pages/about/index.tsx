@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Layout from "../../components/Layout";
-import router from "../api/teste";
+import router from "../../lib/router";
 
 const AboutPage: FC<any> = (props) => {
   return (
