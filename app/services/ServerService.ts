@@ -11,3 +11,7 @@ interface IAddServer {
 export async function addServer(data: IAddServer){
   return await axios.post('/api/servers/create', data)
 }
+
+export async function getAllServers() {
+  return await axios.get('/api/servers/')
+}
