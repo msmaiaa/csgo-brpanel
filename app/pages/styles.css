@@ -51,8 +51,7 @@ html, body {
 html,
 body,
 body > div:first-child,
-div#__next,
-div#__next > div {
+div#__next {
 	height: 100%;
 	font-family: 'Josefin Sans', sans-serif;
 	background-color: #161616;

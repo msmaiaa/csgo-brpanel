@@ -15,7 +15,7 @@ export default function MyApp({ Component, pageProps }) {
   return <>
   <ToastContext.Provider value={{success, error, warn}}>
     <Component {...pageProps} />
-    <ToastContainer />
+    <ToastContainer/>
   </ToastContext.Provider>
   </>
 }

@@ -14,7 +14,6 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
     if(createdServer) return res.status(200).json({message: 'Servidor criado com sucesso', body: createdServer}) 
     return res.status(500).json({message: 'Não foi possível criar o servidor'}) 
   }catch(e) {
-    console.error(e)
     if(e.code === 'P2002') return res.status(500).json({message: 'Já existe um servidor com esse nome.'}) 
     return res.status(500).json({message: 'Não foi possível criar o servidor'}) 
   }
