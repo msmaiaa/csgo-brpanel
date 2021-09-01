@@ -67,6 +67,7 @@ const ManageCargos: FC<any> = (props) => {
   useEffect(() => {
     getAllServers()
     .then((response) => setServers(response.data.body))
+    updateCargos()
   },[])
 
   useEffect(() => {

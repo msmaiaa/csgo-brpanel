@@ -21,6 +21,7 @@
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
+    "gamedig": "^3.0.7",
     "mysql2": "^2.3.0",
     "next": "^11.0.1",
     "next-connect": "^0.10.1",
