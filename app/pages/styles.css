@@ -54,10 +54,25 @@ body > div:first-child,
 div#__next {
 	height: 100%;
 	font-family: 'Josefin Sans', sans-serif;
-	background-color: #161616;
+	background: linear-gradient(165deg, rgba(239,242,252,1) 0%, rgba(250,240,243,1) 53%);
 }
 
 .pro-sidebar-inner {
-	border-radius: 25px;
+	background-color: white !important;
+	border-right: 1px solid lightgray;
 }
 
+.pro-sidebar .pro-menu a {
+	color: black !important;
+}
+
+.pro-icon, .pro-icon-wrapper {
+	background-color: white !important;
+	height: 25px !important;
+	width: 25px !important;
+}
+
+.pro-icon > svg {
+	width: 20px !important;
+	height: 20px !important;
+}

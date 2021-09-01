@@ -2,6 +2,7 @@ import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import styles from './Layout.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faMoneyBillAlt, 
@@ -27,46 +28,46 @@ export default function Layout(children) {
   }
 
   return (
-    <div style={{display: 'flex', height: '100%', width: '100%', justifyContent: 'space-evenly', alignItems: 'center'}}>
-    <ProSidebar style={{height: '95%', marginLeft: '15px'}}>
+    <div style={{display: 'flex', height: '100%', width: '100%', alignItems: 'center'}}>
+    <ProSidebar style={{height: '100%'}}>
       <Menu iconShape="round">
-        <MenuItem icon={<FontAwesomeIcon icon={faHome} />}>
-          <Link href="/">Início</Link>
+        <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faHome} />}>
+          <Link href="/"><p className={styles.menulink}>Início</p></Link>
         </MenuItem>
         {children.user ? 
           <>
-            <MenuItem icon={<FontAwesomeIcon icon={faMoneyBillAlt} />}>
-              <Link href="/store">Loja</Link>
+            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faMoneyBillAlt} />}>
+              <Link href="/store"><p className={styles.menulink}>Loja</p></Link>
             </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faListAlt} />}>
-              <Link href="/managecargos">Gerenciar cargos</Link>
+            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
+              <Link href="/managecargos"><p className={styles.menulink}>Gerenciar cargos</p></Link>
             </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faListAlt} />}>
-              <Link href="/manageservers">Gerenciar servidores</Link>
+            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
+              <Link href="/manageservers"><p className={styles.menulink}>Gerenciar servidores</p></Link>
             </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faCog} />}>
-              <Link href="/panelsettings">Configurações do painel</Link>
+            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon}  icon={faCog} />}>
+              <Link href="/panelsettings"><p className={styles.menulink}>Configurações do painel</p></Link>
             </MenuItem>
             {children.user.user_type > 1 &&
               <>
-                <MenuItem icon={<FontAwesomeIcon icon={faFileInvoiceDollar} />}>
-                  <Link href="/salesrecord">Histórico de vendas</Link>
+                <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faFileInvoiceDollar} />}>
+                  <Link href="/salesrecord"><p className={styles.menulink}>Histórico de vendas</p></Link>
                 </MenuItem>
-                <MenuItem icon={<FontAwesomeIcon icon={faHistory} />}>
-                  <Link href="/logs">Logs</Link>
+                <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faHistory} />}>
+                  <Link href="/logs"><p className={styles.menulink}>Logs</p></Link>
                 </MenuItem>
               </>
             }
-            <MenuItem icon={<FontAwesomeIcon icon={faInfoCircle} />}>
-              <Link href="/about">Sobre</Link>
+            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faInfoCircle} />}>
+              <Link href="/about"><p className={styles.menulink}>Sobre</p></Link>
             </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faSignOutAlt} />}>
-              <a onClick={handleLogout}>Sair</a>
+            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faSignOutAlt} />}>
+              <a className={styles.menulink} onClick={handleLogout}>Sair</a>
             </MenuItem>
           </>
           :
-            <MenuItem icon={<FontAwesomeIcon icon={faSignInAlt} />}>
-              <a onClick={handleLogin}>Entrar</a>
+            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faSignInAlt} />}>
+              <a className={styles.menulink} onClick={handleLogin}>Entrar</a>
             </MenuItem>
         }
       </Menu>

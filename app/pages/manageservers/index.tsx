@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import { TextField, Button, withStyles } from '@material-ui/core'
 import styles from './manageservers.module.css'
 
@@ -13,18 +13,18 @@ import { addServer } from '../../services/ServerService'
 const CustomTextField = withStyles({
   root: {
     '& label.Mui-focused': {
-      color: 'white',
+      color: 'black',
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: '#C0C0C0',
+      borderBottomColor: 'black',
     },
     '& .MuiInputBase-root': { 
-      color: '#C0C0C0',
+      color: 'black',
       fontFamily: 'Josefin Sans',
     },
     '& > *': {
-      color: '#C0C0C0',
-      borderBottomColor: '#C0C0C0',
+      color: 'black',
+      borderBottomColor: 'black',
       fontFamily: 'Josefin Sans',
     }
   },
