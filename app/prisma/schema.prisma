@@ -38,10 +38,11 @@ model Server {
 model Cargo{
   id  Int @default(autoincrement()) @id
   stripe_id String @unique
-  name String @unique
-  full_name String 
-  price Int
-  currency String
+  name String @unique 
+  price String
+  individual Boolean
+  duration String
+  currency String @default("BRL")
   flags String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
