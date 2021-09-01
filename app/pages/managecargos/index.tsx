@@ -129,12 +129,8 @@ const ManageCargos: FC<any> = (props) => {
             <p className={styles.cardTitle}>Alterar cargo</p>
             <Card style={{width:'100%'}}>
               <form className={styles.inputGroup}>
-                <CustomTextField label="Nome do servidor" />
-                <CustomTextField label="Nome do servidor (definido na cfg do plugin)" />
-                <CustomTextField label="IP do servidor" />
-                <CustomTextField label="Senha RCON" />
               </form>
-              <Button variant="contained" color="secondary" className={styles.inputButton}>ADD</Button>
+              <Button variant="contained" color="secondary" className={styles.inputButton}>Alterar</Button>
             </Card>
           </div>
         </div>
