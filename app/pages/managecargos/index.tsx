@@ -3,11 +3,13 @@ import Layout from "../../components/Layout";
 import ToastContext from "../../context/ToastContext";
 import router from "../../lib/router";
 import styles from './managecargos.module.css'
-import { addCargo } from "../../services/CargoService";
+import { addCargo, getAllCargos, ICargo, updateCargo } from "../../services/CargoService";
 import { getAllServers } from "../../services/ServerService";
 
 import { FC, useContext, useEffect, useState } from "react";
-import { withStyles, TextField, Button, Checkbox } from '@material-ui/core'
+import { withStyles, TextField, Button, Checkbox, AccordionSummary, Typography, Accordion, AccordionDetails } from '@material-ui/core'
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CustomTextField = withStyles({
   root: {
@@ -30,23 +32,37 @@ const CustomTextField = withStyles({
   },
 })(TextField);
 
+const CustomAccordion = withStyles({
+  root: {
+    '& > *': {
+      color: 'black',
+      borderBottomColor: 'black',
+      fontFamily: 'Josefin Sans',
+    },
+    color: 'black',
+    borderBottomColor: 'black',
+    fontFamily: 'Josefin Sans',
+  },
+})(Accordion);
+
+
 const ManageCargos: FC<any> = (props) => {
   const toast = useContext(ToastContext)
 
   const [addInputs, setAddInputs] = useState<any>({});
   const handleAddChange = e => setAddInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   const [updateInputs, setUpdateInputs] = useState({});
-  const handleUpdateChange = e => setUpdateInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
+  const handleUpdateChange = (e, cargo) =>  {
+    let newState = {...updateInputs}
+    if(!newState[cargo.name]) newState[cargo.name] = {}
+    newState[cargo.name][e.target.name] = e.target.value
+    setUpdateInputs(newState)
+  }
 
   const [servers, setServers] = useState([])
   const [serversChecked, setServersChecked] = useState([])
-  const [isAllServers, setAllServers] = useState(false);
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    let updatedServersChecked = [...serversChecked]
-    updatedServersChecked[index].checked = event.target.checked
-    setServersChecked(updatedServersChecked)
-  };
+  const [isAllServers, setAllServers] = useState(false)
+  const [cargosFromDb, setCargosFromDb] = useState<Array<ICargo>>([])
 
   useEffect(() => {
     getAllServers()
@@ -65,6 +81,30 @@ const ManageCargos: FC<any> = (props) => {
     }
   }, [servers])
 
+  useEffect(() => {
+    if(cargosFromDb.length > 0) {
+      let formValues = {}
+      for(let cargo of cargosFromDb) {
+        formValues[cargo.name] = {
+          ...cargo
+        }
+      }
+      setUpdateInputs(formValues)
+    }
+  }, [cargosFromDb])
+
+  const updateCargos = () => {
+    getAllCargos()
+    .then((response) => setCargosFromDb(response.data.body))
+  }
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    let updatedServersChecked = [...serversChecked]
+    updatedServersChecked[index].checked = event.target.checked
+    setServersChecked(updatedServersChecked)
+  };
+
+
   const handleAddCargo = async() => {
     try{
       const cargoData = addInputs
@@ -76,6 +116,18 @@ const ManageCargos: FC<any> = (props) => {
       } 
       const addedCargo = await addCargo(cargoData, serversData)
       toast.success(addedCargo.data.message)
+      updateCargos()
+    }catch(e){
+      toast.error(e.response.data.message)
+    }
+  }
+
+  const handleUpdateCargo = async(event, cargo) => {
+    try{
+      event.preventDefault()
+      const updatedCargo = await updateCargo(updateInputs[cargo.name])
+      toast.success(updatedCargo.data.message)
+      updateCargos()
     }catch(e){
       toast.error(e.response.data.message)
     }
@@ -92,7 +144,7 @@ const ManageCargos: FC<any> = (props) => {
                 <CustomTextField inputProps={{ maxLength: 100}} name="name" placeholder="Cargo legal" onChange={handleAddChange} required label="Nome do cargo"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="price" placeholder="15" onChange={handleAddChange} required label="Preço"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="duration" placeholder="30" onChange={handleAddChange} required label="Tempo de duração (dias)"/>
-                <CustomTextField inputProps={{ maxLength: 100}} placeholder="100:z" name="flags" onChange={handleAddChange} required label="Flags"/>
+                <CustomTextField inputProps={{ maxLength: 100}} name="flags" placeholder="100:z" onChange={handleAddChange} required label="Flags"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" placeholder="price_xxxxxxxxxxxxxxxx" onChange={handleAddChange} required label="ID do produto (stripe)"/>
 
 
@@ -126,11 +178,30 @@ const ManageCargos: FC<any> = (props) => {
             </Card>
           </div>
           <div className={styles.cardWrapper}>
-            <p className={styles.cardTitle}>Alterar cargo</p>
+            <p className={styles.cardTitle}>Alterar cargos</p>
             <Card style={{width:'100%'}}>
-              <form className={styles.inputGroup}>
-              </form>
-              <Button variant="contained" color="secondary" className={styles.inputButton}>Alterar</Button>
+              {cargosFromDb.length > 0 && cargosFromDb.map((cargo) => {
+                
+                if (updateInputs[cargo.name]) return <CustomAccordion key={cargo.id}>
+                <AccordionSummary
+                  expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography style={{fontFamily: 'Josefin Sans'}}>{cargo.name}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <form className={styles.inputGroup} onSubmit={(event) => handleUpdateCargo(event, cargo)} style={{width: '100%'}}>
+                    <CustomTextField inputProps={{ maxLength: 100}} name="name" value={updateInputs[cargo.name].name} onChange={(event) => handleUpdateChange(event, cargo)} required label="Nome do cargo" />
+                    <CustomTextField inputProps={{ maxLength: 100}} name="price" value={updateInputs[cargo.name].price} onChange={(event) => handleUpdateChange(event, cargo)} required label="Preço" />
+                    <CustomTextField inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
+                    <CustomTextField inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
+                    <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" />
+                    <Button type="submit" variant="contained" color="secondary" className={styles.inputButton}>Alterar</Button>
+                  </form>
+                </AccordionDetails>
+              </CustomAccordion>
+              })}
             </Card>
           </div>
         </div>
