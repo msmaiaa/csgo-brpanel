@@ -54,7 +54,7 @@ body > div:first-child,
 div#__next {
 	height: 100%;
 	font-family: 'Josefin Sans', sans-serif;
-	background: linear-gradient(165deg, rgba(239,242,252,1) 0%, rgba(250,240,243,1) 53%);
+	background: #F9FAFD;
 }
 
 .pro-sidebar-inner {

@@ -1,6 +1,8 @@
-import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
+import { ProSidebar, Menu, MenuItem, SidebarHeader } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import Link from 'next/link'
+import Image from 'next/image'
+import logoPic from '../public/logo.png'
 import { useRouter } from 'next/router'
 import styles from './Layout.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -30,6 +32,9 @@ export default function Layout(children) {
   return (
     <div style={{display: 'flex', height: '100%', width: '100%', alignItems: 'center'}}>
     <ProSidebar style={{height: '100%'}}>
+      <SidebarHeader style={{display: 'flex', justifyContent: 'center'}}>
+        <Image src={logoPic} alt="Logo" width={100} height={100}/>
+      </SidebarHeader>
       <Menu iconShape="round">
         <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faHome} />}>
           <Link href="/"><p className={styles.menulink}>Início</p></Link>
