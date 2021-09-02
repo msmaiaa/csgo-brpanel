@@ -4,12 +4,21 @@ import { getAllServers } from '../services/ServerService'
 import styles from './index.module.css'
 import Layout from "../components/Layout";
 import ServerCard from "../components/ServerCard/ServerCard";
+
 const HomePage: FC<any> = (props) => {
   const [servers, setServers] = useState([])
 
   useEffect(() => {
+    let mounted = true
     getAllServers()
-    .then((response) => setServers(response.data.body))
+    .then((response) => {
+      if(mounted) {
+        setServers(response.data.body)
+      }
+    })
+    return function cleanup() {
+      mounted = false
+    }
   }, [])
   
   useEffect(() => {
@@ -24,7 +33,13 @@ const HomePage: FC<any> = (props) => {
             {servers.length > 0 ? 
             servers.map((server) => {
               return (
-                <ServerCard key={server.id} server={server} style={{width: '300px', height: '200px', marginLeft: '30px', backgroundColor: '#191919'}}/>
+                <ServerCard key={server.id} server={server} style={{
+                width: '280px', 
+                height: '180px', 
+                marginLeft: '30px', 
+                backgroundColor: 'rgba(255, 255, 255, .15)', 
+                backdropFilter: 'blur(5px)'
+              }}/>
               )
             })
             : ''}

@@ -6,8 +6,8 @@
 }
 
 .cardTitle {
-  color: white;
-  font-size: 22px;
+  color: #000;
+  font-size: 24px;
   margin-bottom: 8px;
   font-weight: 300;
 }
@@ -23,7 +23,7 @@
 }
 
 .players {
-  color: #fff;
+  color: #000;
   margin-bottom: 8px;
 }
 

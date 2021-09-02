@@ -27,19 +27,26 @@ export default function ServerCard ({ server, style }) {
   const [serverInfo, setServerInfo] = useState<IServerInfo>({})
 
   useEffect(() => {
+    let isMounted = true
     getServerStatus(server)
     .then((response) => {
-      const responseData: IResponseData | any = {...response.data.body}
-      setServerInfo({
-        online: true,
-        data: responseData
-      })
+      if(isMounted) {
+        const responseData: IResponseData | any = {...response.data.body}
+        setServerInfo({
+          online: true,
+          data: responseData
+        })
+      }
     })
     .catch((error) => {
+      if(!isMounted) return
       setServerInfo({
         online: false,
       })
     })
+    return () => {
+      isMounted = false
+    }
   }, [])
   return (
     <Card style={{...style}}>
