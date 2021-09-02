@@ -17,10 +17,12 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
         server_id: server.id
       }
     })
-    const createdRelations = await prisma.cargo_Server.createMany({
-      data: parsedData
-    })
-    if(createdRelations && createdCargo) return res.status(200).json({message: 'Cargo criado com sucesso', body: createdCargo}) 
+    if(createdCargo.individual) {
+      await prisma.cargo_Server.createMany({
+        data: parsedData
+      })
+    }
+    if(createdCargo) return res.status(200).json({message: 'Cargo criado com sucesso', body: createdCargo}) 
     return res.status(500).json({message: 'Não foi possível criar o cargo'}) 
   }catch(e) {
     console.error(e)
