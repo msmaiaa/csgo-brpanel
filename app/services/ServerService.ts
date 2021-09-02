@@ -26,5 +26,5 @@ export async function getAllServersWithRcon() {
 }
 
 export async function getServerStatus(server) {
-  return await axios.post('/api/servers/getstatus', {server})
+  return axios.post('/api/servers/getstatus', {server})
 }

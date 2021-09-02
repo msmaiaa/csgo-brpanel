@@ -5,7 +5,16 @@ const path = "/api/cargos/";
 
 router.get(path, async(req: any, res: any) => { 
   try{
-    const foundCargos = await prisma.cargo.findMany()
+    let foundCargos;
+    if(req.query.all) {
+      foundCargos = await prisma.cargo.findMany({
+        where: {
+          individual: false
+        }
+      })
+    }else {
+      foundCargos = await prisma.cargo.findMany()
+    }
     const filteredCargos = foundCargos.map((cargo) => {
       let filtered = cargo
       delete filtered.updated_at

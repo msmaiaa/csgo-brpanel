@@ -77,7 +77,7 @@ export default function Layout(children) {
         }
       </Menu>
     </ProSidebar>
-    <div style={{width: '80%', height: '95%'}}>
+    <div style={{width: '86%', height: '95%'}}>
       {children.children}
     </div>
     </div>
