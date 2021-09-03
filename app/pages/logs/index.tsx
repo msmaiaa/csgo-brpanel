@@ -1,12 +1,82 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import router from "../../lib/router";
+import { getAllLogs } from "../../services/LogsService";
+import styles from './logs.module.css'
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Pagination from '@material-ui/lab/Pagination';
 
 const LogsPage: FC<any> = (props) => {
+  const [actualPage, setActualPage] = useState(1)
+  const [totalPagesCount, setTotalPagesCount] = useState(0)
+  const [rows, setRows] = useState([])
+
+  const updateLogs = async() => {
+    try{
+      const logs = await getAllLogs(actualPage)
+      setTotalPagesCount(Math.ceil((logs.data.body[0] / 10)))
+      setRows(logs.data.body[1])
+    }catch(e) {
+      console.error(e)
+    }
+  }
+
+  const parseDate = (date) => {
+    const newDate = new Date(date)
+    return newDate.toLocaleDateString()
+  }
+
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setActualPage(value);
+  };
+
+  useEffect(() => {
+    updateLogs()
+  },[actualPage])
+
+  useEffect(() => {
+    updateLogs()
+  }, [])
+
   return (
     <>
       <Layout user={props.user}>
-        <p>LogsPage</p>
+        <div className={styles.container}>
+          <div className={styles.logs_container}>
+            <p className={styles.logsTitle}>Logs</p>
+            <TableContainer component={Paper} className={styles.tableContainer}>
+              <Table  size="small" aria-label="a dense table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell className={styles.tableHeadText}>Atividade</TableCell>
+                    <TableCell className={styles.tableHeadText}>Informações adicionais</TableCell>
+                    <TableCell className={styles.tableHeadText}>Feita por</TableCell>
+                    <TableCell className={styles.tableHeadText}>Data</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row" className={styles.tableBodyText} style={{color: 'blue'}}>
+                        {row.activity}
+                      </TableCell>
+                      <TableCell className={styles.tableBodyText}>{row.additional_info}</TableCell>
+                      <TableCell className={styles.tableBodyText} style={{color: 'red'}}>{row.created_by}</TableCell>
+                      <TableCell className={styles.tableBodyText} style={{color: 'grey'}}>{parseDate(row.created_at)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Pagination count={totalPagesCount} style={{float: 'right'}} onChange={handleChangePage} page={actualPage}/>
+            </TableContainer>
+          </div>
+        </div>
       </Layout>
     </>
   )
