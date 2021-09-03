@@ -2,6 +2,7 @@ import router from "../../../lib/router";
 import requireAuth from "../../../middlewares/auth/requireAuth";
 import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
 import prisma from '../../../lib/prisma'
+import { logInDb } from "../../../lib/logger";
 
 const path = "/api/servers/create";
 
@@ -11,6 +12,7 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
     const createdServer = await prisma.server.create({
       data: req.body
     })
+    logInDb('Novo servidor criado', createdServer.full_name, req.user.personaname + ' - ' + req.user.steamid)
     if(createdServer) return res.status(200).json({message: 'Servidor criado com sucesso', body: createdServer}) 
     return res.status(500).json({message: 'Não foi possível criar o servidor'}) 
   }catch(e) {

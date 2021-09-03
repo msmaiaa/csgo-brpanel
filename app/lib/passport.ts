@@ -3,6 +3,7 @@ import passport from "passport";
 import SteamStrategy from "passport-steam";
 import * as SteamID from '@node-steam/id';
 import config from '../config.json'
+import { logInDb } from "./logger";
 
 passport.serializeUser(function(user, done) {
 	done(null, user);
@@ -33,6 +34,7 @@ passport.use(new SteamStrategy({
 				user_type: config.superAdminSteamId === formattedUser.steamid ? 2 : 0
 			}
 		})
+		logInDb('Novo usuário registrado', formattedUser.personaname + ' - ' + formattedUser.steamid, 'Server')
 	}
 	return done(null, {
 		...formattedUser,

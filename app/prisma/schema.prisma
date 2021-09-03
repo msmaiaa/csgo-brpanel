@@ -79,4 +79,7 @@ model Log {
   additional_info String
   created_by String
   created_at DateTime @default(now())
+
+  
+  @@map(name: "logs")
 }

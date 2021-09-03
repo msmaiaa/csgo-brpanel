@@ -2,6 +2,7 @@ import router from "../../../lib/router";
 import requireAuth from "../../../middlewares/auth/requireAuth";
 import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
 import prisma from '../../../lib/prisma'
+import { logInDb } from "../../../lib/logger";
 
 const path = "/api/servers/update";
 
@@ -16,6 +17,7 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
         ...req.body
       }
     })
+    logInDb('Novo cargo criado', updatedServer.full_name, req.user.personaname + ' - ' + req.user.steamid)
     if(updatedServer) return res.status(200).json({message: 'Servidor atualizado com sucesso', body: updatedServer}) 
     return res.status(500).json({message: 'Não foi possível atualizar o servidor'}) 
   }catch(e) {

@@ -2,6 +2,7 @@ import router from "../../../lib/router";
 import requireAuth from "../../../middlewares/auth/requireAuth";
 import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
 import prisma from '../../../lib/prisma'
+import { logInDb } from "../../../lib/logger";
 
 const path = "/api/cargos/create";
 
@@ -22,6 +23,7 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
         data: parsedData
       })
     }
+    logInDb('Novo cargo criado', createdCargo.name, req.user.personaname + ' - ' + req.user.steamid)
     if(createdCargo) return res.status(200).json({message: 'Cargo criado com sucesso', body: createdCargo}) 
     return res.status(500).json({message: 'Não foi possível criar o cargo'}) 
   }catch(e) {

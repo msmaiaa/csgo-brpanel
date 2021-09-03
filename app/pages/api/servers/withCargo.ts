@@ -3,6 +3,9 @@ import prisma from '../../../lib/prisma'
 
 const path = "/api/servers/withCargo";
 
+/*
+* Gets all the servers and each server relationed cargo
+*/
 router.get(path, async(req: any, res: any) => { 
   try{
     const foundCargos = await prisma.server.findMany({

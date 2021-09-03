@@ -2,6 +2,7 @@ import router from "../../../lib/router";
 import requireAuth from "../../../middlewares/auth/requireAuth";
 import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
 import prisma from '../../../lib/prisma'
+import { logInDb } from "../../../lib/logger";
 
 const path = "/api/cargos/delete";
 
@@ -13,6 +14,7 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
         id: req.body.cargo.id
       }
     })
+    logInDb('Cargo deletado', req.body.cargo.name, req.user.personaname + ' - ' + req.user.steamid)
     if(deletedCargo) return res.status(200).json({message: 'Cargo deletado com sucesso', body: deletedCargo}) 
     return res.status(500).json({message: 'Não foi possível deletar o cargo'}) 
   }catch(e) {
