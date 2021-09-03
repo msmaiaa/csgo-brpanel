@@ -22,6 +22,8 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "gamedig": "^3.0.7",
+    "jsonwebtoken": "^8.5.1",
+    "micro": "^9.3.4",
     "mysql2": "^2.3.0",
     "next": "^11.0.1",
     "next-connect": "^0.10.1",
@@ -36,6 +38,7 @@
     "sourcequery": "0.0.2",
     "stripe": "^8.170.0",
     "ts-node": "^10.2.1",
+    "uninstall": "0.0.0",
     "webhook-discord": "^3.7.8"
   },
   "devDependencies": {

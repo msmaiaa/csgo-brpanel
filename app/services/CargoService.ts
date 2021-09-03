@@ -9,6 +9,9 @@ export interface ICargo {
   currency: string
   flags: string
   id?: string
+  created_at?: string
+  updated_at?: string
+  serverName?: string
 }
 
 export async function addCargo(cargo: ICargo, servers: Array<any>){
@@ -21,4 +24,8 @@ export async function updateCargo(cargo: ICargo){
 
 export async function getAllCargos(){
   return await axios.get('/api/cargos/')
+}
+
+export async function buyCargo(cargo: ICargo){
+  return await axios.post('/api/cargos/buy', {cargo})
 }

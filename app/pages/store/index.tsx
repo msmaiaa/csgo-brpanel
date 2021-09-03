@@ -1,15 +1,20 @@
-import { Button, FormControl, Select } from "@material-ui/core";
-import axios from "axios";
-import { FC, useEffect, useState } from "react";
-import { MenuItem } from "react-pro-sidebar";
-import Card from "../../components/Card/Card";
+import ToastContext from "../../context/ToastContext";
 import Layout from "../../components/Layout";
 import router from "../../lib/router";
+import { buyCargo } from "../../services/CargoService";
 import styles from './store.module.css'
+
+import axios from "axios";
+import { Button, FormControl, Select } from "@material-ui/core";
+import { FC, useContext, useEffect, useState } from "react";
+import { MenuItem } from "react-pro-sidebar";
+import { useRouter } from 'next/router'
 
 
 
 const StorePage: FC<any> = (props) => {
+  const router = useRouter()
+  const toast = useContext(ToastContext)
   const [cargosAllServers, setCargosAllServers] = useState([])
   const [serversWithCargo, setServersWithCargo] = useState([])
   const [activeData, setActiveData] = useState([])
@@ -27,23 +32,36 @@ const StorePage: FC<any> = (props) => {
       mounted = false
     }
   }
-
-  useEffect(() => {
-    getInitialData()
-  }, [])
-
-  useEffect(() => {
-    console.log(activeData)
-  }, [activeData])
-
+  
   const handleChange = (event: React.ChangeEvent<{ value: any }>) => {
     if(event.target.value.full_name) {
-      setActiveData(event.target.value.cargo_server.map((data) => data.cargo));
+      console.log(event.target.value)
+      const serverName = event.target.value.name
+      const newActiveData = event.target.value.cargo_server.map((data) => {
+        const newData = data.cargo
+        newData.serverName = serverName
+        return newData
+      })
+      setActiveData(newActiveData);
     }else {
       setActiveData(event.target.value);
     }
     setName(event.target.value as string)
   };
+
+  const handleBuy = async(cargo) => {
+    try{
+      const boughtCargo: any = await buyCargo(cargo)
+      router.push(boughtCargo.data.url)
+    }catch(e) {
+      console.error(e)
+    }
+  }
+
+  useEffect(() => {
+    getInitialData()
+  }, [])
+
   
 
   return (
@@ -98,7 +116,7 @@ const StorePage: FC<any> = (props) => {
                           </p>
                         </div>
                         <div className={styles.cargo__footer}>
-                          <Button variant="contained" color="primary">Comprar</Button>
+                          <Button variant="contained" color="primary" onClick={() => handleBuy(cargo)}>Comprar</Button>
                         </div>
                       </div>
                     )
