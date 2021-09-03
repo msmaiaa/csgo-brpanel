@@ -29,3 +29,7 @@ export async function getAllCargos(){
 export async function buyCargo(cargo: ICargo){
   return await axios.post('/api/cargos/buy', {cargo})
 }
+
+export async function deleteCargo(cargo: ICargo){
+  return await axios.post('/api/cargos/delete', {cargo})
+}

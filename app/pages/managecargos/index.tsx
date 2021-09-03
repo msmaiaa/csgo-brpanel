@@ -3,7 +3,7 @@ import Layout from "../../components/Layout";
 import ToastContext from "../../context/ToastContext";
 import router from "../../lib/router";
 import styles from './managecargos.module.css'
-import { addCargo, getAllCargos, ICargo, updateCargo } from "../../services/CargoService";
+import { addCargo, deleteCargo, getAllCargos, ICargo, updateCargo } from "../../services/CargoService";
 import { getAllServers } from "../../services/ServerService";
 
 import { FC, useContext, useEffect, useState } from "react";
@@ -133,6 +133,16 @@ const ManageCargos: FC<any> = (props) => {
       toast.error(e.response.data.message)
     }
   }
+
+  const handleDeleteCargo = async(cargo) => {
+    try{
+      const deletedCargo = await deleteCargo(updateInputs[cargo.name])
+      toast.success(deletedCargo.data.message)
+      updateCargos()
+    }catch(e){
+      toast.error(e.response.data.message)
+    }
+  }
   
   return (
     <>
@@ -198,7 +208,10 @@ const ManageCargos: FC<any> = (props) => {
                     <CustomTextField inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" />
-                    <Button type="submit" variant="contained" color="secondary" className={styles.inputButton}>Alterar</Button>
+                    <div style={{display: 'flex'}}>
+                      <Button type="submit" variant="contained" color="primary" className={styles.inputButton}>Alterar</Button>
+                      <Button onClick={() => handleDeleteCargo(cargo)} variant="contained" style={{backgroundColor: 'red', color: 'white', marginLeft: '15px'}} className={styles.inputButton}>Deletar</Button>
+                    </div>
                   </form>
                 </AccordionDetails>
               </CustomAccordion>
