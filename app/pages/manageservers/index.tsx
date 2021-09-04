@@ -118,7 +118,7 @@ const ManageServers: FC<any> = (props) => {
             <Card style={{width:'100%'}}>
               <form className={styles.inputGroup}>
                 <CustomTextField inputProps={{ maxLength: 100}} name="full_name" onChange={handleAddChange} required label="Nome do servidor" />
-                <CustomTextField inputProps={{ maxLength: 100}} name="name" onChange={handleAddChange} required label="Nome do servidor (definido na cfg do plugin)" />
+                <CustomTextField inputProps={{ maxLength: 100}} name="name" onChange={handleAddChange} required label="Nome do servidor (definido na cfg do plugin, sem espaços)" />
                 <CustomTextField inputProps={{ maxLength: 100}} name="ip" onChange={handleAddChange} required label="IP do servidor" />
                 <CustomTextField inputProps={{ maxLength: 100}} name="port" onChange={handleAddChange} required label="Porta do servidor" />
                 <CustomTextField inputProps={{ maxLength: 100}} name="rcon_pass" onChange={handleAddChange} required label="Senha RCON" />
