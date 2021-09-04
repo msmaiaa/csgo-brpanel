@@ -228,7 +228,7 @@ export default ManageCargos
 
 export async function getServerSideProps({ req, res}) {
 	await router.run(req, res);
-  if(!req.user) {
+  if(!req.user || req.user.user_type < 1) {
     return {
       redirect: {
         destination: '/',

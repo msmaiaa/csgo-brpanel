@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import passport from "passport";
 import SteamStrategy from "passport-steam";
 import * as SteamID from '@node-steam/id';
-import config from '../config.json'
 import { logInDb } from "./logger";
 
 passport.serializeUser(function(user, done) {
@@ -28,10 +27,11 @@ passport.use(new SteamStrategy({
 		}
 	})
 	if(!userInDb) {
+		console.log(process.env.SUPERADMIN)
 		userInDb = await prisma.user.create({
 			data: {
 				steamid: formattedUser.steamid,
-				user_type: config.superAdminSteamId === formattedUser.steamid ? 2 : 0
+				user_type: process.env.SUPERADMIN === formattedUser.steamid ? 2 : 0
 			}
 		})
 		logInDb('Novo usuário registrado', formattedUser.personaname + ' - ' + formattedUser.steamid, 'Server')

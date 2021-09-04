@@ -35,7 +35,6 @@ const StorePage: FC<any> = (props) => {
   
   const handleChange = (event: React.ChangeEvent<{ value: any }>) => {
     if(event.target.value.full_name) {
-      console.log(event.target.value)
       const serverName = event.target.value.name
       const newActiveData = event.target.value.cargo_server.map((data) => {
         const newData = data.cargo
@@ -76,7 +75,6 @@ const StorePage: FC<any> = (props) => {
                   <p className={styles.contentHeader__title}>Servidor:</p>
                 </div>
                 <FormControl style={{width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems:'flex-start'}}>
-                  {/* <InputLabel id="demo-simple-select-label">name</InputLabel> */}
                   <Select
                     value={name}
                     onChange={handleChange}

@@ -44,17 +44,21 @@ export default function Layout(children) {
             <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faMoneyBillAlt} />}>
               <Link href="/store"><p className={styles.menulink}>Loja</p></Link>
             </MenuItem>
-            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
-              <Link href="/managecargos"><p className={styles.menulink}>Gerenciar cargos</p></Link>
-            </MenuItem>
-            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
-              <Link href="/manageservers"><p className={styles.menulink}>Gerenciar servidores</p></Link>
-            </MenuItem>
-            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon}  icon={faCog} />}>
-              <Link href="/panelsettings"><p className={styles.menulink}>Configurações do painel</p></Link>
-            </MenuItem>
-            {children.user.user_type > 1 &&
+            {children.user.user_type > 0 && 
               <>
+              <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
+                <Link href="/managecargos"><p className={styles.menulink}>Gerenciar cargos</p></Link>
+              </MenuItem>
+              <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
+                <Link href="/manageservers"><p className={styles.menulink}>Gerenciar servidores</p></Link>
+              </MenuItem>
+              </>
+            }
+            {children.user.user_type == 2 &&
+              <>
+                <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon}  icon={faCog} />}>
+                  <Link href="/panelsettings"><p className={styles.menulink}>Configurações do painel</p></Link>
+                </MenuItem>
                 <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faFileInvoiceDollar} />}>
                   <Link href="/salesrecord"><p className={styles.menulink}>Histórico de vendas</p></Link>
                 </MenuItem>
