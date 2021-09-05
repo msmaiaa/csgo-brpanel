@@ -80,7 +80,7 @@ const StorePage: FC<any> = (props) => {
                     onChange={handleChange}
                     style={{fontFamily: 'Josefin Sans', minWidth: '50px'}}
                   >
-                    {cargosAllServers.length > 0 && <MenuItem
+                    {cargosAllServers.length > 0 && serversWithCargo.length > 0 && <MenuItem
                     onMouseEnter={(e: any) => {
                       e.target.style.backgroundColor = 'lightgray'
                       e.target.style.cursor = 'pointer'
