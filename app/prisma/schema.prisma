@@ -56,11 +56,11 @@ model Cargo{
 model User_Cargo  {
   id  Int @default(autoincrement()) @id
   expire_stamp BigInt
-  cargo_name String
+  cargo_id Int
   flags String
   server_name String
   steamid String
-  cargo Cargo @relation(fields: [cargo_name], references: [name])
+  cargo Cargo @relation(fields: [cargo_id], references: [id])
   server Server @relation(fields: [server_name], references: [name])
   user User @relation(fields: [steamid], references: [steamid])
 }

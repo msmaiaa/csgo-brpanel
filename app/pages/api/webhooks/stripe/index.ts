@@ -84,7 +84,7 @@ const fulfillOrder = async(session) => {
           await prisma.user_Cargo.create({
             data: {
               expire_stamp: epochTillExpirationDate(parseInt(cargoInDb.duration)),
-              cargo_name: cargoInDb.name,
+              cargo_id: cargoInDb.id,
               flags: cargoInDb.flags,
               server_name: decodedData.serverName,
               steamid: decodedData.userData.userid
@@ -96,7 +96,7 @@ const fulfillOrder = async(session) => {
             await prisma.user_Cargo.create({
               data: {
                 expire_stamp: epochTillExpirationDate(parseInt(cargoInDb.duration)),
-                cargo_name: cargoInDb.name,
+                cargo_id: cargoInDb.id,
                 flags: cargoInDb.flags,
                 server_name: server.name,
                 steamid: decodedData.userData.userid

@@ -22,10 +22,15 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
         ...req.body.cargo
       }
     })
+    
+
+    /*
+    * Updating existing Users that have the cargo with the updated data
+    */
     if(oldCargo.flags !== updatedCargo.flags) {
       await prisma.user_Cargo.updateMany({
         where: {
-          cargo_name: updatedCargo.name
+          cargo_id: updatedCargo.id
         },
         data: {
           flags: updatedCargo.flags
