@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "database:setup": "npx prisma db push && npx prisma generate"
   },
   "dependencies": {
