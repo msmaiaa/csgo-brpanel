@@ -1,0 +1,14 @@
+.menu_icon {
+  color: black;
+  width: 25px;
+  height: 25px;
+}
+
+.menulink {
+  font-size: 15px;
+  color: black;
+}
+
+.menu_item:not(:last-child) {
+  margin-bottom: 15px;
+}

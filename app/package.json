@@ -1,0 +1,61 @@
+{
+  "name": "brpanel-csgo",
+  "version": "2.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "database:setup": "npx prisma db push && npx prisma generate"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.15",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.37",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@node-steam/id": "^1.2.0",
+    "@prisma/client": "^2.30.0",
+    "@types/node": "^16.7.2",
+    "axios": "^0.21.1",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "gamedig": "^3.0.7",
+    "jsonwebtoken": "^8.5.1",
+    "micro": "^9.3.4",
+    "mysql2": "^2.3.0",
+    "next": "^11.0.1",
+    "next-connect": "^0.10.1",
+    "passport": "^0.4.1",
+    "passport-steam": "^1.0.15",
+    "rcon": "^1.0.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-pro-sidebar": "^0.6.0",
+    "react-toastify": "^8.0.1",
+    "reflect-metadata": "^0.1.13",
+    "sourcequery": "0.0.2",
+    "stripe": "^8.170.0",
+    "ts-node": "^10.2.1",
+    "uninstall": "0.0.0",
+    "webhook-discord": "^3.7.8"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.13",
+    "prisma": "^2.30.0",
+    "typescript": "^4.3.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msmaiaa/csgo-brpanel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msmaiaa/csgo-brpanel/issues"
+  },
+  "homepage": "https://github.com/msmaiaa/csgo-brpanel#readme"
+}

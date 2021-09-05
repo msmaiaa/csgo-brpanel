@@ -1,0 +1,11 @@
+.cardContainer {
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+}
+
+.cardInside {
+  margin: 25px;
+  width: 100%;
+}

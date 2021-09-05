@@ -1,0 +1,87 @@
+.customCard {
+  width: 280px;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.cargos_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cargosTitle{
+  font-size: 32px;
+  font-weight: 300;
+  margin-bottom: 15px;
+}
+
+.cargosContent{
+  width: 90%;
+  min-height: 500px;
+  
+  background-color: rgba(255, 255, 255, .15);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+}
+
+.contentHeader{
+  width: 100%;
+  display: flex;
+  height: 50px;
+}
+
+.contentHeader__title {
+  margin-right: 15px;
+  font-size: 18px;
+}
+
+.contentCargos{
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 25px;
+}
+
+.cargo__name{
+  font-size: 32px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.cargo__footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  /* height: 45px;
+  background-color: black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px; */
+}
+
+.cargo__duration{
+  margin-left: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: gray;
+}
+
+.cargo__pricetext{
+  margin-left: 20px;
+  font-size: 24px;
+}
+
+.cargo__price{
+  color: green;
+}

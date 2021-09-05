@@ -1,0 +1,32 @@
+.cardContent{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardTitle {
+  color: #000;
+  font-size: 24px;
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.cardStatusOnline{
+  color: green;
+  font-size: 18px;
+}
+
+.cardStatusOffline {
+  color: red;
+  font-size: 18px;
+}
+
+.players {
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.players_num {
+  color: red;
+}
