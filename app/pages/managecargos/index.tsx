@@ -52,10 +52,30 @@ const ManageCargos: FC<any> = (props) => {
   const [addInputs, setAddInputs] = useState<any>({});
   const handleAddChange = e => setAddInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   const [updateInputs, setUpdateInputs] = useState({});
-  const handleUpdateChange = (e, cargo) =>  {
+  const handleUpdateChange = (e, cargo, checkbox=false, isSingleServer=false) =>  {
+    const parsedValue = JSON.parse(e.target.value)
     let newState = {...updateInputs}
     if(!newState[cargo.name]) newState[cargo.name] = {}
-    newState[cargo.name][e.target.name] = e.target.value
+    if(checkbox) {
+      const allServers = parsedValue.allServers
+      if(allServers) {
+        newState[cargo.name].individual = !newState[cargo.name].individual
+        newState[cargo.name].servers = []
+      }
+      if(isSingleServer) {
+        const serverInfo = parsedValue.serverInfo
+        if(e.target.checked) {
+          newState[cargo.name].servers.push(serverInfo)
+          if (!updateInputs[cargo.name].individual) updateInputs[cargo.name].individual = true
+        }else {
+          newState[cargo.name].servers = newState[cargo.name].servers.filter((sv) => {
+            return sv.id != serverInfo.id
+          })
+        }
+      }
+    }else{
+      newState[cargo.name][e.target.name] = e.target.value
+    }
     setUpdateInputs(newState)
   }
 
@@ -87,8 +107,12 @@ const ManageCargos: FC<any> = (props) => {
       let formValues = {}
       for(let cargo of cargosFromDb) {
         formValues[cargo.name] = {
-          ...cargo
+          ...cargo,
         }
+        formValues[cargo.name].servers =  cargo.cargo_server.map((data) => {
+          return data.server
+        })
+        delete formValues[cargo.name].cargo_server
       }
       setUpdateInputs(formValues)
     }
@@ -104,7 +128,6 @@ const ManageCargos: FC<any> = (props) => {
     updatedServersChecked[index].checked = event.target.checked
     setServersChecked(updatedServersChecked)
   };
-
 
   const handleAddCargo = async() => {
     try{
@@ -147,6 +170,7 @@ const ManageCargos: FC<any> = (props) => {
   return (
     <>
       <Layout user={props.user}>
+
       <div className={styles.cardsContainer}>
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Adicionar cargo</p>
@@ -157,8 +181,6 @@ const ManageCargos: FC<any> = (props) => {
                 <CustomTextField inputProps={{ maxLength: 100}} name="duration" placeholder="30" onChange={handleAddChange} required label="Tempo de duração (dias)"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="flags" placeholder="100:z" onChange={handleAddChange} required label="Flags"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" placeholder="price_xxxxxxxxxxxxxxxx" onChange={handleAddChange} required label="ID do produto (stripe)"/>
-
-
                 <div className={styles.serverField}>
                   <Checkbox
                     checked={isAllServers}
@@ -188,11 +210,11 @@ const ManageCargos: FC<any> = (props) => {
               <Button variant="contained" color="secondary" className={styles.inputButton} onClick={handleAddCargo}>Adicionar</Button>
             </Card>
           </div>
+
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Alterar cargos</p>
             <Card style={{width:'100%'}}>
               {cargosFromDb.length > 0 && cargosFromDb.map((cargo) => {
-                
                 if (updateInputs[cargo.name]) return <CustomAccordion key={cargo.id}>
                 <AccordionSummary
                   expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
@@ -208,6 +230,34 @@ const ManageCargos: FC<any> = (props) => {
                     <CustomTextField inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" />
+                    <div className={styles.serverField}>
+                      <Checkbox
+                        value={JSON.stringify({allServers: true})}
+                        name="individual"
+                        checked={!updateInputs[cargo.name].individual}
+                        onChange={(event) => handleUpdateChange(event, cargo, true)}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                      />
+                      <p>Todos os servidores</p>
+                    </div>
+                    {servers.length > 0  && serversChecked.length > 0 && !isAllServers?
+                    <>
+                    <p className={styles.cardTitle} style={{marginTop: '25px', marginBottom: '15px', fontSize: '20px', fontWeight: 500}}>Servidores (individual)</p>
+                      {servers.map((serverInfo, index) => {
+                        return(
+                          <div className={styles.serverField} key={serverInfo.id}>
+                            <Checkbox
+                              value={JSON.stringify({allServers: false, serverInfo})}
+                              checked={updateInputs[cargo.name].servers.find((sv) => sv.id == serverInfo.id) ? true : false}
+                              onChange={(event) => handleUpdateChange(event, cargo, true, true)}
+                              inputProps={{ 'aria-label': 'primary checkbox' }}
+                            />
+                            <p>{serverInfo.full_name}</p>
+                          </div>
+                        )
+                      })}
+                    </>
+                    : isAllServers ? '' : <p>Nenhum servidor foi encontrado</p>}
                     <div style={{display: 'flex'}}>
                       <Button type="submit" variant="contained" color="primary" className={styles.inputButton}>Alterar</Button>
                       <Button onClick={() => handleDeleteCargo(cargo)} variant="contained" style={{backgroundColor: 'red', color: 'white', marginLeft: '15px'}} className={styles.inputButton}>Deletar</Button>
@@ -218,6 +268,7 @@ const ManageCargos: FC<any> = (props) => {
               })}
             </Card>
           </div>
+
         </div>
       </Layout>
     </>

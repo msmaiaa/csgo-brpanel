@@ -13,7 +13,15 @@ router.get(path, async(req: any, res: any) => {
         }
       })
     }else {
-      foundCargos = await prisma.cargo.findMany()
+      foundCargos = await prisma.cargo.findMany({
+        include: {
+          cargo_server: {
+            include: {
+              server: true
+            }
+          }
+        }
+      })
     }
     const filteredCargos = foundCargos.map((cargo) => {
       let filtered = cargo

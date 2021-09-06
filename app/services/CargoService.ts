@@ -12,6 +12,7 @@ export interface ICargo {
   created_at?: string
   updated_at?: string
   serverName?: string
+  cargo_server?: [any]
 }
 
 export async function addCargo(cargo: ICargo, servers: Array<any>){
