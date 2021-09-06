@@ -13,6 +13,9 @@ router.get(path, requireAdmin, async(req: any, res: any) => {
       prisma.log.findMany({
         take: 10,
         skip: skipCount,
+        orderBy: {
+          created_at: 'desc'
+        }
       })
     ])
     return res.status(200).json({body: foundLogs}) 
