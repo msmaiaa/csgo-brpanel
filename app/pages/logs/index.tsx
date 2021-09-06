@@ -62,7 +62,7 @@ const LogsPage: FC<any> = (props) => {
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => (
-                    <TableRow key={row.name}>
+                    <TableRow key={row.id}>
                       <TableCell component="th" scope="row" className={styles.tableBodyText} style={{color: 'blue'}}>
                         {row.activity}
                       </TableCell>

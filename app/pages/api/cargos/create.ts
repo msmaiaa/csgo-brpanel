@@ -28,8 +28,15 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
     return res.status(500).json({message: 'Não foi possível criar o cargo'}) 
   }catch(e) {
     console.error(e)
-    if(e.code === 'P2002') return res.status(500).json({message: 'Já existe um cargo com esse nome.'}) 
-    return res.status(500).json({message: 'Não foi possível criar o cargo'}) 
+    let errorResponse = 'Não foi possível criar o cargo.'
+    if(e.code === 'P2002'){
+      if(e.meta.target === "stripe_id_unique") {
+        errorResponse = 'Já existe um cargo com esse id.'
+      }else if(e.meta.target === "name_unique") {
+        errorResponse = 'Já existe um cargo com esse nome.'
+      }
+    }
+    return res.status(500).json({message: errorResponse}) 
   }
 });
 
