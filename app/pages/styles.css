@@ -76,3 +76,19 @@ div#__next {
 	width: 20px !important;
 	height: 20px !important;
 }
+
+.pro-item-content {
+	user-select: none;
+  color: black !important;
+}
+
+.pro-inner-list-item {
+	background-color: #F9FAFD !important;
+	transition: all .2s;
+}
+
+.pro-inner-list-item > div > ul > *:hover {
+	background-color: rgba(160, 170, 255, .25);
+	border-radius: 5px;
+	box-shadow: 0 0 35px 0 rgba(160, 170, 255,.25);
+}
