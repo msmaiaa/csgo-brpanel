@@ -17,7 +17,6 @@ passport.use(new SteamStrategy({
 	realm: `${process.env.DOMAIN}`,
 	apiKey: `${process.env.STEAM_API_KEY}`
 }, async(_, profile, done) => {
-
 	const formattedUser: any = beautifyUser(profile)
 	const prisma = new PrismaClient()
 	let userInDb
@@ -31,7 +30,8 @@ passport.use(new SteamStrategy({
 		userInDb = await prisma.user.create({
 			data: {
 				steamid: formattedUser.steamid,
-				user_type: process.env.SUPERADMIN === formattedUser.steamid ? 2 : 0
+				user_type: process.env.SUPERADMIN === formattedUser.steamid ? 2 : 0,
+				name: formattedUser.personaname
 			}
 		})
 		logInDb('Novo usuário registrado', formattedUser.personaname + ' - ' + formattedUser.steamid, 'Server')

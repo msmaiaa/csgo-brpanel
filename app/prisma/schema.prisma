@@ -10,6 +10,7 @@ generator client {
 
 model User {
   id  Int @default(autoincrement()) @id
+  name String
   steamid String @unique
   user_type Int
   created_at DateTime @default(now())
