@@ -7,6 +7,8 @@ interface IServer {
   ip: string
   port: string
   rcon_pass?: string
+  created_at?: string
+  updated_at?: string
 }
 
 export async function addServer(data: IServer){
@@ -27,4 +29,8 @@ export async function getAllServersWithRcon() {
 
 export async function getServerStatus(server) {
   return axios.post('/api/servers/getstatus', {server})
+}
+
+export async function deleteServer(server) {
+  return axios.delete('/api/servers/delete', {data: server})
 }
