@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-interface IServer {
+export interface IServer {
   full_name: string
   name: string
   ip: string

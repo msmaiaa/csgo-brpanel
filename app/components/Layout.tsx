@@ -31,7 +31,7 @@ export default function Layout(children) {
 
   return (
     <div style={{display: 'flex', height: '100%', width: '100%', alignItems: 'center'}}>
-    <ProSidebar style={{height: '100%'}}>
+    <ProSidebar>
       <SidebarHeader style={{display: 'flex', justifyContent: 'center'}}>
         <Image src={logoPic} alt="Logo" width={100} height={100}/>
       </SidebarHeader>
@@ -84,7 +84,7 @@ export default function Layout(children) {
         }
       </Menu>
     </ProSidebar>
-    <div style={{width: '86%', height: '95%'}}>
+    <div style={{width: '100%', height: '100%', overflowX: 'hidden'}}>
       {children.children}
     </div>
     </div>
