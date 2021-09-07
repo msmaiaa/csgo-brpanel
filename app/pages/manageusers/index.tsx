@@ -2,6 +2,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { Pagination } from "@material-ui/lab";
 import { FC, useContext, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
+import SteamSearchForm from "../../components/SteamSearchForm";
 import ToastContext from "../../context/ToastContext";
 import router from "../../lib/router";
 import { ICargo } from "../../services/CargoService";
@@ -89,7 +90,7 @@ const ManageCargos: FC<any> = (props) => {
                       <TableCell align="center" className={styles.tableBodyText}>{row.user_cargo ? row.user_cargo.length : 0}</TableCell>
                       <TableCell align="center" className={styles.tableBodyText}>{parseDate(row.created_at)}</TableCell>
                       <TableCell align="center" className={styles.tableBodyText}>
-                        <Button onClick={() => setUserEditInfo(row)} color="primary" variant="contained">Editar</Button>
+                        <Button style={{height: '30px', width: '80px', fontSize: '14px'}} onClick={() => setUserEditInfo(row)} color="primary" variant="contained">Editar</Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -111,8 +112,9 @@ const ManageCargos: FC<any> = (props) => {
                       </div>
                     </div>
                     <div style={{height: '48%'}}>
-                      <p style={{height: '8%'}} className={styles.cardTitle}>Pesquisar Steam</p>
+                      <p style={{height: '8%'}} className={styles.cardTitle}>Pesquisar Usuário</p>
                       <div className={styles.container_mini}>
+                        <SteamSearchForm/>
                       </div>
                     </div>
                 </div>
