@@ -53,10 +53,11 @@ const ManageCargos: FC<any> = (props) => {
   const handleAddChange = e => setAddInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   const [updateInputs, setUpdateInputs] = useState({});
   const handleUpdateChange = (e, cargo, checkbox=false, isSingleServer=false) =>  {
-    const parsedValue = JSON.parse(e.target.value)
+    let parsedValue = e.target.value
     let newState = {...updateInputs}
     if(!newState[cargo.name]) newState[cargo.name] = {}
     if(checkbox) {
+      parsedValue = JSON.parse(e.target.value)
       const allServers = parsedValue.allServers
       if(allServers) {
         newState[cargo.name].individual = !newState[cargo.name].individual
