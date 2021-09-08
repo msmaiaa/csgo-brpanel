@@ -49,7 +49,6 @@ const getSteamID64FromString = async(data) => {
         returnData.steamid64 = data.split('/')[4]
         returnData.steamid = new SteamID.ID(data.split('/')[4]).getSteamID2()
       }else if(reg.name === 'steamCustomUrl') {
-        console.log('catch e')
         const vanity = data.split('/')[4]
         const vanityResult = await axios.get(RESOLVE_VANITY_URL + vanity);
         returnData.steamid64 = vanityResult.data.response.steamid

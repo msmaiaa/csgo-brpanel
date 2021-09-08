@@ -25,6 +25,10 @@ interface ISteamApiUser {
   timecreated: number
 }
 
+interface Props {
+  onUserSearch(steamid: string)
+}
+
 const StyledTextField = withStyles({
   root: {
     '& > *': {
@@ -35,7 +39,7 @@ const StyledTextField = withStyles({
   
 })(TextField)
 
-export default function SteamSearchForm() {
+export default function SteamSearchForm({ onUserSearch }: Props) {
   const toast = useContext(ToastContext)
   const [steamInput, setSteamInput] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
@@ -56,6 +60,7 @@ export default function SteamSearchForm() {
   useEffect(() => {
     if(userData && isLoading) {
       setIsLoading(false)
+      onUserSearch(userData.steamid)
     }
   }, [userData])
 

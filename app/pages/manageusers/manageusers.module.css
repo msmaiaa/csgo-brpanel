@@ -54,21 +54,6 @@
   box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
 }
 
-.tableHeadText{
-  font-family: 'Josefin Sans' !important;
-  font-size: 20px !important;
-}
-
-.tableBodyText{
-  font-family: 'Josefin Sans' !important;
-}
-
-.tableContainer {
-  background-color: rgba(255, 255, 255, .15) !important;
-  backdrop-filter: blur(5px) !important;
-  box-shadow: 0 0 35px 0 rgba(154,161,171,.15) !important;
-}
-
 .cardTitle {
   font-size: 22px;
   font-weight: 400;
