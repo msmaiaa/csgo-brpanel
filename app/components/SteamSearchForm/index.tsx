@@ -1,7 +1,9 @@
-import { Button, CircularProgress, TextField, withStyles } from '@material-ui/core'
+import { Button, CircularProgress, FormControl, Select, TextField, withStyles } from '@material-ui/core'
 import { useContext, useEffect, useState } from 'react'
+import { MenuItem } from 'react-pro-sidebar'
 import ToastContext from '../../context/ToastContext'
 import { getSteamUserData } from '../../services/SteamService'
+import { createUser } from '../../services/UserService'
 import styles from './steamform.module.css'
 
 interface ISteamApiUser {
@@ -25,9 +27,6 @@ interface ISteamApiUser {
   timecreated: number
 }
 
-interface Props {
-  onUserSearch(steamid: string)
-}
 
 const StyledTextField = withStyles({
   root: {
@@ -39,11 +38,13 @@ const StyledTextField = withStyles({
   
 })(TextField)
 
-export default function SteamSearchForm({ onUserSearch }: Props) {
+export default function SteamSearchForm() {
   const toast = useContext(ToastContext)
   const [steamInput, setSteamInput] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
   const [userData, setUserData] = useState<ISteamApiUser>()
+
+  const [userTypeInput, setUserTypeInput] = useState<number>(0)
 
   const handleSearch = async(event) => {
     event.preventDefault()
@@ -56,11 +57,24 @@ export default function SteamSearchForm({ onUserSearch }: Props) {
       toast.error(e.response.data.message)
     }
   }
+
+  const handleSelectChange = (value) => {
+    setUserTypeInput(value)
+  }
+
+  const handleAddUser = async() => {
+    try{
+      const createdUser = await createUser({ steamid: userData.steamid, user_type: userTypeInput, username: userData.personaname})
+      console.log(createdUser.data.message)
+      toast.success(createdUser.data.message)
+    }catch(e) {
+      toast.error(e.response.data.message)
+    }
+  }
   
   useEffect(() => {
     if(userData && isLoading) {
       setIsLoading(false)
-      onUserSearch(userData.steamid)
     }
   }, [userData])
 
@@ -83,10 +97,10 @@ export default function SteamSearchForm({ onUserSearch }: Props) {
         {userData && !isLoading && 
           <div style={{display: 'flex', width: '100%', height: '100%'}}>
             <div style={{display: 'flex', alignItems: 'center', }}>
-              <img style={{width: '150px', marginLeft: '60px', borderRight:'3px solid #7ca038', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.71)', }} src={userData.avatarfull}/>
+              <img style={{width: '170px', marginLeft: '45px', borderRight:'3px solid #7ca038', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.71)', }} src={userData.avatarfull}/>
             </div>
-            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%'}}>
-              <div style={{height: '150px', marginLeft: '20px'}}>
+            <div style={{display: 'flex', alignItems: 'center', height: '100%'}}>
+              <div style={{height: '170px', marginLeft: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                 <p className={styles.info_key}>
                   Nome: <span  className={styles.info_value}>{userData.personaname}</span>
                 </p>
@@ -96,6 +110,21 @@ export default function SteamSearchForm({ onUserSearch }: Props) {
                 <p className={styles.info_key}>
                   SteamID64: <span className={styles.info_value}>{userData.steamid64}</span>
                 </p>
+                <div style={{display: 'flex', alignItems: 'center', height: '20px'}}>
+                  <p style={{color: 'blue'}}>Permissões: </p>
+                  <FormControl style={{display: 'flex', alignItems:'flex-start', height: '20px', marginLeft: '15px'}}>
+                    <Select
+                      value={userTypeInput}
+                      onChange={(event) => handleSelectChange(event.target.value)}
+                      style={{fontFamily: 'Josefin Sans', minWidth: '80px', height: '20px'}}
+                      >
+                      <MenuItem value={0} className={styles.menuitem}>Comum</MenuItem>
+                      <MenuItem value={1} className={styles.menuitem}>Admin</MenuItem>
+                      <MenuItem value={2} className={styles.menuitem}>Super Admin</MenuItem>
+                    </Select>
+                </FormControl>
+                </div>
+              <Button onClick={handleAddUser} variant="contained" color="primary" style={{height: '30px', width: '90px'}}>Adicionar</Button>
               </div>
             </div>
           </div>

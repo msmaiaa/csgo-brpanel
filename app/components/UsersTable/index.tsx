@@ -3,7 +3,7 @@ import { Pagination } from "@material-ui/lab";
 import { FC, useEffect, useState } from "react"
 import { IUserWithCargo } from "../../pages/manageusers";
 import { getAllUsers } from "../../services/UserService";
-import styles from './usertable.module.css'
+import styles from './userstable.module.css'
 
 const UsersTable: FC<any> = ({ onEditClick }) => {
   const [rows, setRows] = useState<Array<IUserWithCargo>>([])

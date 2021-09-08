@@ -18,6 +18,15 @@
   cursor: pointer;
 }
 
-.info_key:not(:last-of-type){
-  margin-bottom: 15px;
+.info_key:not(:last-child){
+  margin-bottom: 10px;
+}
+
+.menuitem:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+.menuitem:hover {
+  background-color: lightgray;
+  cursor: pointer;
 }

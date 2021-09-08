@@ -24,12 +24,8 @@ export interface IUserWithCargo extends IUser {
 
 const ManageUsers: FC<any> = (props) => {
   const toast = useContext(ToastContext)
-
   const [userEditInfo, setUserEditInfo] = useState<IUser_Cargo | {}>({})
-
-  const handleUserSearch = (steamid: string) => {
-    console.log(steamid)
-  }
+  
 
   const handleEditClick = (user: IUserWithCargo) => {
     console.log(user)
@@ -50,15 +46,15 @@ const ManageUsers: FC<any> = (props) => {
                   </div>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', width: '48%', justifyContent: 'space-between'}}>
-                    <div style={{height: '48%'}}>
+                    {/* <div style={{height: '48%'}}>
                       <p style={{height: '8%'}} className={styles.cardTitle}>Adicionar usuário</p>
                       <div className={styles.container_mini}>
                       </div>
-                    </div>
+                    </div> */}
                     <div style={{height: '48%'}}>
-                      <p style={{height: '8%'}} className={styles.cardTitle}>Pesquisar Usuário</p>
+                      <p style={{height: '8%'}} className={styles.cardTitle}>Adicionar Usuário</p>
                       <div className={styles.container_mini}>
-                        <SteamSearchForm onUserSearch={(steamid) => handleUserSearch(steamid)}/>
+                        <SteamSearchForm/>
                       </div>
                     </div>
                 </div>
