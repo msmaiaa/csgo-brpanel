@@ -16,21 +16,25 @@ export interface ICargo {
 }
 
 export async function addCargo(cargo: ICargo, servers: Array<any>){
-  return await axios.post('/api/cargos/create', {cargo, servers})
+  return axios.post('/api/cargos/create', {cargo, servers})
 }
 
 export async function updateCargo(cargo: ICargo){
-  return await axios.post('/api/cargos/update', {cargo})
+  return axios.post('/api/cargos/update', {cargo})
 }
 
 export async function getAllCargos(){
-  return await axios.get('/api/cargos/')
+  return axios.get('/api/cargos/')
+}
+
+export async function getNonIndividualCargos(){
+  return axios.get('/api/cargos?all=true')
 }
 
 export async function buyCargo(cargo: ICargo){
-  return await axios.post('/api/cargos/buy', {cargo})
+  return axios.post('/api/cargos/buy', {cargo})
 }
 
 export async function deleteCargo(cargo: ICargo){
-  return await axios.post('/api/cargos/delete', {cargo})
+  return axios.post('/api/cargos/delete', {cargo})
 }

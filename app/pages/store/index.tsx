@@ -1,6 +1,6 @@
 import Layout from "../../components/Layout";
 import router from "../../lib/router";
-import { buyCargo } from "../../services/CargoService";
+import { buyCargo, getNonIndividualCargos } from "../../services/CargoService";
 import styles from './store.module.css'
 
 import axios from "axios";
@@ -8,6 +8,7 @@ import { Button, FormControl, Select } from "@material-ui/core";
 import { FC, useEffect, useState } from "react";
 import { MenuItem } from "react-pro-sidebar";
 import { useRouter } from 'next/router'
+import { getAllServersWithCargo } from "../../services/ServerService";
 
 
 
@@ -20,8 +21,8 @@ const StorePage: FC<any> = (props) => {
 
   const getInitialData = async() => {
     let mounted = true
-    const servers = await axios.get('/api/servers/withCargo')
-    const cargosAll = await axios.get('/api/cargos?all=true')
+    const servers = await getAllServersWithCargo()
+    const cargosAll = await getNonIndividualCargos()
     if(mounted) {
       setCargosAllServers(cargosAll.data.body)
       setServersWithCargo(servers.data.body)
