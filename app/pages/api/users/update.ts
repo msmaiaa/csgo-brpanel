@@ -1,3 +1,4 @@
+import { logInDb } from '../../../lib/logger'
 import prisma from '../../../lib/prisma'
 import router from '../../../lib/router'
 import requireAdmin from '../../../middlewares/auth/requireAdmin'
@@ -6,7 +7,7 @@ const path = '/api/users/update'
 
 router.post(path, requireAdmin, async(req: any, res: any) => {
   try{
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id: req.body.id
       },
@@ -14,6 +15,7 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
         ...req.body.data
       }
     })
+    logInDb('Usuário atualizado', updatedUser.name, req.user.personaname)
     return res.status(200).json({message: 'Usuário atualizado com sucesso'})
   }catch(e) {
     console.error(e)

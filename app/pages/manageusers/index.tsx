@@ -49,15 +49,10 @@ const ManageUsers: FC<any> = (props) => {
                   </div>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', width: '48%', justifyContent: 'space-between'}}>
-                    {/* <div style={{height: '48%'}}>
-                      <p style={{height: '8%'}} className={styles.cardTitle}>Adicionar usuário</p>
-                      <div className={styles.container_mini}>
-                      </div>
-                    </div> */}
                     <div style={{height: '48%'}}>
                       <p style={{height: '8%'}} className={styles.cardTitle}>Adicionar Usuário</p>
                       <div className={styles.container_mini}>
-                        <SteamSearchForm/>
+                        <SteamSearchForm onAddUser={() => setUpdateData(true)}/>
                       </div>
                     </div>
                 </div>

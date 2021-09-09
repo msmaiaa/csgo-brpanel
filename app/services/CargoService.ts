@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { IServer } from './ServerService'
+import { IUser } from './UserService'
 
 export interface ICargo {
   stripe_id: string
@@ -13,6 +15,13 @@ export interface ICargo {
   updated_at?: string
   serverName?: string
   cargo_server?: [any]
+}
+
+interface IAddUser {
+  cargo: ICargo
+  days: number
+  user: IUser
+  server: IServer | string
 }
 
 export async function addCargo(cargo: ICargo, servers: Array<any>){
@@ -37,4 +46,12 @@ export async function buyCargo(cargo: ICargo){
 
 export async function deleteCargo(cargo: ICargo){
   return axios.post('/api/cargos/delete', {cargo})
+}
+
+export async function removeCargosFromUser(user: IUser){
+  return axios.post('/api/cargos/removeFromUser', {user, all: true})
+}
+
+export async function addCargosToUser(dataAddUser: IAddUser){
+  return axios.post('/api/cargos/addToUser', {...dataAddUser})
 }

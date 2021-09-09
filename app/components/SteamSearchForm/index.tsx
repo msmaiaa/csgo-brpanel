@@ -38,7 +38,7 @@ const StyledTextField = withStyles({
   
 })(TextField)
 
-export default function SteamSearchForm() {
+export default function SteamSearchForm({ onAddUser }) {
   const toast = useContext(ToastContext)
   const [steamInput, setSteamInput] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
@@ -65,7 +65,7 @@ export default function SteamSearchForm() {
   const handleAddUser = async() => {
     try{
       const createdUser = await createUser({ steamid: userData.steamid, user_type: userTypeInput, username: userData.personaname})
-      console.log(createdUser.data.message)
+      onAddUser()
       toast.success(createdUser.data.message)
     }catch(e) {
       toast.error(e.response.data.message)
