@@ -1,4 +1,5 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
+import FormUpdateUser from "../../components/FormUpdateUser";
 import Layout from "../../components/Layout";
 import SteamSearchForm from "../../components/SteamSearchForm";
 import UsersTable from "../../components/UsersTable";
@@ -18,17 +19,18 @@ export interface IUser_Cargo {
   server_name: string
   steamid: string
 }
-export interface IUserWithCargo extends IUser {
-  user_cargo?: Array<IUser_Cargo>
-}
 
 const ManageUsers: FC<any> = (props) => {
   const toast = useContext(ToastContext)
-  const [userEditInfo, setUserEditInfo] = useState<IUser_Cargo | {}>({})
-  
+  const [userEditInfo, setUserEditInfo] = useState<IUser>()
+  const [updateData, setUpdateData] = useState<boolean>()
 
-  const handleEditClick = (user: IUserWithCargo) => {
-    console.log(user)
+  const handleEditClick = (user: IUser) => {
+    setUserEditInfo(user)
+  }
+
+  const handleUpdateUserInfo = async() => {
+    setUpdateData(true)
   }
 
 
@@ -37,12 +39,13 @@ const ManageUsers: FC<any> = (props) => {
       <Layout user={props.user}>
       <div className={styles.container}>
           <div className={styles.users_container}>
-            <UsersTable onEditClick={handleEditClick}/>
+            <UsersTable onEditClick={handleEditClick} updateData={updateData} setUpdateData={(value) => setUpdateData(value)}/>
           </div>
             <div style={{display: 'flex', width: '100%', height: '800px', marginTop: '30px', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', flexDirection: 'column', width: '48%'}}>
                   <p style={{height: '4%'}} className={styles.cardTitle}>Editar usuário</p>
                   <div className={styles.container_small}>
+                    <FormUpdateUser selectedData={userEditInfo} updateUserInfo={handleUpdateUserInfo}/>
                   </div>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', width: '48%', justifyContent: 'space-between'}}>

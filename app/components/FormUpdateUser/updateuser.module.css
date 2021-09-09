@@ -1,0 +1,13 @@
+.title {
+  font-size: 20px;
+}
+
+
+.menuitem:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+.menuitem:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}

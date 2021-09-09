@@ -1,18 +1,24 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core"
 import { Pagination } from "@material-ui/lab";
 import { FC, useEffect, useState } from "react"
-import { IUserWithCargo } from "../../pages/manageusers";
-import { getAllUsers } from "../../services/UserService";
+import { getAllUsers, IUser } from "../../services/UserService";
 import styles from './userstable.module.css'
 
-const UsersTable: FC<any> = ({ onEditClick }) => {
-  const [rows, setRows] = useState<Array<IUserWithCargo>>([])
+const UsersTable: FC<any> = ({ onEditClick, updateData, setUpdateData }) => {
+  const [rows, setRows] = useState<Array<IUser>>([])
   const [totalPagesCount, setTotalPagesCount] = useState(0)
   const [actualPage, setActualPage] = useState(1)
 
   useEffect(() => {
     updateUsersRows()
   }, [])
+
+  useEffect(() => {
+    if(updateData) {
+      updateUsersRows()
+      setUpdateData(false)
+    }
+  }, [updateData])
 
   const updateUsersRows = async() => {
     try{

@@ -122,7 +122,7 @@ export default function SteamSearchForm() {
                       <MenuItem value={1} className={styles.menuitem}>Admin</MenuItem>
                       <MenuItem value={2} className={styles.menuitem}>Super Admin</MenuItem>
                     </Select>
-                </FormControl>
+                  </FormControl>
                 </div>
               <Button onClick={handleAddUser} variant="contained" color="primary" style={{height: '30px', width: '90px'}}>Adicionar</Button>
               </div>
