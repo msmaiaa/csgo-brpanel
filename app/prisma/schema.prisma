@@ -84,3 +84,17 @@ model Log {
   
   @@map(name: "logs")
 }
+
+model Sale {
+  id Int@default(autoincrement()) @id
+  gateway String
+  customer_steamid String
+  payment_status String @default("uncompleted")
+  amount String
+
+  currency String? @default("BRL")
+  customer_email String?
+  created_at DateTime @default(now())
+
+  @@map(name: "sales")
+}
