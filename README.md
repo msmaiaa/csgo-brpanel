@@ -1,5 +1,5 @@
 # CSGO Vip Management Panel
-# clonado no commit 8f03c45
+## This is a fork of the Summer-16's VMPanel, it has stripe support with card and boleto. It's kinda broken and i won't give any support for this branch
 ### Single solution to manage VIPs and Admins in your CSGO servers.
 
 -------------------------------------------------------------
