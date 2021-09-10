@@ -14,8 +14,7 @@ import {
   faSignOutAlt, 
   faSignInAlt, 
   faFileInvoiceDollar,
-  faHistory,
-  faInfoCircle
+  faHistory
  } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -70,9 +69,6 @@ export default function Layout(children) {
                 </MenuItem>
               </>
             }
-            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faInfoCircle} />}>
-              <Link href="/about"><p className={styles.menulink}>Sobre</p></Link>
-            </MenuItem>
             <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faSignOutAlt} />}>
               <a className={styles.menulink} onClick={handleLogout}>Sair</a>
             </MenuItem>
