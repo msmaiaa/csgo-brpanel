@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import jwt from 'jsonwebtoken'
 import prisma from '../../../../lib/prisma'
 import { buffer } from "micro";
+import { createSale } from '../../../../lib/sales';
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   apiVersion: '2020-08-27'
@@ -144,6 +145,13 @@ const fulfillOrder = async(session) => {
             }
           }
         }
+        await createSale({
+          amount: cargoInDb.price,
+          customer_steamid: decodedData.userData.userid,
+          gateway: 'Stripe',
+          payment_status: 'completed',
+          customer_email: session.customer_details.email
+        })
       }
     }
   }catch(e) {
