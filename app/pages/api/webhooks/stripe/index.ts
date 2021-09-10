@@ -81,27 +81,67 @@ const fulfillOrder = async(session) => {
           }
         })
         if(cargoInDb.individual) {
-          await prisma.user_Cargo.create({
-            data: {
-              expire_stamp: epochTillExpirationDate(parseInt(cargoInDb.duration)),
-              cargo_id: cargoInDb.id,
-              flags: cargoInDb.flags,
+          const hasCargo = await prisma.user_Cargo.findFirst({
+            where: {
               server_name: decodedData.serverName,
-              steamid: decodedData.userData.userid
+              steamid: decodedData.userData.steamid
             }
           })
-        }else {
-          const allServers = await prisma.server.findMany()
-          for(let server of allServers) {
+          if(hasCargo) {
+            const newTimestamp = addDaysToTimestamp(cargoInDb.duration, hasCargo.expire_stamp)
+            await prisma.user_Cargo.update({
+              where: {
+                id: hasCargo.id
+              },
+              data: {
+                cargo_id: cargoInDb.id,
+                flags: cargoInDb.flags,
+                expire_stamp: newTimestamp
+              }
+            })
+          }else {
             await prisma.user_Cargo.create({
               data: {
                 expire_stamp: epochTillExpirationDate(parseInt(cargoInDb.duration)),
                 cargo_id: cargoInDb.id,
                 flags: cargoInDb.flags,
-                server_name: server.name,
+                server_name: decodedData.serverName,
                 steamid: decodedData.userData.userid
               }
             })
+          }
+        }else {
+          const allServers = await prisma.server.findMany()
+          for(let server of allServers) {
+            const hasCargo = await prisma.user_Cargo.findFirst({
+              where: {
+                server_name: server.name,
+                steamid: decodedData.userData.steamid
+              }
+            })
+            if(hasCargo) {
+              const newTimestamp = addDaysToTimestamp(cargoInDb.duration, hasCargo.expire_stamp)
+              await prisma.user_Cargo.update({
+                where: {
+                  id: hasCargo.id
+                },
+                data: {
+                  cargo_id: cargoInDb.id,
+                  flags: cargoInDb.flags,
+                  expire_stamp: newTimestamp
+                }
+              })
+            }else{
+              await prisma.user_Cargo.create({
+                data: {
+                  expire_stamp: epochTillExpirationDate(parseInt(cargoInDb.duration)),
+                  cargo_id: cargoInDb.id,
+                  flags: cargoInDb.flags,
+                  server_name: server.name,
+                  steamid: decodedData.userData.userid
+                }
+              })
+            }
           }
         }
       }
@@ -116,6 +156,12 @@ function epochTillExpirationDate(days) {
   let currentEpoch = Math.floor(Date.now() / 1000)
   let daysInSec = Math.floor(days * 86400)
   return (currentEpoch + daysInSec)
+}
+
+function addDaysToTimestamp(days, timestamp) {
+  const timestampToDate = new Date(Number(timestamp) * 1000)
+  timestampToDate.setDate(timestampToDate.getDate() + days)
+  return BigInt(timestampToDate.getTime() / 1000)
 }
 
 export default router
