@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { IServer } from './ServerService'
+import { IUser } from './UserService'
 
 export interface ICargo {
   stripe_id: string
@@ -12,24 +14,44 @@ export interface ICargo {
   created_at?: string
   updated_at?: string
   serverName?: string
+  cargo_server?: [any]
+}
+
+interface IAddUser {
+  cargo: ICargo
+  days: number
+  user: IUser
+  server: IServer | string
 }
 
 export async function addCargo(cargo: ICargo, servers: Array<any>){
-  return await axios.post('/api/cargos/create', {cargo, servers})
+  return axios.post('/api/cargos/create', {cargo, servers})
 }
 
 export async function updateCargo(cargo: ICargo){
-  return await axios.post('/api/cargos/update', {cargo})
+  return axios.post('/api/cargos/update', {cargo})
 }
 
 export async function getAllCargos(){
-  return await axios.get('/api/cargos/')
+  return axios.get('/api/cargos/')
+}
+
+export async function getNonIndividualCargos(){
+  return axios.get('/api/cargos?all=true')
 }
 
 export async function buyCargo(cargo: ICargo){
-  return await axios.post('/api/cargos/buy', {cargo})
+  return axios.post('/api/cargos/buy', {cargo})
 }
 
 export async function deleteCargo(cargo: ICargo){
-  return await axios.post('/api/cargos/delete', {cargo})
+  return axios.post('/api/cargos/delete', {cargo})
+}
+
+export async function removeCargosFromUser(user: IUser){
+  return axios.post('/api/cargos/removeFromUser', {user, all: true})
+}
+
+export async function addCargosToUser(dataAddUser: IAddUser){
+  return axios.post('/api/cargos/addToUser', {...dataAddUser})
 }

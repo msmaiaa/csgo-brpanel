@@ -1,4 +1,4 @@
-import { ProSidebar, Menu, MenuItem, SidebarHeader } from 'react-pro-sidebar';
+import { ProSidebar, Menu, MenuItem, SidebarHeader, SubMenu } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,8 +14,7 @@ import {
   faSignOutAlt, 
   faSignInAlt, 
   faFileInvoiceDollar,
-  faHistory,
-  faInfoCircle
+  faHistory
  } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -31,7 +30,7 @@ export default function Layout(children) {
 
   return (
     <div style={{display: 'flex', height: '100%', width: '100%', alignItems: 'center'}}>
-    <ProSidebar style={{height: '100%'}}>
+    <ProSidebar>
       <SidebarHeader style={{display: 'flex', justifyContent: 'center'}}>
         <Image src={logoPic} alt="Logo" width={100} height={100}/>
       </SidebarHeader>
@@ -45,14 +44,17 @@ export default function Layout(children) {
               <Link href="/store"><p className={styles.menulink}>Loja</p></Link>
             </MenuItem>
             {children.user.user_type > 0 && 
-              <>
-              <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
-                <Link href="/managecargos"><p className={styles.menulink}>Gerenciar cargos</p></Link>
-              </MenuItem>
-              <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
-                <Link href="/manageservers"><p className={styles.menulink}>Gerenciar servidores</p></Link>
-              </MenuItem>
-              </>
+              <SubMenu className={styles.menu_item} style={{color: 'black'}} title="Gerenciar" icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faListAlt} />}>
+                <MenuItem className={styles.menu_item}>
+                  <Link href="/manageusers"><p className={styles.menulink}>Usuários</p></Link>
+                </MenuItem>
+                <MenuItem className={styles.menu_item}>
+                  <Link href="/managecargos"><p className={styles.menulink}>Cargos</p></Link>
+                </MenuItem>
+                <MenuItem className={styles.menu_item}>
+                  <Link href="/manageservers"><p className={styles.menulink}>Servidores</p></Link>
+                </MenuItem>
+              </SubMenu>
             }
             {children.user.user_type == 2 &&
               <>
@@ -67,9 +69,6 @@ export default function Layout(children) {
                 </MenuItem>
               </>
             }
-            <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faInfoCircle} />}>
-              <Link href="/about"><p className={styles.menulink}>Sobre</p></Link>
-            </MenuItem>
             <MenuItem className={styles.menu_item} icon={<FontAwesomeIcon  className={styles.menu_icon} icon={faSignOutAlt} />}>
               <a className={styles.menulink} onClick={handleLogout}>Sair</a>
             </MenuItem>
@@ -81,7 +80,7 @@ export default function Layout(children) {
         }
       </Menu>
     </ProSidebar>
-    <div style={{width: '86%', height: '95%'}}>
+    <div style={{width: '100%', height: '100%', overflowX: 'hidden'}}>
       {children.children}
     </div>
     </div>

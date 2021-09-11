@@ -1,33 +1,22 @@
-.customCard {
-  width: 280px;
-  height: 220px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
-}
-
 .container {
   display: flex;
   flex-direction: column;
-  margin: 25px 0 0 0;
+  margin: 25px 60px 45px 60px;
 }
 
-.logs_container {
+.sales_container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.logsTitle{
+.salesTitle{
   font-size: 32px;
   font-weight: 300;
   margin-bottom: 15px;
 }
 
-.logsContent{
+.salesContent{
   width: 90%;
   min-height: 500px;
   

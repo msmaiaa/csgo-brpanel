@@ -1,6 +1,7 @@
 .cardsContainer{
   display: flex;
   justify-content: space-evenly;
+  margin: 25px 0 0 0;
 }
 
 .inputGroup{

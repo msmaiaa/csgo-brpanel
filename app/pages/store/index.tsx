@@ -1,20 +1,19 @@
-import ToastContext from "../../context/ToastContext";
 import Layout from "../../components/Layout";
 import router from "../../lib/router";
-import { buyCargo } from "../../services/CargoService";
+import { buyCargo, getNonIndividualCargos } from "../../services/CargoService";
 import styles from './store.module.css'
 
 import axios from "axios";
 import { Button, FormControl, Select } from "@material-ui/core";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { MenuItem } from "react-pro-sidebar";
 import { useRouter } from 'next/router'
+import { getAllServersWithCargo } from "../../services/ServerService";
 
 
 
 const StorePage: FC<any> = (props) => {
   const router = useRouter()
-  const toast = useContext(ToastContext)
   const [cargosAllServers, setCargosAllServers] = useState([])
   const [serversWithCargo, setServersWithCargo] = useState([])
   const [activeData, setActiveData] = useState([])
@@ -22,8 +21,8 @@ const StorePage: FC<any> = (props) => {
 
   const getInitialData = async() => {
     let mounted = true
-    const servers = await axios.get('/api/servers/withCargo')
-    const cargosAll = await axios.get('/api/cargos?all=true')
+    const servers = await getAllServersWithCargo()
+    const cargosAll = await getNonIndividualCargos()
     if(mounted) {
       setCargosAllServers(cargosAll.data.body)
       setServersWithCargo(servers.data.body)
@@ -80,7 +79,7 @@ const StorePage: FC<any> = (props) => {
                     onChange={handleChange}
                     style={{fontFamily: 'Josefin Sans', minWidth: '50px'}}
                   >
-                    {cargosAllServers.length > 0 && <MenuItem
+                    {cargosAllServers.length > 0 && serversWithCargo.length > 0 && <MenuItem
                     onMouseEnter={(e: any) => {
                       e.target.style.backgroundColor = 'lightgray'
                       e.target.style.cursor = 'pointer'

@@ -14,6 +14,41 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
         id: req.body.cargo.id
       }
     })
+    const cargo_server = await prisma.cargo_Server.findMany({
+      where: {
+        cargo_id: oldCargo.id
+      }
+    })
+    if(oldCargo.individual && req.body.cargo.individual) {
+      if(cargo_server.length != req.body.cargo.servers) {
+        await prisma.cargo_Server.deleteMany({})
+        for(let server of req.body.cargo.servers) {
+          await prisma.cargo_Server.create({
+            data: {
+              cargo_id: oldCargo.id,
+              server_id: server.id
+            }
+          })
+        }
+      }
+    }
+    if(oldCargo.individual && !req.body.cargo.individual) {
+      await prisma.cargo_Server.deleteMany({
+        where: {
+          cargo_id: oldCargo.id
+        }
+      })
+    }else if(!oldCargo.individual && req.body.cargo.individual) {
+      for(let server of req.body.cargo.servers) {
+        await prisma.cargo_Server.create({
+          data: {
+            cargo_id: oldCargo.id,
+            server_id: server.id
+          }
+        })
+      }
+    }
+    delete req.body.cargo.servers
     const updatedCargo = await prisma.cargo.update({
       where: {
         id: req.body.cargo.id
@@ -22,10 +57,15 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
         ...req.body.cargo
       }
     })
+    
+
+    /*
+    * Updating existing Users that have the cargo with the updated data
+    */
     if(oldCargo.flags !== updatedCargo.flags) {
       await prisma.user_Cargo.updateMany({
         where: {
-          cargo_name: updatedCargo.name
+          cargo_id: updatedCargo.id
         },
         data: {
           flags: updatedCargo.flags

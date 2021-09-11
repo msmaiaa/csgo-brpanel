@@ -1,0 +1,32 @@
+.form {
+  display: flex; 
+  height: 15%;
+  justify-content: center;
+  align-items: flex-end; 
+  font-family: "Josefin Sans";
+}
+
+.info_key {
+  color: blue;
+}
+
+.info_value {
+  color: black;
+}
+
+.info_value:hover {
+  cursor: pointer;
+}
+
+.info_key:not(:last-child){
+  margin-bottom: 10px;
+}
+
+.menuitem:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+.menuitem:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}

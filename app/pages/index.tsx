@@ -31,12 +31,12 @@ const HomePage: FC<any> = (props) => {
         <div className={styles.container}>
           <div className={styles.serversContainer}>
             {servers.length > 0 ? 
-            servers.map((server) => {
+            servers.map((server, index) => {
               return (
                 <ServerCard key={server.id} server={server} style={{
                 width: '280px', 
                 height: '180px', 
-                marginLeft: '30px', 
+                marginLeft: index === 0 ? '0' : '30px', 
                 backgroundColor: 'rgba(255, 255, 255, .15)', 
                 backdropFilter: 'blur(5px)'
               }}/>

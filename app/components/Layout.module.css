@@ -7,6 +7,7 @@
 .menulink {
   font-size: 15px;
   color: black;
+  user-select: none;
 }
 
 .menu_item:not(:last-child) {
