@@ -16,7 +16,6 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   user_cargo User_Cargo[]
-
   @@map(name: "users")
 }
 
@@ -29,10 +28,8 @@ model Server {
   rcon_pass String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-
   user_cargos User_Cargo[]
   cargo_server Cargo_Server[]
-
   @@map(name: "servers")
 }
 
@@ -47,10 +44,8 @@ model Cargo{
   flags String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-
   user_cargos User_Cargo[]
   cargo_server Cargo_Server[]
-  
   @@map(name: "cargos")
 }
 
@@ -80,8 +75,6 @@ model Log {
   additional_info String
   created_by String
   created_at DateTime @default(now())
-
-  
   @@map(name: "logs")
 }
 
@@ -91,10 +84,20 @@ model Sale {
   customer_steamid String
   payment_status String @default("uncompleted")
   amount String
-
   currency String? @default("BRL")
   customer_email String?
   created_at DateTime @default(now())
-
   @@map(name: "sales")
+}
+
+model NotificationSettings {
+  id Int@default(autoincrement()) @id
+  send_email_sale Boolean @default(false) //send email after sale status update? (created/fulfilled/rejected)
+  send_disc_on_sale Boolean @default(false) //send webhook on discord when a sale is fulfilled?
+  send_disc_on_modification Boolean @default(false) //send webhook on discord when a modification happens on website?
+  send_discord_notifications Boolean @default(false) //send discord webhooks?
+  community_name String @default("")
+  community_website String @default("")
+  webhook_url String @default("")
+  logo_url String @default("")
 }
