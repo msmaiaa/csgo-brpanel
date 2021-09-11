@@ -1,11 +1,10 @@
 import router from '../../../lib/router'
-import requireAuth from '../../../middlewares/auth/requireAuth'
 import requireAdmin from '../../../middlewares/auth/requireAdmin'
 import prisma from '../../../lib/prisma'
 
 const path = '/api/users/'
 
-router.get(path, requireAuth, requireAdmin, async(req: any, res: any) => {
+router.get(path, requireAdmin, async(req: any, res: any) => {
   try{
     const page = req.query.page
     const skipCount = page === 1 ? 0 : (10*page) - 10

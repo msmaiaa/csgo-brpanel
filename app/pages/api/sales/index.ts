@@ -1,11 +1,10 @@
 import router from '../../../lib/router'
 import prisma from '../../../lib/prisma'
-import requireAuth from '../../../middlewares/auth/requireAuth'
 import requireSuperAdmin from '../../../middlewares/auth/requireSuperAdmin'
 
 const path = "/api/sales"
 
-router.get(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
+router.get(path, requireSuperAdmin, async(req: any, res: any) => {
   try{
     const page = req.query.page
     const skipCount = page === 1 ? 0 : (10*page) - 10

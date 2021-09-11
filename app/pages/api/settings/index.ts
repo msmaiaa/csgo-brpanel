@@ -1,8 +1,9 @@
 import router from '../../../lib/router'
 import prisma from '../../../lib/prisma'
+import requireSuperAdmin from 'middlewares/auth/requireSuperAdmin';
 
 const path = '/api/settings'
-router.get(path, async(req: any, res: any) => {
+router.get(path, requireSuperAdmin, async(req: any, res: any) => {
   try{
     let foundSettings;
     switch(req.query.scope) {

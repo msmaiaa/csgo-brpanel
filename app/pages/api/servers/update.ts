@@ -1,12 +1,11 @@
 import router from "../../../lib/router";
-import requireAuth from "../../../middlewares/auth/requireAuth";
 import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
 import prisma from '../../../lib/prisma'
 import { logInDb } from "../../../lib/logger";
 
 const path = "/api/servers/update";
 
-router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
   try{
     if(!req.body) return res.status(422).json({message: 'Parametros faltando'})
     const updatedServer = await prisma.server.update({

@@ -1,6 +1,5 @@
 import router from '../../../lib/router'
 import prisma from '../../../lib/prisma'
-import requireAuth from '../../../middlewares/auth/requireAuth'
 import requireAdmin from '../../../middlewares/auth/requireAdmin'
 import { logInDb } from '../../../lib/logger'
 
@@ -18,7 +17,7 @@ function addDaysToTimestamp(days, timestamp) {
   return BigInt(timestampToDate.getTime() / 1000)
 }
 
-router.post(path, requireAuth, requireAdmin, async(req: any, res: any) => {
+router.post(path, requireAdmin, async(req: any, res: any) => {
   try{
     const body: any = req.body
     if(body.server === 'all') { 

@@ -1,12 +1,11 @@
 import router from '../../../lib/router'
 import prisma from '../../../lib/prisma'
-import requireAuth from '../../../middlewares/auth/requireAuth'
 import requireAdmin from '../../../middlewares/auth/requireAdmin'
 import { logInDb } from '../../../lib/logger'
 
 const path = ('/api/cargos/removeFromUser')
 
-router.post(path, requireAuth, requireAdmin, async(req: any, res: any) => {
+router.post(path, requireAdmin, async(req: any, res: any) => {
   try{
     let deleted;
     if(req.body.all) {

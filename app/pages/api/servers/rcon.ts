@@ -1,12 +1,11 @@
 import router from "../../../lib/router";
-import requireAuth from "../../../middlewares/auth/requireAuth";
 import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
 import prisma from '../../../lib/prisma'
 
 const path = "/api/servers/rcon";
 
 //todo: delete this shit
-router.get(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => { 
+router.get(path, requireSuperAdmin, async(req: any, res: any) => { 
   try{
     const foundServers = await prisma.server.findMany()
     const filteredServers = foundServers.map((server) => {

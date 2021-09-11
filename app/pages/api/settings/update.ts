@@ -1,9 +1,10 @@
 import router from '../../../lib/router'
 import prisma from '../../../lib/prisma'
+import requireSuperAdmin from 'middlewares/auth/requireSuperAdmin';
 import { logInDb } from '../../../lib/logger';
 
 const path = '/api/settings/update'
-router.post(path, async(req: any, res: any) => {
+router.post(path, requireSuperAdmin, async(req: any, res: any) => {
   try{
     let updatedSettings;
     switch(req.body.scope) {
