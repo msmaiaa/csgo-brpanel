@@ -25,6 +25,7 @@ export async function sendDiscordNotification({data, what, action}: ISendNotific
   try{
     const settings = await NotificationSettings.findOne()
     if(!settings.send_discord_notifications) return
+
     const notification = new DiscordNotification(settings)
     if(action === 'buy') {
       if(!settings.send_disc_on_sale) return

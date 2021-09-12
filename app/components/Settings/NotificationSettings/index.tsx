@@ -2,7 +2,7 @@ import { Button, Checkbox, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { useContext, useEffect, useState } from "react"
 import ToastContext from "context/ToastContext";
-import { getAllSettings, updateSettings } from "services/SettingsService"
+import { getAllSettings, testDiscordHook, updateSettings } from "services/SettingsService"
 import styles from './notificationsettings.module.css'
 
 interface INotificationSettings {
@@ -59,7 +59,11 @@ export default function NotificationSettings() {
   }
 
   const handleTestWebhook = async() => {
-
+    try{
+      await testDiscordHook(settings.webhook_url)
+    }catch(e) {
+      console.error(e.message)
+    }
   }
 
   useEffect(() => {

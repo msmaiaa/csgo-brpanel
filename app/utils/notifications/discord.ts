@@ -18,14 +18,16 @@ export default class DiscordNotification {
     fields: [],
     thumbnail: {}
   }
-  constructor(settings: NotificationSettings) {
-    this.settings = settings
-    this.webhook = this.baseWebhook()
-    this.createBaseMessage()
+  constructor(settings: NotificationSettings = null) {
+    if(settings) {
+      this.settings = settings
+      this.webhook = this.baseWebhook(this.settings.webhook_url)
+      this.createBaseMessage()
+    }
   }
 
-  baseWebhook () {
-    const webhook = new Webhook(this.settings.webhook_url)
+  baseWebhook (webhookUrl: string) {
+    const webhook = new Webhook(webhookUrl)
     return webhook
   }
 
@@ -36,9 +38,6 @@ export default class DiscordNotification {
       width: 30
     }
     this.message.title = 'BRPanel'
-    this.message.author = {
-      name: 'BRPanel'
-    }
     this.message.url = this.settings.community_website
   }
 
@@ -66,6 +65,14 @@ export default class DiscordNotification {
     }catch(e) {
       console.log('error on onSale')
       console.error(e)
+    }
+  }
+
+  async testMessage () {
+    try{
+      this.webhook.send('', [this.message])
+    }catch(e) {
+      console.error('error on testMessage', e)
     }
   }
 } 
