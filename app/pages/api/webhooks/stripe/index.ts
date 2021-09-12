@@ -7,6 +7,7 @@ import { addDaysToTimestamp, epochTillExpirationDate } from 'utils/date';
 import Cargo from 'models/Cargo';
 import UserCargo from 'models/UserCargo';
 import Server from 'models/Server';
+import { sendDiscordNotification } from 'utils/notifications';
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   apiVersion: '2020-08-27'
@@ -152,7 +153,18 @@ const fulfillOrder = async(session) => {
           customer_steamid: decodedData.userData.userid,
           gateway: 'Stripe',
           payment_status: 'completed',
-          customer_email: session.customer_details.email
+          customer_email: session.customer_details.email,
+          additional_info: 'Cargo - ' + cargoInDb.name
+        })
+        sendDiscordNotification({
+          action: "buy",
+          what: "cargo",
+          data: {
+            amount: cargoInDb.price,
+            customer_steamid: decodedData.userData.userid,
+            payment_status: 'completed',
+            cargo_name: cargoInDb.name
+          }
         })
       }
     }

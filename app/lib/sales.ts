@@ -6,9 +6,10 @@ interface ISale {
   payment_status: "completed" | "uncompleted"
   amount: string 
   customer_email?: string
+  additional_info?: string
 }
 
-export async function createSale({ gateway, customer_steamid, payment_status, amount, customer_email }: ISale) {
+export async function createSale({ gateway, customer_steamid, payment_status, amount, customer_email, additional_info }: ISale) {
   try{
     const data: ISale = {
       gateway,
@@ -17,10 +18,10 @@ export async function createSale({ gateway, customer_steamid, payment_status, am
       amount,
     }
     customer_email ? data.customer_email = customer_email : ''
+    additional_info ? data.additional_info = additional_info : ''
     const createdSale = await Sale.create({
       data
     })
-    console.log(`New sale! User: ${createdSale.customer_steamid} | Amount: ${createdSale.amount} ${createdSale.currency}`)
   }catch(e) {
     console.error('Error createSale')
     console.error(e.message)

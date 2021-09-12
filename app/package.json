@@ -37,11 +37,11 @@
     "react-pro-sidebar": "^0.6.0",
     "react-toastify": "^8.0.1",
     "reflect-metadata": "^0.1.13",
+    "simple-discord-webhooks": "^1.0.1",
     "sourcequery": "0.0.2",
     "stripe": "^8.170.0",
     "ts-node": "^10.2.1",
-    "uninstall": "0.0.0",
-    "webhook-discord": "^3.7.8"
+    "uninstall": "0.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.13",

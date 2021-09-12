@@ -86,6 +86,7 @@ model Sale {
   amount String
   currency String? @default("BRL")
   customer_email String?
+  additional_info String?
   created_at DateTime @default(now())
   @@map(name: "sales")
 }

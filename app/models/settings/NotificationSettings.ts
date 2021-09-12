@@ -1,19 +1,17 @@
 import prisma from 'lib/prisma'
 
-interface IFindOrCreateSettings {
-  where: object
-  create: object
-  update: object
-}
-
 interface IUpdateSettings {
   where: object
   data: object
 }
 
 export default new class NotificationSettings {
-  findOrCreate(data: IFindOrCreateSettings) {
+  findOrCreate(data?) {
     return prisma.notificationSettings.upsert(data)
+  }
+
+  findOne() {
+    return prisma.notificationSettings.findFirst()
   }
 
   update(data: IUpdateSettings) {
