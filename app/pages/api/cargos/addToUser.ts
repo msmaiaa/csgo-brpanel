@@ -1,7 +1,8 @@
-import router from '../../../lib/router'
-import prisma from '../../../lib/prisma'
-import requireAdmin from '../../../middlewares/auth/requireAdmin'
-import { logInDb } from '../../../lib/logger'
+import router from 'lib/router'
+import requireAdmin from 'middlewares/auth/requireAdmin'
+import { logInDb } from 'lib/logger'
+import UserCargo from 'models/UserCargo'
+import Server from 'models/Server'
 
 const path = '/api/cargos/addToUser'
 
@@ -21,9 +22,9 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
   try{
     const body: any = req.body
     if(body.server === 'all') { 
-      const foundServers = await prisma.server.findMany()
+      const foundServers = await Server.findAll()
       for(let server of foundServers) {
-        const foundUserCargo = await prisma.user_Cargo.findFirst({
+        const foundUserCargo = await UserCargo.findOne({
           where: {
             server_name: server.name,
             steamid: body.user.steamid
@@ -33,7 +34,7 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
         if(foundUserCargo) {
           const daysToAdd = body.days
           const newCargoTimestamp = addDaysToTimestamp(daysToAdd, foundUserCargo.expire_stamp)
-          await prisma.user_Cargo.update({
+          await UserCargo.update({
             where: {
               id: foundUserCargo.id
             },
@@ -45,7 +46,7 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
           })
           logInDb('Cargo do usuário atualizado', `${body.cargo.name} - ${body.user.steamid}`, req.user.personaname) 
         }else{
-          await prisma.user_Cargo.create({
+          await UserCargo.create({
             data: {
               expire_stamp: epochTillExpirationDate(body.days),
               cargo_id: body.cargo.id,
@@ -58,7 +59,7 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
         }
       }
     }else {
-      const foundUserCargo = await prisma.user_Cargo.findFirst({
+      const foundUserCargo = await UserCargo.findOne({
         where: {
           server_name: body.server.name,
           steamid: body.user.steamid
@@ -67,7 +68,7 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
       if(foundUserCargo) {
         const daysToAdd = body.days
         const newCargoTimestamp = addDaysToTimestamp(daysToAdd, foundUserCargo.expire_stamp)
-        await prisma.user_Cargo.update({
+        await UserCargo.update({
           where: {
             id: foundUserCargo.id
           },
@@ -79,7 +80,7 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
         })
         logInDb('Cargo do usuário atualizado', `${body.cargo.name} - ${body.user.steamid}`, req.user.personaname)
       }else{
-        await prisma.user_Cargo.create({
+        await UserCargo.create({
           data: {
             expire_stamp: epochTillExpirationDate(body.days),
             cargo_id: body.cargo.id,

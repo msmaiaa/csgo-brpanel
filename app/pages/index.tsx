@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import router from "../lib/router";
-import { getAllServers } from '../services/ServerService'
+import router from "lib/router";
+import { getAllServers } from 'services/ServerService'
 import styles from './index.module.css'
-import Layout from "../components/Layout";
-import ServerCard from "../components/ServerCard/ServerCard";
+import Layout from "components/Layout";
+import ServerCard from "components/ServerCard/ServerCard";
 
 const HomePage: FC<any> = (props) => {
   const [servers, setServers] = useState([])

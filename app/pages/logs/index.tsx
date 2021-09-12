@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
-import Layout from "../../components/Layout";
-import router from "../../lib/router";
-import { getAllLogs } from "../../services/LogsService";
+import Layout from "components/Layout";
+import router from "lib/router";
+import { getAllLogs } from "services/LogsService";
 import styles from './logs.module.css'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';

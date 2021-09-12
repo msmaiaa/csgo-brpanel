@@ -1,10 +1,10 @@
-import Card from "../../components/Card/Card";
-import Layout from "../../components/Layout";
-import ToastContext from "../../context/ToastContext";
-import router from "../../lib/router";
+import Card from "components/Card/Card";
+import Layout from "components/Layout";
+import ToastContext from "context/ToastContext";
+import router from "lib/router";
 import styles from './managecargos.module.css'
-import { addCargo, deleteCargo, getAllCargos, ICargo, updateCargo } from "../../services/CargoService";
-import { getAllServers } from "../../services/ServerService";
+import { addCargo, deleteCargo, getAllCargos, ICargo, updateCargo } from "services/CargoService";
+import { getAllServers } from "services/ServerService";
 
 import { FC, useContext, useEffect, useState } from "react";
 import { withStyles, TextField, Button, Checkbox, AccordionSummary, Typography, Accordion, AccordionDetails } from '@material-ui/core'

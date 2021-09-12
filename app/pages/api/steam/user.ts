@@ -1,6 +1,6 @@
-import router from '../../../lib/router'
-import requireAdmin from '../../../middlewares/auth/requireAdmin'
-import { fetchProfile } from '../../../utils/steam'
+import router from 'lib/router'
+import requireAdmin from 'middlewares/auth/requireAdmin'
+import { fetchProfile } from 'utils/steam'
 
 const path = '/api/steam/user'
 router.post(path, requireAdmin, async(req: any, res: any) => {

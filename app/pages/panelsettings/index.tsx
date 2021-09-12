@@ -1,8 +1,8 @@
 import { Button } from "@material-ui/core";
 import { FC, useState } from "react";
-import Layout from "../../components/Layout";
-import NotificationSettings from "../../components/Settings/NotificationSettings";
-import router from "../../lib/router";
+import Layout from "components/Layout";
+import NotificationSettings from "components/Settings/NotificationSettings";
+import router from "lib/router";
 import styles from './panelsettings.module.css'
 
 const renderSwitch = (param) => {

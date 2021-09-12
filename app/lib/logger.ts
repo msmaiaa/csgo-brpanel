@@ -1,8 +1,8 @@
-import prisma from './prisma'
+import Log from 'models/Log'
 
 export async function logInDb (activity, additionalInfo, createdBy) {
   try{
-    await prisma.log.create({
+    await Log.create({
       data: {
         activity,
         additional_info: additionalInfo,

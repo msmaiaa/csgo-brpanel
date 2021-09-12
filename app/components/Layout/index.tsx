@@ -2,7 +2,7 @@ import { ProSidebar, Menu, MenuItem, SidebarHeader, SubMenu } from 'react-pro-si
 import 'react-pro-sidebar/dist/css/styles.css';
 import Link from 'next/link'
 import Image from 'next/image'
-import logoPic from '../public/logo.png'
+import logoPic from 'public/logo.png'
 import { useRouter } from 'next/router'
 import styles from './Layout.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

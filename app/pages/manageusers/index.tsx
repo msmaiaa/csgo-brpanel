@@ -1,13 +1,13 @@
 import { FC, useContext, useState } from "react";
-import FormUpdateUser from "../../components/FormUpdateUser";
-import Layout from "../../components/Layout";
-import SteamSearchForm from "../../components/SteamSearchForm";
-import UsersTable from "../../components/UsersTable";
-import ToastContext from "../../context/ToastContext";
-import router from "../../lib/router";
-import { ICargo } from "../../services/CargoService";
-import { IServer } from "../../services/ServerService";
-import { IUser } from "../../services/UserService";
+import FormUpdateUser from "components/FormUpdateUser";
+import Layout from "components/Layout";
+import SteamSearchForm from "components/SteamSearchForm";
+import UsersTable from "components/UsersTable";
+import ToastContext from "context/ToastContext";
+import router from "lib/router";
+import { ICargo } from "services/CargoService";
+import { IServer } from "services/ServerService";
+import { IUser } from "services/UserService";
 import styles from './manageusers.module.css'
 
 export interface IUser_Cargo {

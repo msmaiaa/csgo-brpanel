@@ -1,7 +1,7 @@
-import router from '../../../lib/router'
-import prisma from '../../../lib/prisma'
+import router from 'lib/router'
 import requireSuperAdmin from 'middlewares/auth/requireSuperAdmin';
-import { logInDb } from '../../../lib/logger';
+import { logInDb } from 'lib/logger';
+import NotificationSettings from 'models/settings/NotificationSettings';
 
 const path = '/api/settings/update'
 router.post(path, requireSuperAdmin, async(req: any, res: any) => {
@@ -9,7 +9,7 @@ router.post(path, requireSuperAdmin, async(req: any, res: any) => {
     let updatedSettings;
     switch(req.body.scope) {
       case 'notifications': {
-        updatedSettings = await prisma.notificationSettings.update({
+        updatedSettings = await NotificationSettings.update({
           where: {
             id: 1
           },

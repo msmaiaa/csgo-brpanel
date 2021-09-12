@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Card from '../Card/Card'
 import styles from './ServerCard.module.css'
-import { getServerStatus } from '../../services/ServerService'
+import { getServerStatus } from 'services/ServerService'
 import { Button } from '@material-ui/core'
 import Link from 'next/link'
 

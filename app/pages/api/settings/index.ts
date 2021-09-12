@@ -1,6 +1,6 @@
-import router from '../../../lib/router'
-import prisma from '../../../lib/prisma'
+import router from 'lib/router'
 import requireSuperAdmin from 'middlewares/auth/requireSuperAdmin';
+import NotificationSettings from 'models/settings/NotificationSettings';
 
 const path = '/api/settings'
 router.get(path, requireSuperAdmin, async(req: any, res: any) => {
@@ -10,7 +10,7 @@ router.get(path, requireSuperAdmin, async(req: any, res: any) => {
       case 'notifications': {
         // if doesnt have a column with the id 1, create one
         // the "update" key is just there to stop prisma from crying
-        foundSettings = await prisma.notificationSettings.upsert({
+        foundSettings = await NotificationSettings.findOrCreate({
           where: {
             id: 1
           },

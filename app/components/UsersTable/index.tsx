@@ -1,7 +1,7 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core"
 import { Pagination } from "@material-ui/lab";
 import { FC, useEffect, useState } from "react"
-import { getAllUsers, IUser } from "../../services/UserService";
+import { getAllUsers, IUser } from "services/UserService";
 import styles from './userstable.module.css'
 
 const UsersTable: FC<any> = ({ onEditClick, updateData, setUpdateData }) => {

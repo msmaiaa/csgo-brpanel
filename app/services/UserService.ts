@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { IUser_Cargo } from '../pages/manageusers'
+import { IUser_Cargo } from 'pages/manageusers'
 
 export interface IUser {
   name: string

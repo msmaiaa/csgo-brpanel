@@ -1,6 +1,6 @@
-import router from '../../../lib/router'
-import requireAdmin from '../../../middlewares/auth/requireAdmin'
-import prisma from '../../../lib/prisma'
+import router from 'lib/router'
+import requireAdmin from 'middlewares/auth/requireAdmin'
+import User from 'models/User'
 
 const path = '/api/users/'
 
@@ -8,24 +8,11 @@ router.get(path, requireAdmin, async(req: any, res: any) => {
   try{
     const page = req.query.page
     const skipCount = page === 1 ? 0 : (10*page) - 10
-    const foundUsers = await prisma.$transaction([
-      prisma.user.count(),
-      prisma.user.findMany({
-        take: 10,
-        skip: skipCount,
-        orderBy: {
-          created_at: 'desc'
-        },
-        include: {
-          user_cargo: {
-            include: {
-              server: true,
-              cargo: true
-            }
-          }
-        }
-      })
-    ])
+    const foundUsers = await User.findAllWithUserCargo({
+      orderBy: 'desc',
+      skipCount,
+      take: 10
+    })
     let formattedData: any = [...foundUsers]
     for(let user of formattedData[1]){
       if(user.user_cargo.length > 0) {

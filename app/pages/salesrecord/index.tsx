@@ -1,9 +1,9 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { FC, useEffect, useState } from "react";
-import Layout from "../../components/Layout";
-import router from "../../lib/router";
-import { getAllSales } from "../../services/SalesService";
+import Layout from "components/Layout";
+import router from "lib/router";
+import { getAllSales } from "services/SalesService";
 import styles from './salesrecord.module.css'
 
 const SalesRecord: FC<any> = (props) => {

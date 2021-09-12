@@ -1,9 +1,9 @@
 import { Button, CircularProgress, FormControl, Select, TextField, withStyles } from '@material-ui/core'
 import { useContext, useEffect, useState } from 'react'
 import { MenuItem } from 'react-pro-sidebar'
-import ToastContext from '../../context/ToastContext'
-import { getSteamUserData } from '../../services/SteamService'
-import { createUser } from '../../services/UserService'
+import ToastContext from 'context/ToastContext'
+import { getSteamUserData } from 'services/SteamService'
+import { createUser } from 'services/UserService'
 import styles from './steamform.module.css'
 
 interface ISteamApiUser {

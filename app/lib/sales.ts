@@ -1,4 +1,4 @@
-import prisma from '../lib/prisma'
+import Sale from 'models/Sale'
 
 interface ISale {
   gateway: string
@@ -17,7 +17,7 @@ export async function createSale({ gateway, customer_steamid, payment_status, am
       amount,
     }
     customer_email ? data.customer_email = customer_email : ''
-    const createdSale = await prisma.sale.create({
+    const createdSale = await Sale.create({
       data
     })
     console.log(`New sale! User: ${createdSale.customer_steamid} | Amount: ${createdSale.amount} ${createdSale.currency}`)

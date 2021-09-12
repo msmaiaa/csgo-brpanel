@@ -8,13 +8,13 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import styles from './manageservers.module.css'
 
-import Card from "../../components/Card/Card";
-import Layout from "../../components/Layout";
-import router from "../../lib/router";
+import Card from "components/Card/Card";
+import Layout from "components/Layout";
+import router from "lib/router";
 
 import { useContext } from "react";
-import ToastContext from "../../context/ToastContext";
-import { addServer, getAllServersWithRcon, updateServer, deleteServer } from '../../services/ServerService'
+import ToastContext from "context/ToastContext";
+import { addServer, getAllServersWithRcon, updateServer, deleteServer } from 'services/ServerService'
 
 const CustomTextField = withStyles({
   root: {

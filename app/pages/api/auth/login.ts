@@ -1,5 +1,5 @@
-import passport from '../../../lib/passport';
-import router from '../../../lib/router';
+import passport from 'lib/passport';
+import router from 'lib/router';
 
 interface AuthLoginResponse extends Response {
 	redirect: (path: string) => any;

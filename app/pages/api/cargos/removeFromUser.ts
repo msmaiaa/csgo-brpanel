@@ -1,7 +1,7 @@
-import router from '../../../lib/router'
-import prisma from '../../../lib/prisma'
-import requireAdmin from '../../../middlewares/auth/requireAdmin'
-import { logInDb } from '../../../lib/logger'
+import router from 'lib/router'
+import requireAdmin from 'middlewares/auth/requireAdmin'
+import { logInDb } from 'lib/logger'
+import UserCargo from 'models/UserCargo'
 
 const path = ('/api/cargos/removeFromUser')
 
@@ -9,12 +9,12 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
   try{
     let deleted;
     if(req.body.all) {
-      deleted = await prisma.user_Cargo.deleteMany({
+      deleted = await UserCargo.deleteMany({
         where: {
           steamid: req.body.user.steamid
         }
       })
-      logInDb('Cargo(s) removidos do usuário', 'Todos os cargos - ' + req.body.user.name, req.user.personaname)
+      logInDb('Cargo(s) removidos do usuário', 'Todos os cargos - ' + req.body.user.name, req.user.personaname + ' - ' + req.user.steamid)
     }
     //TODO: delete single cargo from user
     

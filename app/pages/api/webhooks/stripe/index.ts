@@ -1,9 +1,12 @@
-import router from '../../../../lib/router'
+import router from 'lib/router'
 import Stripe from 'stripe'
 import jwt from 'jsonwebtoken'
-import prisma from '../../../../lib/prisma'
 import { buffer } from "micro";
-import { createSale } from '../../../../lib/sales';
+import { createSale } from 'lib/sales';
+import { addDaysToTimestamp, epochTillExpirationDate } from 'utils/date';
+import Cargo from 'models/Cargo';
+import UserCargo from 'models/UserCargo';
+import Server from 'models/Server';
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   apiVersion: '2020-08-27'
@@ -76,13 +79,12 @@ const fulfillOrder = async(session) => {
 
     switch(decodedData.type) {
       case 'buyCargo': {
-        const cargoInDb = await prisma.cargo.findFirst({
+        const cargoInDb = await Cargo.findOne({
           where: {
             id: decodedData.body.id
-          }
-        })
+          }})
         if(cargoInDb.individual) {
-          const hasCargo = await prisma.user_Cargo.findFirst({
+          const hasCargo = await UserCargo.findOne({
             where: {
               server_name: decodedData.serverName,
               steamid: decodedData.userData.steamid
@@ -90,7 +92,7 @@ const fulfillOrder = async(session) => {
           })
           if(hasCargo) {
             const newTimestamp = addDaysToTimestamp(cargoInDb.duration, hasCargo.expire_stamp)
-            await prisma.user_Cargo.update({
+            await UserCargo.update({
               where: {
                 id: hasCargo.id
               },
@@ -101,7 +103,7 @@ const fulfillOrder = async(session) => {
               }
             })
           }else {
-            await prisma.user_Cargo.create({
+            await UserCargo.create({
               data: {
                 expire_stamp: epochTillExpirationDate(parseInt(cargoInDb.duration)),
                 cargo_id: cargoInDb.id,
@@ -112,9 +114,9 @@ const fulfillOrder = async(session) => {
             })
           }
         }else {
-          const allServers = await prisma.server.findMany()
+          const allServers = await Server.findAll()
           for(let server of allServers) {
-            const hasCargo = await prisma.user_Cargo.findFirst({
+            const hasCargo = await UserCargo.findOne({
               where: {
                 server_name: server.name,
                 steamid: decodedData.userData.steamid
@@ -122,7 +124,7 @@ const fulfillOrder = async(session) => {
             })
             if(hasCargo) {
               const newTimestamp = addDaysToTimestamp(cargoInDb.duration, hasCargo.expire_stamp)
-              await prisma.user_Cargo.update({
+              await UserCargo.update({
                 where: {
                   id: hasCargo.id
                 },
@@ -133,7 +135,7 @@ const fulfillOrder = async(session) => {
                 }
               })
             }else{
-              await prisma.user_Cargo.create({
+              await UserCargo.create({
                 data: {
                   expire_stamp: epochTillExpirationDate(parseInt(cargoInDb.duration)),
                   cargo_id: cargoInDb.id,
@@ -158,18 +160,6 @@ const fulfillOrder = async(session) => {
     console.log('Error on fulfillOrder')
     console.log(e.message)
   }
-}
-
-function epochTillExpirationDate(days) {
-  let currentEpoch = Math.floor(Date.now() / 1000)
-  let daysInSec = Math.floor(days * 86400)
-  return (currentEpoch + daysInSec)
-}
-
-function addDaysToTimestamp(days, timestamp) {
-  const timestampToDate = new Date(Number(timestamp) * 1000)
-  timestampToDate.setDate(timestampToDate.getDate() + days)
-  return BigInt(timestampToDate.getTime() / 1000)
 }
 
 export default router

@@ -1,5 +1,5 @@
-import router from "../../../lib/router";
-import prisma from '../../../lib/prisma'
+import router from "lib/router";
+import Server from "models/Server";
 
 const path = "/api/servers/withCargo";
 
@@ -8,7 +8,7 @@ const path = "/api/servers/withCargo";
 */
 router.get(path, async(req: any, res: any) => { 
   try{
-    const foundCargos = await prisma.server.findMany({
+    const foundCargos = await Server.findManyWithCargoServer({
       select: {
         full_name: true,
         id: true,

@@ -2,10 +2,10 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Accordion, AccordionDetails, AccordionSummary, Button, FormControl, MenuItem, Select, TextField, Typography, withStyles } from "@material-ui/core";
 import { FC, useContext, useEffect, useState } from "react";
-import ToastContext from "../../context/ToastContext";
-import { addCargosToUser, getAllCargos, getNonIndividualCargos, ICargo, removeCargosFromUser } from "../../services/CargoService";
-import { getAllServersWithCargo, IServer } from "../../services/ServerService";
-import { IUser, updateUser } from "../../services/UserService";
+import ToastContext from "context/ToastContext";
+import { addCargosToUser, getAllCargos, getNonIndividualCargos, ICargo, removeCargosFromUser } from "services/CargoService";
+import { getAllServersWithCargo, IServer } from "services/ServerService";
+import { IUser, updateUser } from "services/UserService";
 import styles from './updateuser.module.css'
 
 

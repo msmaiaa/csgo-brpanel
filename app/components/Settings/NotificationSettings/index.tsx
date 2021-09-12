@@ -1,8 +1,8 @@
 import { Button, Checkbox, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { useContext, useEffect, useState } from "react"
-import ToastContext from "../../../context/ToastContext";
-import { getAllSettings, updateSettings } from "../../../services/SettingsService"
+import ToastContext from "context/ToastContext";
+import { getAllSettings, updateSettings } from "services/SettingsService"
 import styles from './notificationsettings.module.css'
 
 interface INotificationSettings {
