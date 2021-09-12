@@ -14,6 +14,10 @@ const UsersTable: FC<any> = ({ onEditClick, updateData, setUpdateData }) => {
   }, [])
 
   useEffect(() => {
+    updateUsersRows()
+  },[actualPage])
+
+  useEffect(() => {
     if(updateData) {
       updateUsersRows()
       setUpdateData(false)
