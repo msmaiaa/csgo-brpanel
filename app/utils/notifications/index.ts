@@ -1,11 +1,13 @@
-import NotificationSettings from "models/settings/NotificationSettings";
+import { NotificationSettings } from ".prisma/client";
+import _NotificationSettings from "models/settings/NotificationSettings";
 import DiscordNotification from "./discord";
 
 
-interface ISendNotification {
+export interface ISendNotification {
   action: string
   what?: string
   data: IBoughtCargo | IPanelUpdate
+  settings?: NotificationSettings
 }
 
 export interface IPanelUpdate {
@@ -24,7 +26,7 @@ export interface IBoughtCargo {
 
 export async function sendDiscordNotification({data, what, action}: ISendNotification) {
   try{
-    const settings = await NotificationSettings.findOne()
+    const settings = await _NotificationSettings.findOne()
     if(!settings.send_discord_notifications) return
 
     const notification = new DiscordNotification(settings)
