@@ -1,4 +1,4 @@
-import { Button, Checkbox, TextField } from "@material-ui/core";
+import { Button, Checkbox, CircularProgress, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { useContext, useEffect, useState } from "react"
 import ToastContext from "context/ToastContext";
@@ -33,6 +33,7 @@ const CustomTextField = withStyles({
 export default function NotificationSettings() {
   const toast = useContext(ToastContext)
   const [settings, setSettings] = useState<INotificationSettings>()
+  const [isLoading, setIsLoading] = useState(true)
 
   const onUpdateForm = (value, key) => {
     const newData = {...settings}
@@ -42,8 +43,10 @@ export default function NotificationSettings() {
 
   const refreshSettings = async() => {
     try{
+      setIsLoading(true)
       const foundSettings = await getAllSettings('notifications')
       setSettings(foundSettings.data.body)
+      setIsLoading(false)
     }catch(e) {
       console.error(e)
     }
@@ -70,8 +73,12 @@ export default function NotificationSettings() {
     refreshSettings()
   }, [])
 
-  if(!settings) {
-    return <p></p>
+  if(!settings || isLoading) {
+    return (
+      <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '50px'}}>
+        <CircularProgress style={{height: '100px', width: '100px'}}/> 
+      </div>
+    )
   }
 
   return (

@@ -3,7 +3,7 @@ import router from "lib/router";
 import { buyCargo, getNonIndividualCargos } from "services/CargoService";
 import styles from './store.module.css'
 
-import { Button, FormControl, Select } from "@material-ui/core";
+import { Button, CircularProgress, FormControl, Select } from "@material-ui/core";
 import { FC, useEffect, useState } from "react";
 import { MenuItem } from "react-pro-sidebar";
 import { useRouter } from 'next/router'
@@ -17,6 +17,7 @@ const StorePage: FC<any> = (props) => {
   const [serversWithCargo, setServersWithCargo] = useState([])
   const [activeData, setActiveData] = useState([])
   const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(true)
 
   const getInitialData = async() => {
     let mounted = true
@@ -25,6 +26,7 @@ const StorePage: FC<any> = (props) => {
     if(mounted) {
       setCargosAllServers(cargosAll.data.body)
       setServersWithCargo(servers.data.body)
+      setIsLoading(false)
     }
     return () => {
       mounted = false
@@ -68,6 +70,11 @@ const StorePage: FC<any> = (props) => {
           <div className={styles.cargos_container}>
             <p className={styles.cargosTitle}>Cargos</p>
             <div className={styles.cargosContent}>
+              {isLoading ? 
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+                <CircularProgress style={{height: '50px', width: '50px'}}/> 
+              </div>
+              :
               <div className={styles.contentHeader}>
                 <div style={{width: '50%', height: '100%', display: 'flex', justifyContent: 'flex-end', alignItems:'center'}}>
                   <p className={styles.contentHeader__title}>Servidor:</p>
@@ -76,7 +83,7 @@ const StorePage: FC<any> = (props) => {
                   <Select
                     value={name}
                     onChange={handleChange}
-                    style={{fontFamily: 'Josefin Sans', minWidth: '50px'}}
+                    style={{fontFamily: 'Josefin Sans', minWidth: '100px'}}
                   >
                     {cargosAllServers.length > 0 && serversWithCargo.length > 0 && <MenuItem
                     onMouseEnter={(e: any) => {
@@ -100,8 +107,9 @@ const StorePage: FC<any> = (props) => {
                   </Select>
               </FormControl>
               </div>
+              }
               <div className={styles.contentCargos}>
-                  {activeData.length > 0 && activeData.map((cargo) => {
+                  {activeData.length > 0 && !isLoading && activeData.map((cargo) => {
                     return (
                       <div key={cargo.stripe_id} className={styles.customCard}>
                         <div>

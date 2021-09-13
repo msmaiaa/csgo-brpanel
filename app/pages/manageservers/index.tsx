@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { TextField, Button, withStyles, Typography } from '@material-ui/core'
+import { TextField, Button, withStyles, Typography, CircularProgress } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import Accordion from '@material-ui/core/Accordion';
@@ -53,7 +53,7 @@ const CustomAccordion = withStyles({
 const ManageServers: FC<any> = (props) => {
   const toast = useContext(ToastContext)
   const [servers, setServers] = useState([])
-
+  const [isLoading, setIsLoading] = useState(true)
 
   const [addInputs, setAddInputs] = useState<any>({});
   const handleAddChange = e => setAddInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -83,8 +83,12 @@ const ManageServers: FC<any> = (props) => {
   }, [servers])
 
   const updateServers = () => {
+    setIsLoading(true)
     getAllServersWithRcon()
-    .then((response) => setServers(response.data.body))
+    .then((response) =>  {
+      setServers(response.data.body)
+      setIsLoading(false)
+    })
   }
 
   const handleUpdateServer = async(event, server) => {
@@ -138,7 +142,7 @@ const ManageServers: FC<any> = (props) => {
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Alterar servidor</p>
             <Card style={{width:'100%'}}>
-              {servers.length > 0 && servers.map((server) => {
+              {servers.length > 0 ? servers.map((server) => {
                 
                 if (updateInputs[server.name]) return <CustomAccordion key={server.id}>
                 <AccordionSummary
@@ -162,7 +166,11 @@ const ManageServers: FC<any> = (props) => {
                   </form>
                 </AccordionDetails>
               </CustomAccordion>
-              })}
+              }) 
+            : 
+            <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+              <CircularProgress style={{height: '100px', width: '100px'}}/> 
+            </div>}
             </Card>
           </div>
         </div>

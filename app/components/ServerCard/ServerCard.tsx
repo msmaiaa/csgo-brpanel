@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Card from '../Card/Card'
 import styles from './ServerCard.module.css'
 import { getServerStatus } from 'services/ServerService'
-import { Button } from '@material-ui/core'
+import { Button, CircularProgress } from '@material-ui/core'
 import Link from 'next/link'
 
 interface IServerInfo {
@@ -36,6 +36,7 @@ export default function ServerCard ({ server, style }) {
           online: true,
           data: responseData
         })
+        setIsLoading(false)
       }
     })
     .catch((error) => {
@@ -43,34 +44,43 @@ export default function ServerCard ({ server, style }) {
       setServerInfo({
         online: false,
       })
+      setIsLoading(false)
     })
     return () => {
       isMounted = false
     }
   }, [])
+
+  if(isLoading) {
+    return <div style={{...style, display: 'flex', justifyContent: 'center', alignItems: 'center'}} className={styles.cardContainer}>
+      <CircularProgress style={{height: '50px', width: '50px'}}/>
+    </div>
+  }
   return (
-    <Card style={{...style}}>
-      {serverInfo.online ?
-      <div className={styles.cardContent}>
-        <div className={styles.cardHeader}>
-          <p className={styles.cardTitle}>{server.full_name}</p>
-          <p className={styles.cardStatusOnline}>online</p>
+    <div style={{...style}} className={styles.cardContainer}>
+      <div style={{margin: '25px'}}>
+        {serverInfo.online ?
+        <div className={styles.cardContent}>
+          <div className={styles.cardHeader}>
+            <p className={styles.cardTitle}>{server.full_name}</p>
+            <p className={styles.cardStatusOnline}>online</p>
+          </div>
+          <div className={styles.cardFooter}>
+            <p className={styles.players}>Jogadores online: <span className={styles.players_num}>{serverInfo.data.raw.numplayers}</span></p>
+              <Link href={`steam://connect/${serverInfo.data.connect}`}>
+                <Button variant="contained" color="secondary">
+                  Conectar
+                </Button>
+              </Link>
+          </div>
         </div>
-        <div className={styles.cardFooter}>
-          <p className={styles.players}>Jogadores online: <span className={styles.players_num}>{serverInfo.data.raw.numplayers}</span></p>
-            <Link href={`steam://connect/${serverInfo.data.connect}`}>
-              <Button variant="contained" color="secondary">
-                Conectar
-              </Button>
-            </Link>
-        </div>
+        : 
+        <>
+        <p className={styles.cardTitle}>{server.full_name}</p>
+        <p className={styles.cardStatusOffline}>offline</p>
+        </>
+        }
       </div>
-      : 
-      <>
-      <p className={styles.cardTitle}>{server.full_name}</p>
-      <p className={styles.cardStatusOffline}>offline</p>
-      </>
-      }
-    </Card>
+    </div>
   )
 }
