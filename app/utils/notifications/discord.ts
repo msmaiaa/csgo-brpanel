@@ -46,6 +46,7 @@ export default class DiscordNotification {
       this.message.title = 'Nova compra de cargo'
       this.message.fields.push({name: 'Usuário:', value: data.customer_steamid})
       this.message.fields.push({name: 'Cargo:', value: data.cargo_name})
+      this.message.fields.push({name: 'Servidor:', value: data.server})
     }
     try{
       await this.webhook.send('', [this.message])

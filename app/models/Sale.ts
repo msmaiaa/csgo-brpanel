@@ -24,4 +24,8 @@ export default new class Sale {
   create (data: Prisma.SaleCreateArgs) {
     return prisma.sale.create(data)
   }
+
+  update (data: Prisma.SaleUpdateArgs) {
+    return prisma.sale.update(data)
+  }
 }

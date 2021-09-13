@@ -6,6 +6,10 @@ export default new class Server {
     return prisma.server.findMany()
   }
 
+  findOne(data: Prisma.ServerFindFirstArgs) {
+    return prisma.server.findFirst(data)
+  }
+
   findManyWithCargoServer (data: Prisma.ServerFindManyArgs) {
     return prisma.server.findMany(data)
   }

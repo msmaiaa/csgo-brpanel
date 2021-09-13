@@ -2,7 +2,7 @@ import router from 'lib/router'
 import Stripe from 'stripe'
 import jwt from 'jsonwebtoken'
 import { buffer } from "micro";
-import { createSale } from 'lib/sales';
+import Sale from 'models/Sale'
 import { addDaysToTimestamp, epochTillExpirationDate } from 'utils/date';
 import Cargo from 'models/Cargo';
 import UserCargo from 'models/UserCargo';
@@ -55,7 +55,6 @@ router.post(path, async(req, res) => {
         break;
       }
     }
-
     return res.status(200).json({
       received: true
     })
@@ -66,17 +65,64 @@ router.post(path, async(req, res) => {
 })
 
 const emailCustomerAboutFailedPayment = async(session) => {
-  //todo
+  try{
+    await Sale.update({
+      where: {
+        gateway_order_id: session.id
+      },
+      data :{
+        payment_status: 'failed'
+      }
+    })
+  }catch(e) {
+    console.error('error on emailCustomerAboutFailedPayment', e)
+  }
 }
 
 const createOrder = async(session) => {
-  //todo
+  try{
+    const decodedData = jwt.decode(session.metadata.token, process.env.JWT_KEY)
+    if(!decodedData) throw new Error('Error while decoding jwt')
+    switch(decodedData.type) {
+      case 'buyCargo': {
+        const cargoInDb = await Cargo.findOne({
+          where: {
+            id: decodedData.body.id
+        }})
+        const saleData = {
+          amount: cargoInDb.price,
+          customer_steamid: decodedData.userData.userid,
+          gateway: 'Stripe',
+          gateway_order_id: session.id,
+          payment_status: 'incomplete',
+          customer_email: session.customer_details.email,
+          additional_info: `${cargoInDb.name} - Todos os servidores`,
+          purchase_type: 'cargo',
+        }
+        if(cargoInDb.individual) {
+          const serverData = await Server.findOne({
+            where: {
+              name: decodedData.serverName
+            }
+          })
+          saleData.additional_info = `${cargoInDb.name} - ${serverData.full_name}`
+        }
+        await Sale.create({
+          data: {
+            ...saleData
+          }
+        })
+      }
+    }
+  }catch(e) {
+    console.error('error on createOrder', e)
+  }
 }
 
 const fulfillOrder = async(session) => {
   try{
     const decodedData = jwt.decode(session.metadata.token, process.env.JWT_KEY)
-    if(!decodedData) throw new Error('?')
+    if(!decodedData) throw new Error('Error while decoding jwt')
 
     switch(decodedData.type) {
       case 'buyCargo': {
@@ -148,24 +194,45 @@ const fulfillOrder = async(session) => {
             }
           }
         }
-        await createSale({
+        const saleData = {
           amount: cargoInDb.price,
           customer_steamid: decodedData.userData.userid,
           gateway: 'Stripe',
-          payment_status: 'completed',
+          gateway_order_id: session.id,
+          payment_status: 'complete',
           customer_email: session.customer_details.email,
-          additional_info: 'Cargo - ' + cargoInDb.name
-        })
-        sendDiscordNotification({
+          additional_info: `${cargoInDb.name} - Todos os servidores`,
+          purchase_type: 'cargo',
+        }
+        const notificationData = {
           action: "buy",
           what: "cargo",
           data: {
             amount: cargoInDb.price,
             customer_steamid: decodedData.userData.userid,
             payment_status: 'completed',
-            cargo_name: cargoInDb.name
+            cargo_name: cargoInDb.name,
+            server: 'Todos'
+          }
+        }
+        if(cargoInDb.individual) {
+          const serverData = await Server.findOne({
+            where: {
+              name: decodedData.serverName
+            }
+          })
+          saleData.additional_info = `${cargoInDb.name} - ${serverData.full_name}`
+          notificationData.data.server = serverData.full_name
+        }
+        await Sale.update({
+          where: {
+            gateway_order_id: session.id
+          },
+          data: {
+            payment_status: 'complete'
           }
         })
+        sendDiscordNotification(notificationData)
       }
     }
   }catch(e) {

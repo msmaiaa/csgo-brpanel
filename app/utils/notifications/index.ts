@@ -3,7 +3,7 @@ import DiscordNotification from "./discord";
 
 
 interface ISendNotification {
-  action: "buy" | "modify"
+  action: string
   what?: string
   data: IBoughtCargo | IPanelUpdate
 }
@@ -19,6 +19,7 @@ export interface IBoughtCargo {
   customer_steamid: string
   payment_status: string
   cargo_name: string
+  server: string
 }
 
 export async function sendDiscordNotification({data, what, action}: ISendNotification) {
