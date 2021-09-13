@@ -81,12 +81,14 @@ model Log {
 model Sale {
   id Int@default(autoincrement()) @id
   gateway String
+  gateway_order_id String? @unique
   customer_steamid String
   payment_status String @default("uncompleted")
   amount String
   currency String? @default("BRL")
   customer_email String?
-  additional_info String?
+  purchase_type String
+  additional_info String
   created_at DateTime @default(now())
   @@map(name: "sales")
 }
