@@ -53,8 +53,8 @@ export default function SteamSearchForm({ onAddUser }) {
       const foundSteamData = await getSteamUserData(steamInput)
       setUserData(foundSteamData.data.body[0])
     }catch(e) {
-      console.log(e)
-      toast.error(e.response.data.message)
+      setIsLoading(false)
+      toast.error('Não foi possível encontrar o usuário.')
     }
   }
 
@@ -68,6 +68,7 @@ export default function SteamSearchForm({ onAddUser }) {
       onAddUser()
       toast.success(createdUser.data.message)
     }catch(e) {
+      setIsLoading(false)
       toast.error(e.response.data.message)
     }
   }

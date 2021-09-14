@@ -142,14 +142,18 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
             >
               <Typography style={{fontFamily: 'Josefin Sans'}}>Todos os servidores</Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails style={{display: 'flex', flexDirection: 'column'}}>
               {cargosAllServers.map((cargo: ICargo) => {
                   return (
-                    <div key={cargo.id} style={{display: 'flex', alignItems: 'center'}}>
-                      <p style={{color: 'blue', fontSize: '16px', marginRight: '10px'}}>{cargo.name} - </p>
-                      <Button onClick={() => handleAddCargo(cargo, 1, 'all')} variant="contained" color="primary" className={styles.button}>1 dia</Button>
-                      <Button onClick={() => handleAddCargo(cargo, 15, 'all')} variant="contained" color="secondary" className={styles.button}>15 dias</Button>
-                      <Button onClick={() => handleAddCargo(cargo, 30, 'all')} variant="contained" style={{backgroundColor: 'red', color: 'white'}} className={styles.button}>30 dias</Button>
+                    <div key={cargo.id} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', marginTop: '15px'}}>
+                      <>
+                        <p style={{color: 'blue', fontSize: '16px', width: '60px'}}>{cargo.name}</p>
+                      </>
+                      <>
+                        <Button onClick={() => handleAddCargo(cargo, 1, 'all')} variant="contained" color="primary" className={styles.button}>1 dia</Button>
+                        <Button onClick={() => handleAddCargo(cargo, 15, 'all')} variant="contained" color="secondary" className={styles.button}>15 dias</Button>
+                        <Button onClick={() => handleAddCargo(cargo, 30, 'all')} variant="contained" style={{backgroundColor: 'red', color: 'white'}} className={styles.button}>30 dias</Button>
+                      </>
                     </div>
                   )
               })}
