@@ -55,8 +55,8 @@
 }
 
 .cardTitle {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 300;
   color: black;
-  
+  margin-bottom: 15px;
 }

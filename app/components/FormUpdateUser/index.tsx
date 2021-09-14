@@ -110,11 +110,10 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
 
   return(
     <div style={{display: 'flex', flexDirection: 'column'}}>
-      <div style={{marginLeft: '20px', marginTop: '20px'}}>
-        <p className={styles.title}>Informações</p>
+      <div style={{marginLeft: '20px', marginTop: '25px'}}>
         <div style={{display: 'flex', alignItems: 'center', height: '20px', marginTop: '15px'}}>
           <p style={{color: 'blue'}}>Permissões: </p>
-          <FormControl style={{display: 'flex', alignItems:'flex-start', height: '20px', marginLeft: '15px'}}>
+          <FormControl style={{display: 'flex', alignItems:'flex-start', marginLeft: '15px'}}>
             <Select
               value={userTypeInput}
               onChange={(event) => setUserTypeInput(event.target.value)}
@@ -128,7 +127,7 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
           <Button onClick={handleUpdateUType} color="primary" variant="contained" style={{height: '26px', width: '80px', fontSize: '14px', marginLeft: '10px'}}>Salvar</Button>
         </div>
       </div>
-      <div style={{marginLeft: '20px', marginTop: '20px', marginRight: '20px'}}>
+      <div style={{marginLeft: '20px', marginTop: '35px', marginRight: '20px'}}>
         <p className={styles.title}>Adicionar cargos</p>
         <p style={{ color: 'gray', marginTop: '5px', fontSize: '14px' }}>
         Caso o usuário já possua um cargo no servidor, 
