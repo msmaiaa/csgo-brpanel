@@ -118,7 +118,7 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
             <Select
               value={userTypeInput}
               onChange={(event) => setUserTypeInput(event.target.value)}
-              style={{fontFamily: 'Josefin Sans', minWidth: '80px', height: '20px'}}
+              style={{fontFamily: 'Josefin Sans', minWidth: '80px'}}
               >
               <MenuItem style={{fontFamily: 'Josefin Sans'}} value={0} className={styles.menuitem}>Comum</MenuItem>
               <MenuItem style={{fontFamily: 'Josefin Sans'}} value={1} className={styles.menuitem}>Admin</MenuItem>

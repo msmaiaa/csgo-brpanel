@@ -85,25 +85,13 @@ const StorePage: FC<any> = (props) => {
                     onChange={handleChange}
                     style={{fontFamily: 'Josefin Sans', minWidth: '100px'}}
                   >
-                    {cargosAllServers.length > 0 && serversWithCargo.length > 0 && <MenuItem
-                    onMouseEnter={(e: any) => {
-                      e.target.style.backgroundColor = 'lightgray'
-                      e.target.style.cursor = 'pointer'
-                    }} 
-                    onMouseLeave={(e: any) => e.target.style.backgroundColor = 'white'} 
-                    style={{fontSize: '18px'}} 
-                    value={cargosAllServers}>Cargo em todos os servidores</MenuItem>}                    
+                    {cargosAllServers.length > 0 && serversWithCargo.length > 0 && 
+                    <MenuItem  className={styles.menuitem} value={cargosAllServers}>Cargo em todos os servidores</MenuItem>}  
+
                     {serversWithCargo.length > 0 && serversWithCargo.map((server) => {
-                      return <MenuItem 
-                      onMouseEnter={(e: any) => {
-                        e.target.style.backgroundColor = 'lightgray'
-                        e.target.style.cursor = 'pointer'
-                      }} 
-                      onMouseLeave={(e: any) => e.target.style.backgroundColor = 'white'} 
-                      style={{fontSize: '18px', marginTop: '8px'}}
-                      key={server.id}
-                      value={server}>{server.full_name}</MenuItem>
+                      return <MenuItem className={styles.menuitem} key={server.id} value={server}>{server.full_name}</MenuItem>
                     })}
+
                   </Select>
               </FormControl>
               </div>
