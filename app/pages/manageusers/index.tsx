@@ -43,7 +43,7 @@ const ManageUsers: FC<any> = (props) => {
           </div>
             <div style={{display: 'flex', width: '100%', height: '800px', marginTop: '30px', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', flexDirection: 'column', width: '48%'}}>
-                  <p style={{height: '4%'}} className={styles.cardTitle}>Editar usuário <span style={{fontSize: '20px', fontWeight: 400, color: 'blue'}}>{userEditInfo.name}</span></p>
+                  <p style={{height: '4%'}} className={styles.cardTitle}>Editar usuário <span style={{fontSize: '20px', fontWeight: 400, color: 'blue'}}>{userEditInfo ? userEditInfo.name : ''}</span></p>
                   <div className={styles.container_small}>
                     <FormUpdateUser selectedData={userEditInfo} updateUserInfo={handleUpdateUserInfo}/>
                   </div>

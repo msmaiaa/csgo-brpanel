@@ -135,8 +135,8 @@ const ManageServers: FC<any> = (props) => {
                 <CustomTextField inputProps={{ maxLength: 100}} name="ip" onChange={handleAddChange} required label="IP do servidor" />
                 <CustomTextField inputProps={{ maxLength: 100}} name="port" onChange={handleAddChange} required label="Porta do servidor" />
                 <CustomTextField inputProps={{ maxLength: 100}} name="rcon_pass" onChange={handleAddChange} required label="Senha RCON" />
+                <Button variant="contained" color="primary" style={{marginTop: '10px'}} onClick={handleAddServer}>Adicionar</Button>
               </form>
-              <Button variant="contained" color="secondary" style={{marginTop: '10px'}} onClick={handleAddServer}>Adicionar</Button>
             </Card>
           </div>
           <div className={styles.cardWrapper}>
@@ -153,7 +153,7 @@ const ManageServers: FC<any> = (props) => {
                   <Typography style={{fontFamily: 'Josefin Sans'}}>{server.full_name}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <form className={styles.inputGroup} onSubmit={(event) => handleUpdateServer(event, server)} style={{width: '100%'}}>
+                  <form className={styles.inputGroup} onSubmit={(event) => handleUpdateServer(event, server)} style={{width: '100%', marginTop: '0'}}>
                     <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="full_name" value={updateInputs[server.name].full_name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor" />
                     <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="name" value={updateInputs[server.name].name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor (definido na cfg do plugin)" />
                     <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="ip" value={updateInputs[server.name].ip} onChange={(event) => handleUpdateChange(event, server)} required label="IP do servidor" />

@@ -10,16 +10,38 @@ interface IServerInfo {
   data?: IResponseData
 }
 
-interface IResponseData {
-  bots: []
-  connect: string
-  map: string
-  maxplayers: number
+interface IRawData {
+  protocol: number
+  folder: string
+  game: string
+  appId: number
+  numplayers: number
+  numbots: number
+  listentype: string
+  environment: string
+  secure: 1
+  version: string
+  steamid: string
+  tags: Array<string>
+}
+
+interface IPlayerData {
   name: string
+  raw: {
+    score: number
+    time: number
+  }
+}
+interface IResponseData {
+  name: string
+  map: string
   password: boolean
+  raw: IRawData
+  maxplayers: number
+  players: Array<IPlayerData>
+  bots: Array<any>
+  connect: string
   ping: number
-  players: [any]
-  raw: any
 }
 
 export default function ServerCard ({ server, style }) {

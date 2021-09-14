@@ -10,9 +10,9 @@ router.post(path, async(req: any, res: any) => {
       host: req.body.server.ip,
       port: req.body.server.port
     }).then((state) => {
-        return res.status(200).json({body: state}) 
+      return res.status(200).json({body: state}) 
     }).catch((error) => {
-        return res.status(500).json({body: error.message}) 
+      return res.status(500).json({body: error.message}) 
     });
   }catch(e) {
     return res.status(500).json({message: 'Não foi possível encontrar os servidores'}) 
