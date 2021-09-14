@@ -28,4 +28,12 @@ export default new class Sale {
   update (data: Prisma.SaleUpdateArgs) {
     return prisma.sale.update(data)
   }
+
+  findAllByUser (data) {
+    return prisma.sale.findMany({
+      where: {
+        customer_steamid: data.steamid
+      }
+    })
+  }
 }

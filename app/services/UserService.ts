@@ -31,3 +31,7 @@ export async function createUser(data: ICreateUser) {
 export async function updateUser(id: number, data: any) {
   return axios.post('/api/users/update', {id, data})
 }
+
+export async function getUserStatus() {
+  return axios.get('/api/users/status')
+}

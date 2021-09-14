@@ -89,8 +89,9 @@ export default function ServerCard ({ server, style }) {
           </div>
           <div className={styles.cardFooter}>
             <p className={styles.players}>Jogadores online: <span className={styles.players_num}>{serverInfo.data.raw.numplayers}</span></p>
+            <p className={styles.players}>Mapa atual: <span className={styles.players_num}>{serverInfo.data.map}</span></p>
               <Link href={`steam://connect/${serverInfo.data.connect}`}>
-                <Button variant="contained" color="secondary">
+                <Button variant="contained" color="primary" style={{width: '95px', height: '30px', fontFamily: 'Josefin Sans'}}>
                   Conectar
                 </Button>
               </Link>

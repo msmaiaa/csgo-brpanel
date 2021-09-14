@@ -6,7 +6,7 @@ import { getSteamUserData } from 'services/SteamService'
 import { createUser } from 'services/UserService'
 import styles from './steamform.module.css'
 
-interface ISteamApiUser {
+export interface ISteamApiUser {
   avatar: string
   avatarfull: string
   avatarhash: string

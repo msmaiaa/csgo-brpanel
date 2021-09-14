@@ -25,4 +25,8 @@ export default new class UserCargo {
   create (data: Prisma.User_CargoCreateArgs) {
     return prisma.user_Cargo.create(data)
   }
+
+  findMany (data: Prisma.User_CargoFindManyArgs) {
+    return prisma.user_Cargo.findMany(data)
+  }
 }
