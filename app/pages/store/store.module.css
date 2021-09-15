@@ -91,3 +91,12 @@
   background-color: lightgray;
   cursor: pointer;
 }
+
+.pagseguro {
+  width: 190px;
+
+}
+
+.pagseguro:hover {
+  cursor: pointer;
+}

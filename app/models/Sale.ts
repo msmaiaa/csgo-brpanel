@@ -36,4 +36,12 @@ export default new class Sale {
       }
     })
   }
+
+  findById (id) {
+    return prisma.sale.findFirst({
+      where: {
+        id
+      }
+    })
+  }
 }

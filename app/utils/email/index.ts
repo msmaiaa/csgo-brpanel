@@ -11,6 +11,7 @@ export interface ISaleData {
   customer_email: string
   additional_info: string
   purchase_type: string
+  additional_data: object
 }
 
 const generateSmtpConfig = () => {

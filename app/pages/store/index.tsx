@@ -48,9 +48,9 @@ const StorePage: FC<any> = (props) => {
     setName(event.target.value as string)
   };
 
-  const handleBuy = async(cargo) => {
+  const handleBuy = async(cargo, gateway) => {
     try{
-      const boughtCargo: any = await buyCargo(cargo)
+      const boughtCargo: any = await buyCargo(cargo, gateway)
       router.push(boughtCargo.data.url)
     }catch(e) {
       console.error(e)
@@ -76,10 +76,10 @@ const StorePage: FC<any> = (props) => {
               </div>
               :
               <div className={styles.contentHeader}>
-                <div style={{width: '50%', height: '100%', display: 'flex', justifyContent: 'flex-end', alignItems:'center'}}>
+                <div style={{width: '48%', height: '100%', display: 'flex', justifyContent: 'flex-end', alignItems:'center'}}>
                   <p className={styles.contentHeader__title}>Servidor:</p>
                 </div>
-                <FormControl style={{width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems:'flex-start'}}>
+                <FormControl style={{width: '52%', height: '100%', display: 'flex', justifyContent: 'center', alignItems:'flex-start'}}>
                   <Select
                     value={name}
                     onChange={handleChange}
@@ -108,7 +108,8 @@ const StorePage: FC<any> = (props) => {
                           </p>
                         </div>
                         <div className={styles.cargo__footer}>
-                          <Button variant="contained" color="primary" onClick={() => handleBuy(cargo)}>Comprar</Button>
+                          {/* <Button variant="contained" color="primary" onClick={() => handleBuy(cargo, 'stripe')}>Stripe</Button> */}
+                          <img className={styles.pagseguro} src="https://netfacilita.com.br/mais-ajuda/comprar-ps.png" onClick={() => handleBuy(cargo, 'pagseguro')}/>
                         </div>
                       </div>
                     )

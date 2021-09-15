@@ -191,7 +191,7 @@ const ManageCargos: FC<any> = (props) => {
                 <CustomTextField inputProps={{ maxLength: 100}} name="price" placeholder="15" onChange={handleAddChange} required label="Preço"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="duration" placeholder="30" onChange={handleAddChange} required label="Tempo de duração (dias)"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="flags" placeholder="100:z" onChange={handleAddChange} required label="Flags"/>
-                <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" placeholder="price_xxxxxxxxxxxxxxxx" onChange={handleAddChange} required label="ID do produto (stripe)"/>
+                {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" placeholder="price_xxxxxxxxxxxxxxxx" onChange={handleAddChange} required label="ID do produto (stripe)"/> */}
                 {isLoadingServers ? 
                 <CircularProgress style={{height: '100px', width: '100px'}}/> 
                 :
@@ -248,7 +248,7 @@ const ManageCargos: FC<any> = (props) => {
                     <CustomTextField inputProps={{ maxLength: 100}} name="price" value={updateInputs[cargo.name].price} onChange={(event) => handleUpdateChange(event, cargo)} required label="Preço" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
-                    <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" />
+                    {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" /> */}
                       {isLoadingServers ? 
                       <CircularProgress style={{height: '100px', width: '100px'}}/> 
                       :
@@ -279,14 +279,14 @@ const ManageCargos: FC<any> = (props) => {
                               </div>
                             )
                           })}
-                        <div style={{display: 'flex'}}>
-                          <Button type="submit" variant="contained" color="primary" className={styles.inputButton}>Alterar</Button>
-                          <Button onClick={() => handleDeleteCargo(cargo)} variant="contained" style={{backgroundColor: 'red', color: 'white', marginLeft: '15px'}} className={styles.inputButton}>Deletar</Button>
-                        </div>
                         </>
                         : isAllServers ? '' : <p>Nenhum servidor foi encontrado</p>}        
                       </>          
                     }
+                        <div style={{display: 'flex'}}>
+                          <Button type="submit" variant="contained" color="primary" className={styles.inputButton}>Alterar</Button>
+                          <Button onClick={() => handleDeleteCargo(cargo)} variant="contained" style={{backgroundColor: 'red', color: 'white', marginLeft: '15px'}} className={styles.inputButton}>Deletar</Button>
+                        </div>
                   </form>
                 </AccordionDetails>
               </CustomAccordion>
