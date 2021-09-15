@@ -221,7 +221,7 @@ const ManageCargos: FC<any> = (props) => {
                       )
                     })}
                   </>
-                  : isAllServers ? '' : <p>Nenhum servidor foi encontrado</p>}
+                  : isAllServers ? '' : <p style={{margin: '15px 0 10px 0'}}>Nenhum servidor foi encontrado</p>}
                   </div>
                 </>
                 }
@@ -233,7 +233,13 @@ const ManageCargos: FC<any> = (props) => {
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Alterar cargos</p>
             <Card style={{width:'100%'}}>
-              {cargosFromDb.length > 0 && !isLoadingCargos ? cargosFromDb.map((cargo) => {
+              {isLoadingCargos ? 
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
+                <CircularProgress style={{height: '100px', width: '100px'}}/> 
+              </div>
+               :
+               <>
+              {cargosFromDb.length > 0 ? cargosFromDb.map((cargo) => {
                 if (updateInputs[cargo.name]) return <CustomAccordion key={cargo.id}>
                 <AccordionSummary
                   expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
@@ -249,7 +255,7 @@ const ManageCargos: FC<any> = (props) => {
                     <CustomTextField inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
                     {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" /> */}
-                      {isLoadingServers ? 
+                      {isLoadingServers  || isLoadingCargos ? 
                       <CircularProgress style={{height: '100px', width: '100px'}}/> 
                       :
                       <>
@@ -280,7 +286,7 @@ const ManageCargos: FC<any> = (props) => {
                             )
                           })}
                         </>
-                        : isAllServers ? '' : <p>Nenhum servidor foi encontrado</p>}        
+                        : isAllServers ? '' : <p style={{marginTop: '5px', marginBottom: '5px'}}>Nenhum servidor foi encontrado</p>}        
                       </>          
                     }
                         <div style={{display: 'flex'}}>
@@ -291,9 +297,11 @@ const ManageCargos: FC<any> = (props) => {
                 </AccordionDetails>
               </CustomAccordion>
               }) : 
-                <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                  <CircularProgress style={{height: '100px', width: '100px'}}/> 
+                <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
+                  <p style={{fontSize: '30px', fontWeight: 300}}>Nenhum cargo encontrado.</p> 
                 </div>
+              }
+              </>
               }
             </Card>
           </div>

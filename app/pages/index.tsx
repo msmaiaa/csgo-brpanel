@@ -88,7 +88,7 @@ const HomePage: FC<any> = (props: IProps) => {
                 }}/>
                 )
               })
-              : ''}
+              : <p style={{fontSize: '22px', fontWeight: 400, marginTop: '25px'}}>Nenhum servidor encontrado :(</p>}
             </div>
           </div>
         </div>

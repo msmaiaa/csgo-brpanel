@@ -142,7 +142,13 @@ const ManageServers: FC<any> = (props) => {
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Alterar servidor</p>
             <Card style={{width:'100%'}}>
-              {servers.length > 0 ? servers.map((server) => {
+              {isLoading ? 
+                <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                  <CircularProgress style={{height: '100px', width: '100px'}}/> 
+                </div>
+              :
+              <>
+              {servers.length > 0  ? servers.map((server) => {
                 
                 if (updateInputs[server.name]) return <CustomAccordion key={server.id}>
                 <AccordionSummary
@@ -168,9 +174,12 @@ const ManageServers: FC<any> = (props) => {
               </CustomAccordion>
               }) 
             : 
-            <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-              <CircularProgress style={{height: '100px', width: '100px'}}/> 
-            </div>}
+            <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
+              <p style={{fontSize: '30px', fontWeight: 300}}>Nenhum servidor encontrado.</p>
+            </div>
+            }
+            </>
+            }
             </Card>
           </div>
         </div>
