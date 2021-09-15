@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
 
 import { useEffect } from 'react';
-import ToastContext, { success, error, warn } from '../context/ToastContext'
+import ToastContext, { success, error, warn } from 'context/ToastContext'
 
 export default function MyApp({ Component, pageProps }) {
   useEffect(() => {

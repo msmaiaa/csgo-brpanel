@@ -1,14 +1,13 @@
-import Layout from "../../components/Layout";
-import router from "../../lib/router";
-import { buyCargo, getNonIndividualCargos } from "../../services/CargoService";
+import Layout from "components/Layout";
+import router from "lib/router";
+import { buyCargo, getNonIndividualCargos } from "services/CargoService";
 import styles from './store.module.css'
 
-import axios from "axios";
-import { Button, FormControl, Select } from "@material-ui/core";
+import { Button, CircularProgress, FormControl, Select } from "@material-ui/core";
 import { FC, useEffect, useState } from "react";
 import { MenuItem } from "react-pro-sidebar";
 import { useRouter } from 'next/router'
-import { getAllServersWithCargo } from "../../services/ServerService";
+import { getAllServersWithCargo } from "services/ServerService";
 
 
 
@@ -18,6 +17,7 @@ const StorePage: FC<any> = (props) => {
   const [serversWithCargo, setServersWithCargo] = useState([])
   const [activeData, setActiveData] = useState([])
   const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(true)
 
   const getInitialData = async() => {
     let mounted = true
@@ -26,6 +26,7 @@ const StorePage: FC<any> = (props) => {
     if(mounted) {
       setCargosAllServers(cargosAll.data.body)
       setServersWithCargo(servers.data.body)
+      setIsLoading(false)
     }
     return () => {
       mounted = false
@@ -47,9 +48,9 @@ const StorePage: FC<any> = (props) => {
     setName(event.target.value as string)
   };
 
-  const handleBuy = async(cargo) => {
+  const handleBuy = async(cargo, gateway) => {
     try{
-      const boughtCargo: any = await buyCargo(cargo)
+      const boughtCargo: any = await buyCargo(cargo, gateway)
       router.push(boughtCargo.data.url)
     }catch(e) {
       console.error(e)
@@ -69,40 +70,34 @@ const StorePage: FC<any> = (props) => {
           <div className={styles.cargos_container}>
             <p className={styles.cargosTitle}>Cargos</p>
             <div className={styles.cargosContent}>
+              {isLoading ? 
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+                <CircularProgress style={{height: '50px', width: '50px'}}/> 
+              </div>
+              :
               <div className={styles.contentHeader}>
-                <div style={{width: '50%', height: '100%', display: 'flex', justifyContent: 'flex-end', alignItems:'center'}}>
+                <div style={{width: '48%', height: '100%', display: 'flex', justifyContent: 'flex-end', alignItems:'center'}}>
                   <p className={styles.contentHeader__title}>Servidor:</p>
                 </div>
-                <FormControl style={{width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems:'flex-start'}}>
+                <FormControl style={{width: '52%', height: '100%', display: 'flex', justifyContent: 'center', alignItems:'flex-start'}}>
                   <Select
                     value={name}
                     onChange={handleChange}
-                    style={{fontFamily: 'Josefin Sans', minWidth: '50px'}}
+                    style={{fontFamily: 'Josefin Sans', minWidth: '100px'}}
                   >
-                    {cargosAllServers.length > 0 && serversWithCargo.length > 0 && <MenuItem
-                    onMouseEnter={(e: any) => {
-                      e.target.style.backgroundColor = 'lightgray'
-                      e.target.style.cursor = 'pointer'
-                    }} 
-                    onMouseLeave={(e: any) => e.target.style.backgroundColor = 'white'} 
-                    style={{fontSize: '18px'}} 
-                    value={cargosAllServers}>Cargo em todos os servidores</MenuItem>}                    
+                    {cargosAllServers.length > 0 && serversWithCargo.length > 0 && 
+                    <MenuItem  className={styles.menuitem} value={cargosAllServers}>Cargo em todos os servidores</MenuItem>}  
+
                     {serversWithCargo.length > 0 && serversWithCargo.map((server) => {
-                      return <MenuItem 
-                      onMouseEnter={(e: any) => {
-                        e.target.style.backgroundColor = 'lightgray'
-                        e.target.style.cursor = 'pointer'
-                      }} 
-                      onMouseLeave={(e: any) => e.target.style.backgroundColor = 'white'} 
-                      style={{fontSize: '18px', marginTop: '8px'}}
-                      key={server.id}
-                      value={server}>{server.full_name}</MenuItem>
+                      return <MenuItem className={styles.menuitem} key={server.id} value={server}>{server.full_name}</MenuItem>
                     })}
+
                   </Select>
               </FormControl>
               </div>
+              }
               <div className={styles.contentCargos}>
-                  {activeData.length > 0 && activeData.map((cargo) => {
+                  {activeData.length > 0 && !isLoading && activeData.map((cargo) => {
                     return (
                       <div key={cargo.stripe_id} className={styles.customCard}>
                         <div>
@@ -113,7 +108,8 @@ const StorePage: FC<any> = (props) => {
                           </p>
                         </div>
                         <div className={styles.cargo__footer}>
-                          <Button variant="contained" color="primary" onClick={() => handleBuy(cargo)}>Comprar</Button>
+                          {/* <Button variant="contained" color="primary" onClick={() => handleBuy(cargo, 'stripe')}>Stripe</Button> */}
+                          <img className={styles.pagseguro} src="https://netfacilita.com.br/mais-ajuda/comprar-ps.png" onClick={() => handleBuy(cargo, 'pagseguro')}/>
                         </div>
                       </div>
                     )

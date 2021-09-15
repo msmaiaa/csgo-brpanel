@@ -6,4 +6,18 @@
 
 .serversContainer {
   display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+}
+
+.profileItem {
+  font-size: 18px;
+}
+
+.profileSubItem {
+  color: blue;
+}
+
+.profileItem:not(:first-of-type) {
+  margin-top: 10px;
 }

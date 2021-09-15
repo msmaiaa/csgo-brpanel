@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { TextField, Button, withStyles, Typography } from '@material-ui/core'
+import { TextField, Button, withStyles, Typography, CircularProgress } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import Accordion from '@material-ui/core/Accordion';
@@ -8,13 +8,13 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import styles from './manageservers.module.css'
 
-import Card from "../../components/Card/Card";
-import Layout from "../../components/Layout";
-import router from "../../lib/router";
+import Card from "components/Card/Card";
+import Layout from "components/Layout";
+import router from "lib/router";
 
 import { useContext } from "react";
-import ToastContext from "../../context/ToastContext";
-import { addServer, getAllServersWithRcon, updateServer, deleteServer } from '../../services/ServerService'
+import ToastContext from "context/ToastContext";
+import { addServer, getAllServersWithRcon, updateServer, deleteServer } from 'services/ServerService'
 
 const CustomTextField = withStyles({
   root: {
@@ -53,7 +53,7 @@ const CustomAccordion = withStyles({
 const ManageServers: FC<any> = (props) => {
   const toast = useContext(ToastContext)
   const [servers, setServers] = useState([])
-
+  const [isLoading, setIsLoading] = useState(true)
 
   const [addInputs, setAddInputs] = useState<any>({});
   const handleAddChange = e => setAddInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -83,8 +83,12 @@ const ManageServers: FC<any> = (props) => {
   }, [servers])
 
   const updateServers = () => {
+    setIsLoading(true)
     getAllServersWithRcon()
-    .then((response) => setServers(response.data.body))
+    .then((response) =>  {
+      setServers(response.data.body)
+      setIsLoading(false)
+    })
   }
 
   const handleUpdateServer = async(event, server) => {
@@ -131,14 +135,20 @@ const ManageServers: FC<any> = (props) => {
                 <CustomTextField inputProps={{ maxLength: 100}} name="ip" onChange={handleAddChange} required label="IP do servidor" />
                 <CustomTextField inputProps={{ maxLength: 100}} name="port" onChange={handleAddChange} required label="Porta do servidor" />
                 <CustomTextField inputProps={{ maxLength: 100}} name="rcon_pass" onChange={handleAddChange} required label="Senha RCON" />
+                <Button variant="contained" color="primary" style={{marginTop: '10px'}} onClick={handleAddServer}>Adicionar</Button>
               </form>
-              <Button variant="contained" color="secondary" style={{marginTop: '10px'}} onClick={handleAddServer}>Adicionar</Button>
             </Card>
           </div>
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Alterar servidor</p>
             <Card style={{width:'100%'}}>
-              {servers.length > 0 && servers.map((server) => {
+              {isLoading ? 
+                <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                  <CircularProgress style={{height: '100px', width: '100px'}}/> 
+                </div>
+              :
+              <>
+              {servers.length > 0  ? servers.map((server) => {
                 
                 if (updateInputs[server.name]) return <CustomAccordion key={server.id}>
                 <AccordionSummary
@@ -149,7 +159,7 @@ const ManageServers: FC<any> = (props) => {
                   <Typography style={{fontFamily: 'Josefin Sans'}}>{server.full_name}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <form className={styles.inputGroup} onSubmit={(event) => handleUpdateServer(event, server)} style={{width: '100%'}}>
+                  <form className={styles.inputGroup} onSubmit={(event) => handleUpdateServer(event, server)} style={{width: '100%', marginTop: '0'}}>
                     <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="full_name" value={updateInputs[server.name].full_name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor" />
                     <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="name" value={updateInputs[server.name].name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor (definido na cfg do plugin)" />
                     <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="ip" value={updateInputs[server.name].ip} onChange={(event) => handleUpdateChange(event, server)} required label="IP do servidor" />
@@ -162,7 +172,14 @@ const ManageServers: FC<any> = (props) => {
                   </form>
                 </AccordionDetails>
               </CustomAccordion>
-              })}
+              }) 
+            : 
+            <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
+              <p style={{fontSize: '30px', fontWeight: 300}}>Nenhum servidor encontrado.</p>
+            </div>
+            }
+            </>
+            }
             </Card>
           </div>
         </div>

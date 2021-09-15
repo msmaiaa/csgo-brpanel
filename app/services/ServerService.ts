@@ -23,12 +23,12 @@ export async function getAllServers() {
   return axios.get('/api/servers/')
 }
 
-export async function getAllServersWithCargo() {
-  return axios.get('/api/servers/withCargo')
+export async function getAllServersWithRcon() {
+  return axios.get('/api/servers?rcon=true')
 }
 
-export async function getAllServersWithRcon() {
-  return axios.get('/api/servers/rcon')
+export async function getAllServersWithCargo() {
+  return axios.get('/api/servers/withCargo')
 }
 
 export async function getServerStatus(server) {

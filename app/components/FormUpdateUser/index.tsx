@@ -2,10 +2,10 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Accordion, AccordionDetails, AccordionSummary, Button, FormControl, MenuItem, Select, TextField, Typography, withStyles } from "@material-ui/core";
 import { FC, useContext, useEffect, useState } from "react";
-import ToastContext from "../../context/ToastContext";
-import { addCargosToUser, getAllCargos, getNonIndividualCargos, ICargo, removeCargosFromUser } from "../../services/CargoService";
-import { getAllServersWithCargo, IServer } from "../../services/ServerService";
-import { IUser, updateUser } from "../../services/UserService";
+import ToastContext from "context/ToastContext";
+import { addCargosToUser, getAllCargos, getNonIndividualCargos, ICargo, removeCargosFromUser } from "services/CargoService";
+import { getAllServersWithCargo, IServer } from "services/ServerService";
+import { IUser, updateUser } from "services/UserService";
 import styles from './updateuser.module.css'
 
 
@@ -110,15 +110,14 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
 
   return(
     <div style={{display: 'flex', flexDirection: 'column'}}>
-      <div style={{marginLeft: '20px', marginTop: '20px'}}>
-        <p className={styles.title}>Informações</p>
+      <div style={{marginLeft: '20px', marginTop: '25px'}}>
         <div style={{display: 'flex', alignItems: 'center', height: '20px', marginTop: '15px'}}>
           <p style={{color: 'blue'}}>Permissões: </p>
-          <FormControl style={{display: 'flex', alignItems:'flex-start', height: '20px', marginLeft: '15px'}}>
+          <FormControl style={{display: 'flex', alignItems:'flex-start', marginLeft: '15px'}}>
             <Select
               value={userTypeInput}
               onChange={(event) => setUserTypeInput(event.target.value)}
-              style={{fontFamily: 'Josefin Sans', minWidth: '80px', height: '20px'}}
+              style={{fontFamily: 'Josefin Sans', minWidth: '80px'}}
               >
               <MenuItem style={{fontFamily: 'Josefin Sans'}} value={0} className={styles.menuitem}>Comum</MenuItem>
               <MenuItem style={{fontFamily: 'Josefin Sans'}} value={1} className={styles.menuitem}>Admin</MenuItem>
@@ -128,7 +127,7 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
           <Button onClick={handleUpdateUType} color="primary" variant="contained" style={{height: '26px', width: '80px', fontSize: '14px', marginLeft: '10px'}}>Salvar</Button>
         </div>
       </div>
-      <div style={{marginLeft: '20px', marginTop: '20px', marginRight: '20px'}}>
+      <div style={{marginLeft: '20px', marginTop: '35px', marginRight: '20px'}}>
         <p className={styles.title}>Adicionar cargos</p>
         <p style={{ color: 'gray', marginTop: '5px', fontSize: '14px' }}>
         Caso o usuário já possua um cargo no servidor, 
@@ -142,14 +141,18 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
             >
               <Typography style={{fontFamily: 'Josefin Sans'}}>Todos os servidores</Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails style={{display: 'flex', flexDirection: 'column'}}>
               {cargosAllServers.map((cargo: ICargo) => {
                   return (
-                    <div key={cargo.id} style={{display: 'flex', alignItems: 'center'}}>
-                      <p style={{color: 'blue', fontSize: '16px', marginRight: '10px'}}>{cargo.name} - </p>
-                      <Button onClick={() => handleAddCargo(cargo, 1, 'all')} variant="contained" color="primary" className={styles.button}>1 dia</Button>
-                      <Button onClick={() => handleAddCargo(cargo, 15, 'all')} variant="contained" color="secondary" className={styles.button}>15 dias</Button>
-                      <Button onClick={() => handleAddCargo(cargo, 30, 'all')} variant="contained" style={{backgroundColor: 'red', color: 'white'}} className={styles.button}>30 dias</Button>
+                    <div key={cargo.id} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', marginTop: '15px'}}>
+                      <>
+                        <p style={{color: 'blue', fontSize: '16px', width: '60px'}}>{cargo.name}</p>
+                      </>
+                      <>
+                        <Button onClick={() => handleAddCargo(cargo, 1, 'all')} variant="contained" color="primary" className={styles.button}>1 dia</Button>
+                        <Button onClick={() => handleAddCargo(cargo, 15, 'all')} variant="contained" color="secondary" className={styles.button}>15 dias</Button>
+                        <Button onClick={() => handleAddCargo(cargo, 30, 'all')} variant="contained" style={{backgroundColor: 'red', color: 'white'}} className={styles.button}>30 dias</Button>
+                      </>
                     </div>
                   )
               })}

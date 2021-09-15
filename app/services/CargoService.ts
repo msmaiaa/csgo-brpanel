@@ -40,8 +40,8 @@ export async function getNonIndividualCargos(){
   return axios.get('/api/cargos?all=true')
 }
 
-export async function buyCargo(cargo: ICargo){
-  return axios.post('/api/cargos/buy', {cargo})
+export async function buyCargo(cargo: ICargo, gateway){
+  return axios.post('/api/cargos/buy', {cargo, gateway})
 }
 
 export async function deleteCargo(cargo: ICargo){

@@ -64,10 +64,6 @@
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
-  /* height: 45px;
-  background-color: black;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px; */
 }
 
 .cargo__duration{
@@ -85,4 +81,22 @@
 
 .cargo__price{
   color: green;
+}
+
+.menuitem:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+.menuitem:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.pagseguro {
+  width: 190px;
+
+}
+
+.pagseguro:hover {
+  cursor: pointer;
 }

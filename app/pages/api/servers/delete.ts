@@ -1,21 +1,20 @@
-import router from "../../../lib/router";
-import requireAuth from "../../../middlewares/auth/requireAuth";
-import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
-import prisma from '../../../lib/prisma'
-import { logInDb } from "../../../lib/logger";
+import router from "lib/router";
+import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
+import { logInDb } from "lib/logger";
+import Server from "models/Server";
 
 const path = "/api/servers/delete";
 
-router.delete(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => { 
+router.delete(path, requireSuperAdmin, async(req: any, res: any) => { 
   try{
     if(!req.body) return res.status(422).json({message: '?'})
-    const deletedServer = await prisma.server.delete({
+    const deletedServer = await Server.delete({
       where: {
         id: req.body.id
       }
     })
     logInDb('Servidor deletado', deletedServer.full_name, req.user.personaname + ' - ' + req.user.steamid)
-    if(deletedServer) return res.status(200).json({message: 'Servidor deletado com sucesso', body: deletedServer}) 
+    return res.status(200).json({message: 'Servidor deletado com sucesso', body: deletedServer}) 
   }catch(e) {
     console.error(e.message)
     let errorResponse = 'Não foi possível deletar o servidor'

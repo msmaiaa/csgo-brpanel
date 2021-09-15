@@ -1,14 +1,14 @@
-import router from "../../../lib/router";
-import prisma from '../../../lib/prisma'
+import router from "lib/router";
+import Server from "models/Server";
 
 const path = "/api/servers/";
 
 router.get(path, async(req: any, res: any) => { 
   try{
-    const foundServers = await prisma.server.findMany()
+    const foundServers = await Server.findAll()
     const filteredServers = foundServers.map((server) => {
       let filtered = server
-      delete filtered.rcon_pass
+      if(!req.query.rcon) delete filtered.rcon_pass
       delete filtered.updated_at
       delete filtered.created_at
       return filtered

@@ -1,6 +1,16 @@
+.cardContainer {
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+  min-width: 320px;
+  min-height: 200px;
+}
+
 .cardContent{
   display: flex;
   height: 100%;
+  margin-bottom: 10px;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -28,5 +38,9 @@
 }
 
 .players_num {
-  color: red;
+  color: blue;
+}
+
+.cardFooter {
+  margin-top: 30px;
 }

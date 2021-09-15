@@ -1,21 +1,24 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { FC, useEffect, useState } from "react";
-import Layout from "../../components/Layout";
-import router from "../../lib/router";
-import { getAllSales } from "../../services/SalesService";
+import Layout from "components/Layout";
+import router from "lib/router";
+import { getAllSales } from "services/SalesService";
 import styles from './salesrecord.module.css'
 
 const SalesRecord: FC<any> = (props) => {
   const [actualPage, setActualPage] = useState(1)
   const [totalPagesCount, setTotalPagesCount] = useState(0)
   const [rows, setRows] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const updateSales = async() => {
     try{
+      setIsLoading(true)
       const sales = await getAllSales(actualPage)
       setTotalPagesCount(Math.ceil((sales.data.body[0] / 10)))
       setRows(sales.data.body[1])
+      setIsLoading(false)
     }catch(e) {
       console.error(e)
     }
@@ -45,6 +48,11 @@ const SalesRecord: FC<any> = (props) => {
           <div className={styles.sales_container}>
             <p className={styles.salesTitle}>Vendas</p>
             <TableContainer component={Paper} className={styles.tableContainer}>
+              {isLoading ?
+                <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '50px', minHeight: '200px'}}>
+                  <CircularProgress style={{height: '100px', width: '100px'}}/> 
+                </div>
+              :
               <Table  size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
@@ -71,6 +79,7 @@ const SalesRecord: FC<any> = (props) => {
                   ))}
                 </TableBody>
               </Table>
+              }
               <Pagination count={totalPagesCount} style={{float: 'right'}} onChange={handleChangePage} page={actualPage}/>
             </TableContainer>
           </div>

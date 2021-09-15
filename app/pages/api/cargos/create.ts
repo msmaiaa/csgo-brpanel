@@ -1,17 +1,14 @@
-import router from "../../../lib/router";
-import requireAuth from "../../../middlewares/auth/requireAuth";
-import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
-import prisma from '../../../lib/prisma'
-import { logInDb } from "../../../lib/logger";
+import router from "lib/router";
+import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
+import { logInDb } from "lib/logger";
+import Cargo from "models/Cargo";
+import CargoServer from "models/CargoServer";
 
 const path = "/api/cargos/create";
 
-router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
   try{
-    if(!req.body) return res.status(422).json({message: 'Parametros faltando'})
-    const createdCargo = await prisma.cargo.create(
-      {data:req.body.cargo }
-    )
+    const createdCargo = await Cargo.createOne({ data:req.body.cargo })
     const parsedData = req.body.servers.map((server) => {
       return {
         cargo_id: createdCargo.id,
@@ -19,13 +16,12 @@ router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => {
       }
     })
     if(createdCargo.individual) {
-      await prisma.cargo_Server.createMany({
+      await CargoServer.createMany({
         data: parsedData
       })
     }
     logInDb('Novo cargo criado', createdCargo.name, req.user.personaname + ' - ' + req.user.steamid)
-    if(createdCargo) return res.status(200).json({message: 'Cargo criado com sucesso', body: createdCargo}) 
-    return res.status(500).json({message: 'Não foi possível criar o cargo'}) 
+    return res.status(200).json({message: 'Cargo criado com sucesso', body: createdCargo}) 
   }catch(e) {
     console.error(e)
     let errorResponse = 'Não foi possível criar o cargo.'

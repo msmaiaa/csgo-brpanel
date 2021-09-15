@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import Card from '../Card/Card'
 import styles from './ServerCard.module.css'
-import { getServerStatus } from '../../services/ServerService'
-import { Button } from '@material-ui/core'
+import { getServerStatus } from 'services/ServerService'
+import { Button, CircularProgress } from '@material-ui/core'
 import Link from 'next/link'
 
 interface IServerInfo {
@@ -10,16 +10,38 @@ interface IServerInfo {
   data?: IResponseData
 }
 
-interface IResponseData {
-  bots: []
-  connect: string
-  map: string
-  maxplayers: number
+interface IRawData {
+  protocol: number
+  folder: string
+  game: string
+  appId: number
+  numplayers: number
+  numbots: number
+  listentype: string
+  environment: string
+  secure: 1
+  version: string
+  steamid: string
+  tags: Array<string>
+}
+
+interface IPlayerData {
   name: string
+  raw: {
+    score: number
+    time: number
+  }
+}
+interface IResponseData {
+  name: string
+  map: string
   password: boolean
+  raw: IRawData
+  maxplayers: number
+  players: Array<IPlayerData>
+  bots: Array<any>
+  connect: string
   ping: number
-  players: [any]
-  raw: any
 }
 
 export default function ServerCard ({ server, style }) {
@@ -36,6 +58,7 @@ export default function ServerCard ({ server, style }) {
           online: true,
           data: responseData
         })
+        setIsLoading(false)
       }
     })
     .catch((error) => {
@@ -43,34 +66,44 @@ export default function ServerCard ({ server, style }) {
       setServerInfo({
         online: false,
       })
+      setIsLoading(false)
     })
     return () => {
       isMounted = false
     }
   }, [])
+
+  if(isLoading) {
+    return <div style={{...style, display: 'flex', justifyContent: 'center', alignItems: 'center'}} className={styles.cardContainer}>
+      <CircularProgress style={{height: '50px', width: '50px'}}/>
+    </div>
+  }
   return (
-    <Card style={{...style}}>
-      {serverInfo.online ?
-      <div className={styles.cardContent}>
-        <div className={styles.cardHeader}>
-          <p className={styles.cardTitle}>{server.full_name}</p>
-          <p className={styles.cardStatusOnline}>online</p>
+    <div style={{...style}} className={styles.cardContainer}>
+      <div style={{margin: '25px'}}>
+        {serverInfo.online ?
+        <div className={styles.cardContent}>
+          <div className={styles.cardHeader}>
+            <p className={styles.cardTitle}>{server.full_name}</p>
+            <p className={styles.cardStatusOnline}>online</p>
+          </div>
+          <div className={styles.cardFooter}>
+            <p className={styles.players}>Jogadores online: <span className={styles.players_num}>{serverInfo.data.raw.numplayers}</span></p>
+            <p className={styles.players}>Mapa atual: <span className={styles.players_num}>{serverInfo.data.map}</span></p>
+              <Link href={`steam://connect/${serverInfo.data.connect}`}>
+                <Button variant="contained" color="primary" style={{width: '95px', height: '30px', fontFamily: 'Josefin Sans'}}>
+                  Conectar
+                </Button>
+              </Link>
+          </div>
         </div>
-        <div className={styles.cardFooter}>
-          <p className={styles.players}>Jogadores online: <span className={styles.players_num}>{serverInfo.data.raw.numplayers}</span></p>
-            <Link href={`steam://connect/${serverInfo.data.connect}`}>
-              <Button variant="contained" color="secondary">
-                Conectar
-              </Button>
-            </Link>
-        </div>
+        : 
+        <>
+        <p className={styles.cardTitle}>{server.full_name}</p>
+        <p className={styles.cardStatusOffline}>offline</p>
+        </>
+        }
       </div>
-      : 
-      <>
-      <p className={styles.cardTitle}>{server.full_name}</p>
-      <p className={styles.cardStatusOffline}>offline</p>
-      </>
-      }
-    </Card>
+    </div>
   )
 }

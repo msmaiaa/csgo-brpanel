@@ -1,4 +1,4 @@
-import router from '../../../../lib/router'
+import router from 'lib/router'
 
 const path = '/api/webhooks/stripe/failure'
 router.post(path, (req, res) => {

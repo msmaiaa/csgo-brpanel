@@ -1,20 +1,17 @@
-import router from "../../../lib/router";
-import requireAuth from "../../../middlewares/auth/requireAuth";
-import requireSuperAdmin from "../../../middlewares/auth/requireSuperAdmin";
-import prisma from '../../../lib/prisma'
-import { logInDb } from "../../../lib/logger";
+import router from "lib/router";
+import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
+import { logInDb } from "lib/logger";
+import Server from "models/Server";
 
 const path = "/api/servers/create";
 
-router.post(path, requireAuth, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
   try{
-    if(!req.body) return res.status(422).json({message: '?'})
-    const createdServer = await prisma.server.create({
+    const createdServer = await Server.create({
       data: req.body
     })
     logInDb('Novo servidor criado', createdServer.full_name, req.user.personaname + ' - ' + req.user.steamid)
-    if(createdServer) return res.status(200).json({message: 'Servidor criado com sucesso', body: createdServer}) 
-    return res.status(500).json({message: 'Não foi possível criar o servidor'}) 
+    return res.status(200).json({message: 'Servidor criado com sucesso', body: createdServer}) 
   }catch(e) {
     if(e.code === 'P2002') return res.status(500).json({message: 'Já existe um servidor com esse nome.'}) 
     return res.status(500).json({message: 'Não foi possível criar o servidor'}) 

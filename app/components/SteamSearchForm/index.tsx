@@ -1,12 +1,12 @@
 import { Button, CircularProgress, FormControl, Select, TextField, withStyles } from '@material-ui/core'
 import { useContext, useEffect, useState } from 'react'
 import { MenuItem } from 'react-pro-sidebar'
-import ToastContext from '../../context/ToastContext'
-import { getSteamUserData } from '../../services/SteamService'
-import { createUser } from '../../services/UserService'
+import ToastContext from 'context/ToastContext'
+import { getSteamUserData } from 'services/SteamService'
+import { createUser } from 'services/UserService'
 import styles from './steamform.module.css'
 
-interface ISteamApiUser {
+export interface ISteamApiUser {
   avatar: string
   avatarfull: string
   avatarhash: string
@@ -53,8 +53,8 @@ export default function SteamSearchForm({ onAddUser }) {
       const foundSteamData = await getSteamUserData(steamInput)
       setUserData(foundSteamData.data.body[0])
     }catch(e) {
-      console.log(e)
-      toast.error(e.response.data.message)
+      setIsLoading(false)
+      toast.error('Não foi possível encontrar o usuário.')
     }
   }
 
@@ -68,6 +68,7 @@ export default function SteamSearchForm({ onAddUser }) {
       onAddUser()
       toast.success(createdUser.data.message)
     }catch(e) {
+      setIsLoading(false)
       toast.error(e.response.data.message)
     }
   }

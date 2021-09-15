@@ -1,18 +1,18 @@
-import router from '../../../lib/router'
-import prisma from '../../../lib/prisma'
-import { logInDb } from '../../../lib/logger'
+import router from 'lib/router'
+import { logInDb } from 'lib/logger'
+import User from 'models/User'
 
 const path = '/api/users/create'
 router.post(path, async(req: any, res: any) => {
   try{
-    const createdUser = await prisma.user.create({
+    const createdUser = await User.create({
       data: {
         name: req.body.data.username,
         steamid: req.body.data.steamid,
         user_type: req.body.data.user_type
       }
     })
-    logInDb('Novo usuário registrado', createdUser.name + ' - ' + createdUser.steamid, req.user.personaname)
+    logInDb('Novo usuário registrado', createdUser.name + ' - ' + createdUser.steamid, req.user.personaname + ' - ' + req.user.steamid)
     return res.status(200).json({message: `Usuário ${createdUser.name} adicionado com sucesso.`})
   }catch(e) {
     console.error(e)

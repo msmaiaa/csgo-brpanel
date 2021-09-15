@@ -1,13 +1,13 @@
-import Card from "../../components/Card/Card";
-import Layout from "../../components/Layout";
-import ToastContext from "../../context/ToastContext";
-import router from "../../lib/router";
+import Card from "components/Card/Card";
+import Layout from "components/Layout";
+import ToastContext from "context/ToastContext";
+import router from "lib/router";
 import styles from './managecargos.module.css'
-import { addCargo, deleteCargo, getAllCargos, ICargo, updateCargo } from "../../services/CargoService";
-import { getAllServers } from "../../services/ServerService";
+import { addCargo, deleteCargo, getAllCargos, ICargo, updateCargo } from "services/CargoService";
+import { getAllServers } from "services/ServerService";
 
 import { FC, useContext, useEffect, useState } from "react";
-import { withStyles, TextField, Button, Checkbox, AccordionSummary, Typography, Accordion, AccordionDetails } from '@material-ui/core'
+import { withStyles, TextField, Button, Checkbox, AccordionSummary, Typography, Accordion, AccordionDetails, CircularProgress } from '@material-ui/core'
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -84,10 +84,16 @@ const ManageCargos: FC<any> = (props) => {
   const [serversChecked, setServersChecked] = useState([])
   const [isAllServers, setAllServers] = useState(false)
   const [cargosFromDb, setCargosFromDb] = useState<Array<ICargo>>([])
+  const [isLoadingServers, setIsLoadingServers] = useState(true)
+  const [isLoadingCargos, setIsLoadingCargos] = useState(true)
 
   useEffect(() => {
+    setIsLoadingServers(true)
     getAllServers()
-    .then((response) => setServers(response.data.body))
+    .then((response) => {
+      setServers(response.data.body)
+      setIsLoadingServers(false)
+    })
     updateCargos()
   },[])
 
@@ -120,8 +126,12 @@ const ManageCargos: FC<any> = (props) => {
   }, [cargosFromDb])
 
   const updateCargos = () => {
+    setIsLoadingCargos(true)
     getAllCargos()
-    .then((response) => setCargosFromDb(response.data.body))
+    .then((response) => {
+      setCargosFromDb(response.data.body)
+      setIsLoadingCargos(false)
+    })
   }
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -181,7 +191,11 @@ const ManageCargos: FC<any> = (props) => {
                 <CustomTextField inputProps={{ maxLength: 100}} name="price" placeholder="15" onChange={handleAddChange} required label="Preço"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="duration" placeholder="30" onChange={handleAddChange} required label="Tempo de duração (dias)"/>
                 <CustomTextField inputProps={{ maxLength: 100}} name="flags" placeholder="100:z" onChange={handleAddChange} required label="Flags"/>
-                <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" placeholder="price_xxxxxxxxxxxxxxxx" onChange={handleAddChange} required label="ID do produto (stripe)"/>
+                {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" placeholder="price_xxxxxxxxxxxxxxxx" onChange={handleAddChange} required label="ID do produto (stripe)"/> */}
+                {isLoadingServers ? 
+                <CircularProgress style={{height: '100px', width: '100px'}}/> 
+                :
+                <>
                 <div className={styles.serverField}>
                   <Checkbox
                     checked={isAllServers}
@@ -190,32 +204,42 @@ const ManageCargos: FC<any> = (props) => {
                   />
                   <p>Todos os servidores</p>
                 </div>
-                {servers.length > 0  && serversChecked.length > 0 && !isAllServers?
-                <>
-                <p className={styles.cardTitle} style={{marginTop: '25px', marginBottom: '15px', fontSize: '20px', fontWeight: 500}}>Servidores (individual)</p>
-                  {servers.map((serverInfo, index) => {
-                    return(
-                      <div className={styles.serverField} key={serverInfo.id}>
-                        <Checkbox
-                          checked={serversChecked[index].checked}
-                          onChange={(event) => handleCheckboxChange(event, index)}
-                          inputProps={{ 'aria-label': 'primary checkbox' }}
-                        />
-                        <p>{serverInfo.full_name}</p>
-                      </div>
-                    )
-                  })}
+                  <div>
+                  {servers.length > 0  && serversChecked.length > 0 && !isAllServers?
+                  <>
+                  <p className={styles.cardTitle} style={{marginTop: '25px', marginBottom: '15px', fontSize: '20px', fontWeight: 500}}>Servidores (individual)</p>
+                    {servers.map((serverInfo, index) => {
+                      return(
+                        <div className={styles.serverField} key={serverInfo.id}>
+                          <Checkbox
+                            checked={serversChecked[index].checked}
+                            onChange={(event) => handleCheckboxChange(event, index)}
+                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                          />
+                          <p>{serverInfo.full_name}</p>
+                        </div>
+                      )
+                    })}
+                  </>
+                  : isAllServers ? '' : <p style={{margin: '15px 0 10px 0'}}>Nenhum servidor foi encontrado</p>}
+                  </div>
                 </>
-                : isAllServers ? '' : <p>Nenhum servidor foi encontrado</p>}
+                }
+                <Button style={{width: '100px'}} variant="contained" color="secondary" className={styles.inputButton} onClick={handleAddCargo}>Adicionar</Button>
               </form>
-              <Button variant="contained" color="secondary" className={styles.inputButton} onClick={handleAddCargo}>Adicionar</Button>
             </Card>
           </div>
 
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Alterar cargos</p>
             <Card style={{width:'100%'}}>
-              {cargosFromDb.length > 0 && cargosFromDb.map((cargo) => {
+              {isLoadingCargos ? 
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
+                <CircularProgress style={{height: '100px', width: '100px'}}/> 
+              </div>
+               :
+               <>
+              {cargosFromDb.length > 0 ? cargosFromDb.map((cargo) => {
                 if (updateInputs[cargo.name]) return <CustomAccordion key={cargo.id}>
                 <AccordionSummary
                   expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
@@ -230,7 +254,11 @@ const ManageCargos: FC<any> = (props) => {
                     <CustomTextField inputProps={{ maxLength: 100}} name="price" value={updateInputs[cargo.name].price} onChange={(event) => handleUpdateChange(event, cargo)} required label="Preço" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
                     <CustomTextField inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
-                    <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" />
+                    {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" /> */}
+                      {isLoadingServers  || isLoadingCargos ? 
+                      <CircularProgress style={{height: '100px', width: '100px'}}/> 
+                      :
+                      <>
                     <div className={styles.serverField}>
                       <Checkbox
                         value={JSON.stringify({allServers: true})}
@@ -241,32 +269,40 @@ const ManageCargos: FC<any> = (props) => {
                       />
                       <p>Todos os servidores</p>
                     </div>
-                    {servers.length > 0  && serversChecked.length > 0 && !isAllServers?
-                    <>
-                    <p className={styles.cardTitle} style={{marginTop: '25px', marginBottom: '15px', fontSize: '20px', fontWeight: 500}}>Servidores (individual)</p>
-                      {servers.map((serverInfo, index) => {
-                        return(
-                          <div className={styles.serverField} key={serverInfo.id}>
-                            <Checkbox
-                              value={JSON.stringify({allServers: false, serverInfo})}
-                              checked={updateInputs[cargo.name].servers.find((sv) => sv.id == serverInfo.id) ? true : false}
-                              onChange={(event) => handleUpdateChange(event, cargo, true, true)}
-                              inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                            <p>{serverInfo.full_name}</p>
-                          </div>
-                        )
-                      })}
-                    </>
-                    : isAllServers ? '' : <p>Nenhum servidor foi encontrado</p>}
-                    <div style={{display: 'flex'}}>
-                      <Button type="submit" variant="contained" color="primary" className={styles.inputButton}>Alterar</Button>
-                      <Button onClick={() => handleDeleteCargo(cargo)} variant="contained" style={{backgroundColor: 'red', color: 'white', marginLeft: '15px'}} className={styles.inputButton}>Deletar</Button>
-                    </div>
+                        {servers.length > 0  && serversChecked.length > 0 && !isAllServers?
+                        <>
+                        <p className={styles.cardTitle} style={{marginTop: '25px', marginBottom: '15px', fontSize: '20px', fontWeight: 500}}>Servidores (individual)</p>
+                          {servers.map((serverInfo, index) => {
+                            return(
+                              <div className={styles.serverField} key={serverInfo.id}>
+                                <Checkbox
+                                  value={JSON.stringify({allServers: false, serverInfo})}
+                                  checked={updateInputs[cargo.name].servers.find((sv) => sv.id == serverInfo.id) ? true : false}
+                                  onChange={(event) => handleUpdateChange(event, cargo, true, true)}
+                                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                                />
+                                <p>{serverInfo.full_name}</p>
+                              </div>
+                            )
+                          })}
+                        </>
+                        : isAllServers ? '' : <p style={{marginTop: '5px', marginBottom: '5px'}}>Nenhum servidor foi encontrado</p>}        
+                      </>          
+                    }
+                        <div style={{display: 'flex'}}>
+                          <Button type="submit" variant="contained" color="primary" className={styles.inputButton}>Alterar</Button>
+                          <Button onClick={() => handleDeleteCargo(cargo)} variant="contained" style={{backgroundColor: 'red', color: 'white', marginLeft: '15px'}} className={styles.inputButton}>Deletar</Button>
+                        </div>
                   </form>
                 </AccordionDetails>
               </CustomAccordion>
-              })}
+              }) : 
+                <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
+                  <p style={{fontSize: '30px', fontWeight: 300}}>Nenhum cargo encontrado.</p> 
+                </div>
+              }
+              </>
+              }
             </Card>
           </div>
 
