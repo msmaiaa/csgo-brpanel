@@ -35,7 +35,7 @@ model Server {
 
 model Cargo{
   id  Int @default(autoincrement()) @id
-  stripe_id String @unique
+  stripe_id String? @unique
   name String @unique 
   price String
   individual Boolean
@@ -89,6 +89,7 @@ model Sale {
   customer_email String?
   purchase_type String
   additional_info String
+  additional_data Json
   created_at DateTime @default(now())
   @@map(name: "sales")
 }

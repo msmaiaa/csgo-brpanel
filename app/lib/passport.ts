@@ -12,9 +12,11 @@ passport.deserializeUser(function(obj, done) {
 	done(null, obj);
 });
 
+const domain = process.env.NODE_ENV == "production" ? process.env.DOMAIN_PROD : process.env.DOMAIN_DEV 
+
 passport.use(new SteamStrategy({
-	returnURL: `${process.env.DOMAIN}/api/auth/return`,
-	realm: `${process.env.DOMAIN}`,
+	returnURL: `${domain}/api/auth/return`,
+	realm: `${domain}`,
 	apiKey: `${process.env.STEAM_API_KEY}`
 }, async(_, profile, done) => {
 	const formattedUser: any = beautifyUser(profile)
