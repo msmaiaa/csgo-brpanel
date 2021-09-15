@@ -47,11 +47,6 @@ router.post(path, requireAuth, async(req: any, res: any) => {
       extraData.body.serverName = cargoData.serverName
     }
     let returnUrl = ''
-    // if(req.body.gateway === 'stripe') {
-    //   const encodedData = await jwt.sign(extraData, process.env.JWT_KEY)
-    //   const session = await generateStripeSession(cargoData, encodedData)
-    //   returnUrl = session.url
-    // }else 
     if(req.body.gateway === 'pagseguro') {
       const pagseguroUrl = await generatePagseguroData(cargoData, extraData)
       returnUrl = pagseguroUrl
