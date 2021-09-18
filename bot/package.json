@@ -13,9 +13,14 @@
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
+    "@types/node-cron": "^2.0.4",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "gamedig": "^3.0.7",
+    "knex": "^0.95.11",
+    "mysql2": "^2.3.0",
+    "node-cron": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.9.1",

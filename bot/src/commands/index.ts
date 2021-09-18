@@ -1,6 +1,6 @@
-import ping from "./ping";
+import monitorserver from "./monitorserver"
 
 const commands: any = {
-  ping
+  monitorserver
 }
 export default commands
