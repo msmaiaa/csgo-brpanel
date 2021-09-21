@@ -69,9 +69,9 @@ const HomePage: FC<any> = (props: IProps) => {
                   <img src={props.user.avatarfull} alt="Avatar" style={{height: '130px'}}/>
                 </div>
                 <div style={{marginLeft: '15px'}}>
-                  <p className={styles.profileItem}>Nome: <span className={styles.profileSubItem}>{props.user.personaname}</span></p>
-                  <p className={styles.profileItem}>SteamID: <span className={styles.profileSubItem}>{props.user.steamid}</span></p>                  
-                  <p className={styles.profileItem}>Você possui <span className={styles.profileSubItem}>{userData.cargos.length}</span> cargos</p>                  
+                  <p className={styles.profileItem}>Nome: <span style={{color: theme.data.textAccent}}>{props.user.personaname}</span></p>
+                  <p className={styles.profileItem}>SteamID: <span style={{color: theme.data.textAccent}}>{props.user.steamid}</span></p>                  
+                  <p className={styles.profileItem}>Você possui <span style={{color: theme.data.textAccent}}>{userData.cargos.length}</span> cargos</p>                  
                 </div>
               </div>
             </Card>
