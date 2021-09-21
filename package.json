@@ -8,8 +8,11 @@
   },
   "scripts": {
     "start": "npm-run-all --parallel start:bot start:panel",
-    "start:bot": "cd ./bot && npm run build && npm run start",
-    "start:panel": "cd ./app && npm run build && npm run start"
+    "start:bot": "cd ./bot && npm run start",
+    "start:panel": "cd ./app && npm run start",
+    "build:bot": "cd ./app && npm install && npm run build",
+    "build:panel": "cd ./bot && npm install && npm run build",
+    "build": "npm-run build:bot && build:panel"
   },
   "repository": {
     "type": "git",
