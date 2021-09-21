@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { TextField, Button, withStyles, Typography, CircularProgress } from '@material-ui/core'
+import { TextField, Button, Typography, CircularProgress } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import Accordion from '@material-ui/core/Accordion';
@@ -15,42 +15,41 @@ import router from "lib/router";
 import { useContext } from "react";
 import ToastContext from "context/ToastContext";
 import { addServer, getAllServersWithRcon, updateServer, deleteServer } from 'services/ServerService'
+import { ThemeContext } from "context/ThemeContext";
+import { makeStyles } from "@material-ui/styles";
 
-const CustomTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: 'black',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'black',
-    },
-    '& .MuiInputBase-root': { 
-      color: 'black',
-      fontFamily: 'Josefin Sans',
-    },
+const useStyles = makeStyles({
+  textField: (props: any) => ({
     '& > *': {
-      color: 'black',
-      borderBottomColor: 'black',
+      color: props.textColor,
       fontFamily: 'Josefin Sans',
     },
-    marginBottom: '10px'
-  },
-})(TextField);
-
-const CustomAccordion = withStyles({
-  root: {
+    '& > .MuiFormLabel-root ': {
+      color: props.textSecondary,
+    },
+    '& > *::before': {
+      borderBottomColor: `${props.textSecondary}`,
+    },
+    marginBottom: '10px',
+    marginLeft: '25px',
+    marginRight: '25px',
+    
+  }),
+  accordion: (props: any) => ({
     '& > *': {
-      color: 'black',
-      borderBottomColor: 'black',
+      color: props.textColor,
+      borderBottomColor: props.borderBottomColor,
       fontFamily: 'Josefin Sans',
     },
-    color: 'black',
-    borderBottomColor: 'black',
+    color: props.textColor,
+    borderBottomColor: props.borderBottomColor,
     fontFamily: 'Josefin Sans',
-  },
-})(Accordion);
+  })
+})
 
 const ManageServers: FC<any> = (props) => {
+  const theme = useContext(ThemeContext)
+  const classes = useStyles(theme.data)
   const toast = useContext(ToastContext)
   const [servers, setServers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -125,23 +124,23 @@ const ManageServers: FC<any> = (props) => {
   return (
     <>
       <Layout user={props.user}>
-        <div className={styles.cardsContainer}>
+        <div className={styles.cardsContainer} style={{color: theme.data.textColor}}>
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Adicionar servidor</p>
-            <Card style={{width:'100%'}}>
+            <Card style={{width:'100%', backgroundColor: theme.data.backgroundPrimary}}>
               <form className={styles.inputGroup}>
-                <CustomTextField inputProps={{ maxLength: 100}} name="full_name" onChange={handleAddChange} required label="Nome do servidor" />
-                <CustomTextField inputProps={{ maxLength: 100}} name="name" onChange={handleAddChange} required label="Nome do servidor (definido na cfg do plugin, sem espaços)" />
-                <CustomTextField inputProps={{ maxLength: 100}} name="ip" onChange={handleAddChange} required label="IP do servidor" />
-                <CustomTextField inputProps={{ maxLength: 100}} name="port" onChange={handleAddChange} required label="Porta do servidor" />
-                <CustomTextField inputProps={{ maxLength: 100}} name="rcon_pass" onChange={handleAddChange} required label="Senha RCON" />
+                <TextField className={classes.textField} name="full_name" onChange={handleAddChange} required label="Nome do servidor" />
+                <TextField className={classes.textField} name="name" onChange={handleAddChange} required label="Nome do servidor (definido na cfg do plugin, sem espaços)" />
+                <TextField className={classes.textField} name="ip" onChange={handleAddChange} required label="IP do servidor" />
+                <TextField className={classes.textField} name="port" onChange={handleAddChange} required label="Porta do servidor" />
+                <TextField className={classes.textField} name="rcon_pass" onChange={handleAddChange} required label="Senha RCON" />
                 <Button variant="contained" color="primary" style={{marginTop: '10px'}} onClick={handleAddServer}>Adicionar</Button>
               </form>
             </Card>
           </div>
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Alterar servidor</p>
-            <Card style={{width:'100%'}}>
+            <Card style={{width:'100%', backgroundColor: theme.data.backgroundPrimary}}>
               {isLoading ? 
                 <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                   <CircularProgress style={{height: '100px', width: '100px'}}/> 
@@ -150,28 +149,27 @@ const ManageServers: FC<any> = (props) => {
               <>
               {servers.length > 0  ? servers.map((server) => {
                 
-                if (updateInputs[server.name]) return <CustomAccordion key={server.id}>
+                if (updateInputs[server.name]) return <Accordion key={server.id} className={classes.accordion}>
                 <AccordionSummary
                   expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+                  style={{backgroundColor: theme.data.backgroundPrimary}}
                 >
-                  <Typography style={{fontFamily: 'Josefin Sans'}}>{server.full_name}</Typography>
+                  <Typography style={{fontFamily: 'Josefin Sans', color: theme.data.textAccent}}>{server.full_name}</Typography>
                 </AccordionSummary>
-                <AccordionDetails>
-                  <form className={styles.inputGroup} onSubmit={(event) => handleUpdateServer(event, server)} style={{width: '100%', marginTop: '0'}}>
-                    <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="full_name" value={updateInputs[server.name].full_name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor" />
-                    <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="name" value={updateInputs[server.name].name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor (definido na cfg do plugin)" />
-                    <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="ip" value={updateInputs[server.name].ip} onChange={(event) => handleUpdateChange(event, server)} required label="IP do servidor" />
-                    <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="port" value={updateInputs[server.name].port} onChange={(event) => handleUpdateChange(event, server)} required label="Porta do servidor" />
-                    <CustomTextField className={styles.textField} inputProps={{ maxLength: 100}} name="rcon_pass" value={updateInputs[server.name].rcon_pass} onChange={(event) => handleUpdateChange(event, server)} required label="Senha RCON" />
+                <AccordionDetails style={{backgroundColor: theme.data.backgroundPrimary}}>
+                  <form className={styles.inputGroup} onSubmit={(event) => handleUpdateServer(event, server)} style={{width: '100%', marginTop: '0', backgroundColor: theme.data.backgroundPrimary}}>
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="full_name" value={updateInputs[server.name].full_name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor" />
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="name" value={updateInputs[server.name].name} onChange={(event) => handleUpdateChange(event, server)} required label="Nome do servidor (definido na cfg do plugin)" />
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="ip" value={updateInputs[server.name].ip} onChange={(event) => handleUpdateChange(event, server)} required label="IP do servidor" />
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="port" value={updateInputs[server.name].port} onChange={(event) => handleUpdateChange(event, server)} required label="Porta do servidor" />
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="rcon_pass" value={updateInputs[server.name].rcon_pass} onChange={(event) => handleUpdateChange(event, server)} required label="Senha RCON" />
                     <div style={{display: 'flex', marginTop: '10px'}}>
                       <Button type="submit" variant="contained" color="primary">Alterar</Button>
                       <Button onClick={() => handleDeleteServer(server)} variant="contained" color="secondary" style={{backgroundColor: 'red', marginLeft: '10px'}}>Deletar</Button>
                     </div>
                   </form>
                 </AccordionDetails>
-              </CustomAccordion>
+              </Accordion>
               }) 
             : 
             <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>

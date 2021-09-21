@@ -4,15 +4,43 @@ import { buyCargo, getNonIndividualCargos } from "services/CargoService";
 import styles from './store.module.css'
 
 import { Button, CircularProgress, FormControl, Select } from "@material-ui/core";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { MenuItem } from "react-pro-sidebar";
 import { useRouter } from 'next/router'
 import { getAllServersWithCargo } from "services/ServerService";
+import { ThemeContext } from "context/ThemeContext";
+import { makeStyles } from "@material-ui/styles";
 
-
+const useStyles = makeStyles({
+  select: (props: any) => ({
+    '& > *': {
+      backgroundColor: `${props.backgroundPrimary} !important`,
+      color: `${props.textColor} !important`
+    },
+    backgroundColor: `${props.backgroundPrimary} !important`,
+    color: `${props.textColor} !important`,
+    fontFamily: 'Josefin Sans'
+  }),
+  menuitem: (props: any) => ({
+    minHeight: '25px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: props.textColor,
+    backgroundColor: props.backgroundPrimary,
+    '&:not(:last-of-type)': {
+      marginBottom: '10px'
+    },
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  })
+})
 
 const StorePage: FC<any> = (props) => {
   const router = useRouter()
+  const theme = useContext(ThemeContext)
+  const classes = useStyles(theme.data)
   const [cargosAllServers, setCargosAllServers] = useState([])
   const [serversWithCargo, setServersWithCargo] = useState([])
   const [activeData, setActiveData] = useState([])
@@ -66,10 +94,10 @@ const StorePage: FC<any> = (props) => {
   return (
     <>
       <Layout user={props.user}>
-        <div className={styles.container}>
+        <div className={styles.container} style={{color: theme.data.textColor}}>
           <div className={styles.cargos_container}>
             <p className={styles.cargosTitle}>Cargos</p>
-            <div className={styles.cargosContent}>
+            <div className={styles.cargosContent} style={{backgroundColor: theme.data.backgroundPrimary, boxShadow: theme.data.boxShadowCard}}>
               {isLoading ? 
               <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
                 <CircularProgress style={{height: '50px', width: '50px'}}/> 
@@ -83,13 +111,21 @@ const StorePage: FC<any> = (props) => {
                   <Select
                     value={name}
                     onChange={handleChange}
-                    style={{fontFamily: 'Josefin Sans', minWidth: '100px'}}
+                    style={{ minWidth: '100px'}}
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          backgroundColor: theme.data.backgroundPrimary
+                        },
+                      },
+                    }}
+                    className={classes.select}
                   >
                     {cargosAllServers.length > 0 && serversWithCargo.length > 0 && 
-                    <MenuItem  className={styles.menuitem} value={cargosAllServers}>Cargo em todos os servidores</MenuItem>}  
+                    <MenuItem  className={classes.menuitem} value={cargosAllServers}>Cargo em todos os servidores</MenuItem>}  
 
                     {serversWithCargo.length > 0 && serversWithCargo.map((server) => {
-                      return <MenuItem className={styles.menuitem} key={server.id} value={server}>{server.full_name}</MenuItem>
+                      return <MenuItem className={classes.menuitem} key={server.id} value={server}>{server.full_name}</MenuItem>
                     })}
 
                   </Select>
@@ -99,7 +135,7 @@ const StorePage: FC<any> = (props) => {
               <div className={styles.contentCargos}>
                   {activeData.length > 0 && !isLoading && activeData.map((cargo) => {
                     return (
-                      <div key={cargo.stripe_id} className={styles.customCard}>
+                      <div key={cargo.stripe_id} className={styles.customCard} style={{backgroundColor: theme.data.backgroundSecondary, boxShadow: theme.data.boxShadowCard}}>
                         <div>
                           <p className={styles.cargo__name}>{cargo.name}</p>
                           <p className={styles.cargo__duration}>{cargo.duration} dias</p>

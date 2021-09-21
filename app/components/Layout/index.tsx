@@ -80,6 +80,8 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    color: props.textColor,
+    backgroundColor: props.backgroundPrimary,
     '&:not(:last-of-type)': {
       marginBottom: '10px'
     },
@@ -183,8 +185,8 @@ export default function Layout(children) {
                 className={classes.select}
                 style={{fontFamily: 'Josefin Sans', minWidth: '50'}}
               >
-                <MenuItem style={{color: theme.data.textColor, backgroundColor: theme.data.backgroundPrimary}} className={classes.menuitem} value="light">Claro</MenuItem>
-                <MenuItem style={{color: theme.data.textColor, backgroundColor: theme.data.backgroundPrimary}} className={classes.menuitem} value="dark">Escuro</MenuItem>
+                <MenuItem className={classes.menuitem} value="light">Claro</MenuItem>
+                <MenuItem className={classes.menuitem} value="dark">Escuro</MenuItem>
               </Select>
             </FormControl>
           </div>
