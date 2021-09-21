@@ -71,6 +71,7 @@ export const updateServersStatus = async(client: Client) => {
           .setTitle(`Servidor: ${oldTitle?.join(" ")} :x:`)
           .setDescription('O servidor está offline, contate os administradores.')
           .setColor('#ff0000')
+          .setTimestamp()
         }
         await channel.messages.edit(d.messageId, { embeds: [oldEmbed] })
       }catch(e:any) {

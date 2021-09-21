@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Card from '../Card/Card'
 import styles from './ServerCard.module.css'
 import { getServerStatus } from 'services/ServerService'
 import { Button, CircularProgress } from '@material-ui/core'
 import Link from 'next/link'
+import { ThemeContext } from 'context/ThemeContext'
+import { makeStyles } from '@material-ui/styles'
 
 interface IServerInfo {
   online?: boolean,
@@ -44,7 +46,15 @@ interface IResponseData {
   ping: number
 }
 
+const useStyles = makeStyles({
+  card: (props: any) => ({
+    boxShadow: props.boxShadowCard
+  })
+})
+
 export default function ServerCard ({ server, style }) {
+  const theme = useContext(ThemeContext)
+  const classes = useStyles(theme)
   const [isLoading, setIsLoading] = useState(true)
   const [serverInfo, setServerInfo] = useState<IServerInfo>({})
 
@@ -74,13 +84,13 @@ export default function ServerCard ({ server, style }) {
   }, [])
 
   if(isLoading) {
-    return <div style={{...style, display: 'flex', justifyContent: 'center', alignItems: 'center'}} className={styles.cardContainer}>
+    return <div style={{...style, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '10px', boxShadow: theme.data.boxShadowCard}} className={classes.card}>
       <CircularProgress style={{height: '50px', width: '50px'}}/>
     </div>
   }
   return (
-    <div style={{...style}} className={styles.cardContainer}>
-      <div style={{margin: '25px'}}>
+    <div style={{...style, borderRadius: '10px', boxShadow: theme.data.boxShadowCard}} className={classes.card}>
+      <div style={{margin: '25px'}} className={classes.card}>
         {serverInfo.online ?
         <div className={styles.cardContent}>
           <div className={styles.cardHeader}>
