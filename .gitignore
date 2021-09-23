@@ -4,3 +4,4 @@ config.json
 .vscode
 .next
 package-lock.json
+prod

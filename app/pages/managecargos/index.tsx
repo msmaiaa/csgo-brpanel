@@ -3,7 +3,7 @@ import Layout from "components/Layout";
 import ToastContext from "context/ToastContext";
 import router from "lib/router";
 import styles from './managecargos.module.css'
-import { addCargo, deleteCargo, getAllCargos, ICargo, updateCargo } from "services/CargoService";
+import { addCargo, deleteCargo, getAllCargos,updateCargo } from "services/CargoService";
 import { getAllServers } from "services/ServerService";
 
 import { FC, useContext, useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { TextField, Button, Checkbox, AccordionSummary, Typography, Accordion, A
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ThemeContext } from "context/ThemeContext";
+import { ICargo } from "types";
 
 const useStyles = makeStyles({
   textField: (props: any) => ({
@@ -195,7 +196,7 @@ const ManageCargos: FC<any> = (props) => {
                   <Checkbox
                     checked={isAllServers}
                     onChange={(event) => setAllServers(event.target.checked)}
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    style={{color: theme.data.textAccent}}
                   />
                   <p>Todos os servidores</p>
                 </div>
@@ -209,7 +210,7 @@ const ManageCargos: FC<any> = (props) => {
                           <Checkbox
                             checked={serversChecked[index].checked}
                             onChange={(event) => handleCheckboxChange(event, index)}
-                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                            style={{color: theme.data.textAccent}}
                           />
                           <p>{serverInfo.full_name}</p>
                         </div>
@@ -248,7 +249,6 @@ const ManageCargos: FC<any> = (props) => {
                     <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="price" value={updateInputs[cargo.name].price} onChange={(event) => handleUpdateChange(event, cargo)} required label="Preço" />
                     <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
                     <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
-                    {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" /> */}
                       {isLoadingServers  || isLoadingCargos ? 
                       <CircularProgress style={{height: '100px', width: '100px'}}/> 
                       :
@@ -259,7 +259,7 @@ const ManageCargos: FC<any> = (props) => {
                         name="individual"
                         checked={!updateInputs[cargo.name].individual}
                         onChange={(event) => handleUpdateChange(event, cargo, true)}
-                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                        style={{color: theme.data.textAccent}}
                       />
                       <p>Todos os servidores</p>
                     </div>
@@ -273,7 +273,7 @@ const ManageCargos: FC<any> = (props) => {
                                   value={JSON.stringify({allServers: false, serverInfo})}
                                   checked={updateInputs[cargo.name].servers.find((sv) => sv.id == serverInfo.id) ? true : false}
                                   onChange={(event) => handleUpdateChange(event, cargo, true, true)}
-                                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                                  style={{color: theme.data.textAccent}}
                                 />
                                 <p>{serverInfo.full_name}</p>
                               </div>

@@ -6,27 +6,7 @@ import { getSteamUserData } from 'services/SteamService'
 import { createUser } from 'services/UserService'
 import styles from './steamform.module.css'
 import { ThemeContext } from 'context/ThemeContext'
-
-export interface ISteamApiUser {
-  avatar: string
-  avatarfull: string
-  avatarhash: string
-  avatarmedium: string
-  commentpermission?: number
-  communityvisibilitystate?: number
-  lastlogoff: number
-  loccountrycode?: string
-  personaname: string
-  personastate: number
-  personastateflags: number
-  primaryclanid: string
-  profilestate: number
-  profileurl: string
-  realname?: string
-  steamid: string
-  steamid64: string
-  timecreated: number
-}
+import { ISteamApiUser } from 'types'
 
 const useStyles = makeStyles({
   textField: (props: any) => ({

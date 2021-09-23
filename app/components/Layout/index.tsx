@@ -117,7 +117,7 @@ export default function Layout(children) {
     <div style={{display: 'flex', height: '100%', width: '100%', alignItems: 'center', backgroundColor: theme.data.backgroundSecondary}}>
     <ProSidebar style={{height: '100%'}}>
       <SidebarHeader style={{display: 'flex', justifyContent: 'center', backgroundColor: theme.data.backgroundPrimary}}>
-        <Image src={logoPic} alt="Logo" width={100} height={100}/>
+        <Image src={logoPic} alt="Logo" width={270} height={100}/>
       </SidebarHeader>
       <SidebarContent style={{backgroundColor: theme.data.backgroundPrimary}} className={classes.sidebar_content}>
         <Menu iconShape="round" style={{backgroundColor: theme.data.backgroundPrimary}}>

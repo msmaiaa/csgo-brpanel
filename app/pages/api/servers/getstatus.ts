@@ -1,9 +1,10 @@
 import router from "lib/router";
+import { ApiRequest, ApiResponse } from "types"
 
 import Gamedig from 'gamedig'
 const path = "/api/servers/getstatus";
 
-router.post(path, async(req: any, res: any) => { 
+router.post(path, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     Gamedig.query({
       type: 'csgo',

@@ -9,7 +9,6 @@ import { botDatabase, panelDatabase } from "../database"
 export const verifyExpiredCargos = async() => {
   try{
     const currentTimestamp = Math.floor(Date.now() / 1000)
-    console.log(currentTimestamp)
     await panelDatabase.raw(`
     DELETE FROM user_cargo WHERE expire_stamp < ${currentTimestamp}
     `)

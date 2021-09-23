@@ -59,7 +59,6 @@ export default {
         host: serverIp,
         port: serverPort
       })
-      console.log(serverInfo)
       const embed = new MessageEmbed()
       .setTitle(`Servidor: ${serverInfo.name} :white_check_mark:`)
       .setDescription(`Mapa: ${serverInfo.map}\n Slots: ${serverInfo.maxplayers}`)
@@ -70,6 +69,7 @@ export default {
       let scoreList: string = ''
       if(serverInfo.players.length > 0) {
         serverInfo.players.map((player) => {
+          if(!player.raw.score || !player.raw.time) return
           playersNames += `${player.name}\n`
           scoreList += `${player.raw.score.toString()}\n`
         })

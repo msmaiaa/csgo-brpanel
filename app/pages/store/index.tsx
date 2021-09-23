@@ -1,15 +1,16 @@
-import Layout from "components/Layout";
+import { FC, useContext, useEffect, useState } from "react";
+import { CircularProgress, FormControl, Select } from "@material-ui/core";
 import router from "lib/router";
+import Image from 'next/image'
+import { makeStyles } from "@material-ui/styles";
+import { useRouter } from 'next/router'
+import { MenuItem } from "react-pro-sidebar";
+
+import Layout from "components/Layout";
 import { buyCargo, getNonIndividualCargos } from "services/CargoService";
 import styles from './store.module.css'
-
-import { Button, CircularProgress, FormControl, Select } from "@material-ui/core";
-import { FC, useContext, useEffect, useState } from "react";
-import { MenuItem } from "react-pro-sidebar";
-import { useRouter } from 'next/router'
 import { getAllServersWithCargo } from "services/ServerService";
 import { ThemeContext } from "context/ThemeContext";
-import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
   select: (props: any) => ({
@@ -144,8 +145,7 @@ const StorePage: FC<any> = (props) => {
                           </p>
                         </div>
                         <div className={styles.cargo__footer}>
-                          {/* <Button variant="contained" color="primary" onClick={() => handleBuy(cargo, 'stripe')}>Stripe</Button> */}
-                          <img className={styles.pagseguro} src="https://netfacilita.com.br/mais-ajuda/comprar-ps.png" onClick={() => handleBuy(cargo, 'pagseguro')}/>
+                          <Image src="/pagseguro.png" width="180" height="25" alt="pagseguro_btn" onClick={() => handleBuy(cargo, 'pagseguro')} className={styles.pagseguro}/>
                         </div>
                       </div>
                     )

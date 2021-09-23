@@ -4,6 +4,7 @@ module.exports = {
 	env: {
 		DOMAIN_DEV: process.env.DOMAIN_DEV,
 		DOMAIN_PROD: process.env.DOMAIN_PROD,
+		APP_ENV: process.env.APP_ENV,
 		STEAM_API_KEY: process.env.STEAM_API_KEY,
 		SESSION_SECRET: process.env.SESSION_SECRET,
 		STRIPE_API_KEY: process.env.STRIPE_API_KEY,

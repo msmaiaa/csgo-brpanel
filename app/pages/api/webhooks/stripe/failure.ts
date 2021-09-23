@@ -1,4 +1,6 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
+import { ApiRequest, ApiResponse } from "types"
 
 const path = '/api/webhooks/stripe/failure'
 router.post(path, (req, res) => {

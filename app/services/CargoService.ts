@@ -1,28 +1,6 @@
 import axios from 'axios'
-import { IServer } from './ServerService'
-import { IUser } from './UserService'
+import { IAddUser, ICargo, IUser } from 'types'
 
-export interface ICargo {
-  stripe_id: string
-  name: string
-  price: string
-  duration: string
-  individual: boolean
-  currency: string
-  flags: string
-  id?: string
-  created_at?: string
-  updated_at?: string
-  serverName?: string
-  cargo_server?: [any]
-}
-
-interface IAddUser {
-  cargo: ICargo
-  days: number
-  user: IUser
-  server: IServer | string
-}
 
 export async function addCargo(cargo: ICargo, servers: Array<any>){
   return axios.post('/api/cargos/create', {cargo, servers})

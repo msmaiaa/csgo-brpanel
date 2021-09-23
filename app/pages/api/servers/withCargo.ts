@@ -1,4 +1,5 @@
 import router from "lib/router";
+import { ApiRequest, ApiResponse } from "types"
 import Server from "models/Server";
 
 const path = "/api/servers/withCargo";
@@ -6,7 +7,7 @@ const path = "/api/servers/withCargo";
 /*
 * Gets all the servers and each server relationed cargo
 */
-router.get(path, async(req: any, res: any) => { 
+router.get(path, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     const foundCargos = await Server.findManyWithCargoServer({
       select: {

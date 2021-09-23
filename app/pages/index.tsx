@@ -6,9 +6,9 @@ import Layout from "components/Layout";
 import ServerCard from "components/ServerCard/ServerCard";
 import { getUserStatus } from "services/UserService";
 import { ISaleData } from "utils/email";
-import { ISteamApiUser } from "components/SteamSearchForm";
 import { Card } from "@material-ui/core";
 import { ThemeContext } from "context/ThemeContext";
+import { ISteamApiUser } from "types";
 
 interface IUserData {
   cargos: [{

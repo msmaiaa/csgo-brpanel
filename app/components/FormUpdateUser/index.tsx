@@ -3,23 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Accordion, AccordionDetails, AccordionSummary, Button, FormControl, makeStyles, MenuItem, Select, TextField, Typography, withStyles } from "@material-ui/core";
 import { FC, useContext, useEffect, useState } from "react";
 import ToastContext from "context/ToastContext";
-import { addCargosToUser, getAllCargos, getNonIndividualCargos, ICargo, removeCargosFromUser } from "services/CargoService";
-import { getAllServersWithCargo, IServer } from "services/ServerService";
-import { IUser, updateUser } from "services/UserService";
+import { addCargosToUser, getNonIndividualCargos, removeCargosFromUser } from "services/CargoService";
+import { getAllServersWithCargo } from "services/ServerService";
+import { updateUser } from "services/UserService";
 import styles from './updateuser.module.css'
 import { ThemeContext } from "context/ThemeContext";
+import { ICargo, ICargo_Server, IServer, IUser } from "types";
 
 
 interface IProps {
   selectedData: IUser
   updateUserInfo()
-}
-
-interface ICargo_Server {
-  cargo_id: number
-  id: number
-  server_id: number
-  cargo: ICargo
 }
 
 const useStyles = makeStyles({

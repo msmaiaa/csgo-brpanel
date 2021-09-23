@@ -1,50 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
-import Card from '../Card/Card'
+import { Button, CircularProgress } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
+import Link from 'next/link'
+
 import styles from './ServerCard.module.css'
 import { getServerStatus } from 'services/ServerService'
-import { Button, CircularProgress } from '@material-ui/core'
-import Link from 'next/link'
 import { ThemeContext } from 'context/ThemeContext'
-import { makeStyles } from '@material-ui/styles'
-
-interface IServerInfo {
-  online?: boolean,
-  data?: IResponseData
-}
-
-interface IRawData {
-  protocol: number
-  folder: string
-  game: string
-  appId: number
-  numplayers: number
-  numbots: number
-  listentype: string
-  environment: string
-  secure: 1
-  version: string
-  steamid: string
-  tags: Array<string>
-}
-
-interface IPlayerData {
-  name: string
-  raw: {
-    score: number
-    time: number
-  }
-}
-interface IResponseData {
-  name: string
-  map: string
-  password: boolean
-  raw: IRawData
-  maxplayers: number
-  players: Array<IPlayerData>
-  bots: Array<any>
-  connect: string
-  ping: number
-}
+import { IServerQueryResponse } from 'types'
 
 const useStyles = makeStyles({
   card: (props: any) => ({
@@ -56,14 +18,14 @@ export default function ServerCard ({ server, style }) {
   const theme = useContext(ThemeContext)
   const classes = useStyles(theme)
   const [isLoading, setIsLoading] = useState(true)
-  const [serverInfo, setServerInfo] = useState<IServerInfo>({})
+  const [serverInfo, setServerInfo] = useState<IServerQueryResponse>({})
 
   useEffect(() => {
     let isMounted = true
     getServerStatus(server)
     .then((response) => {
       if(isMounted) {
-        const responseData: IResponseData | any = {...response.data.body}
+        const responseData: IServerQueryResponse | any = {...response.data.body}
         setServerInfo({
           online: true,
           data: responseData

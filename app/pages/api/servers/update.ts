@@ -1,11 +1,12 @@
 import router from "lib/router";
 import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
+import { ApiRequest, ApiResponse } from "types"
 import { logInDb } from "lib/logger";
 import Server from "models/Server";
 
 const path = "/api/servers/update";
 
-router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     const updatedServer = await Server.update({
       where: {

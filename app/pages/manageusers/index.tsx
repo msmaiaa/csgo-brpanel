@@ -3,27 +3,13 @@ import FormUpdateUser from "components/FormUpdateUser";
 import Layout from "components/Layout";
 import SteamSearchForm from "components/SteamSearchForm";
 import UsersTable from "components/UsersTable";
-import ToastContext from "context/ToastContext";
 import router from "lib/router";
-import { ICargo } from "services/CargoService";
-import { IServer } from "services/ServerService";
-import { IUser } from "services/UserService";
 import styles from './manageusers.module.css'
 import { ThemeContext } from "context/ThemeContext";
-
-export interface IUser_Cargo {
-  id: number
-  cargo_id: number
-  flags: string
-  cargo: ICargo
-  server: IServer
-  server_name: string
-  steamid: string
-}
+import { IUser } from "types";
 
 const ManageUsers: FC<any> = (props) => {
   const theme = useContext(ThemeContext)
-  const toast = useContext(ToastContext)
   const [userEditInfo, setUserEditInfo] = useState<IUser>()
   const [updateData, setUpdateData] = useState<boolean>()
 

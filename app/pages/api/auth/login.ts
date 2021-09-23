@@ -1,5 +1,6 @@
 import passport from 'lib/passport';
-import router from 'lib/router';
+import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 
 interface AuthLoginResponse extends Response {
 	redirect: (path: string) => any;

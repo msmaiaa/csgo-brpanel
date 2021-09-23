@@ -1,6 +1,7 @@
 import { Prisma } from '.prisma/client';
 import axios from 'axios'
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import Cargo from 'models/Cargo';
 import Sale from 'models/Sale';
 import Server from 'models/Server';
@@ -110,7 +111,7 @@ interface IPagseguroWebhookXML {
     }
 }
 
-router.post(path, async(req: any, res: any) => {
+router.post(path, async(req: ApiRequest, res: ApiResponse) => {
   try{
     const response:INotificationBody = req.body 
     const notificationResponse = await axios.get(notificationUrl + response.notificationCode + `?${credentialsQuery}`)

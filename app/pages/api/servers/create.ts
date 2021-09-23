@@ -1,11 +1,12 @@
 import router from "lib/router";
+import { ApiRequest, ApiResponse } from "types"
 import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
 import { logInDb } from "lib/logger";
 import Server from "models/Server";
 
 const path = "/api/servers/create";
 
-router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     const createdServer = await Server.create({
       data: req.body

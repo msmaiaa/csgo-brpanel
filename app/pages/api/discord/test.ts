@@ -1,10 +1,11 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import requireSuperAdmin from 'middlewares/auth/requireSuperAdmin'
 import NotificationSettings from 'models/settings/NotificationSettings'
 import DiscordNotification from 'utils/notifications/discord'
 
 const path = '/api/discord/test'
-router.post(path, requireSuperAdmin, async(req: any, res: any) => {
+router.post(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => {
   try{
     const settings = await NotificationSettings.findOne()
     const notificaton = new DiscordNotification(settings)

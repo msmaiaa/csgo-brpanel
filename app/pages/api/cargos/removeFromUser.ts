@@ -1,11 +1,12 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import requireAdmin from 'middlewares/auth/requireAdmin'
 import { logInDb } from 'lib/logger'
 import UserCargo from 'models/UserCargo'
 
 const path = ('/api/cargos/removeFromUser')
 
-router.post(path, requireAdmin, async(req: any, res: any) => {
+router.post(path, requireAdmin, async(req: ApiRequest, res: ApiResponse) => {
   try{
     let deleted;
     if(req.body.all) {
