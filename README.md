@@ -90,7 +90,7 @@ Para buildar e rodar em produção:
 npm run build
 npm start
 ```
-Para configurar o plugin no servidor você deve inserir esses campos no database.cfg
+Para configurar o plugin no servidor você deve inserir esses campos no database.cfg e colocar o plugin na pasta plugins
 ```
 	"brpanel"
 	{
@@ -103,4 +103,4 @@ Para configurar o plugin no servidor você deve inserir esses campos no database
 		//"port"        "0" 
 	}
 ```
-Ao executar o plugin pela primeira vez o arquivo de configuração na pasta cfg/sourcemod/ será criado e você deverá colocar o nome do servidor no campo "sm_serverName" (igual ao nome único que você irá criar ao adicionar um servidor no painel)
+Ao executar o plugin pela primeira vez o arquivo de configuração na pasta cfg/sourcemod/ será criado e você deverá colocar o nome do servidor no campo "sm_serverName" (igual ao nome único que você irá criar ao adicionar um servidor no painel, sem espaços)
