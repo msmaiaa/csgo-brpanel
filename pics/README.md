@@ -1,0 +1,8 @@
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/home_claro.png)
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/gerenciar_cargos.png)
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/gerenciar_servidores.png)
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/gerenciar_usuarios.png)
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/config_notificacoes.png)
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/logs.png)
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/loja.png)
+![foto](https://github.com/msmaiaa/csgo-brpanel/blob/main/pics/vendas.png)
