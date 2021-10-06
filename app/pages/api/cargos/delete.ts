@@ -1,11 +1,12 @@
 import router from "lib/router";
+import { ApiRequest, ApiResponse } from "types"
 import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
 import { logInDb } from "lib/logger";
 import Cargo from "models/Cargo";
 
 const path = "/api/cargos/delete";
 
-router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     if(!req.body) return res.status(422).json({message: 'Parametros faltando'})
     const deletedCargo = await Cargo.deleteWhere({

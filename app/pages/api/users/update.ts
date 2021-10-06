@@ -1,11 +1,12 @@
 import User from 'models/User'
 import { logInDb } from 'lib/logger'
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import requireAdmin from 'middlewares/auth/requireAdmin'
 
 const path = '/api/users/update'
 
-router.post(path, requireAdmin, async(req: any, res: any) => {
+router.post(path, requireAdmin, async(req: ApiRequest, res: ApiResponse) => {
   try{
     const updatedUser = await User.update({
       where: {

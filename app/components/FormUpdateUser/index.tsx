@@ -1,12 +1,14 @@
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Accordion, AccordionDetails, AccordionSummary, Button, FormControl, MenuItem, Select, TextField, Typography, withStyles } from "@material-ui/core";
+import { Accordion, AccordionDetails, AccordionSummary, Button, FormControl, makeStyles, MenuItem, Select, TextField, Typography, withStyles } from "@material-ui/core";
 import { FC, useContext, useEffect, useState } from "react";
 import ToastContext from "context/ToastContext";
-import { addCargosToUser, getAllCargos, getNonIndividualCargos, ICargo, removeCargosFromUser } from "services/CargoService";
-import { getAllServersWithCargo, IServer } from "services/ServerService";
-import { IUser, updateUser } from "services/UserService";
+import { addCargosToUser, getNonIndividualCargos, removeCargosFromUser } from "services/CargoService";
+import { getAllServersWithCargo } from "services/ServerService";
+import { updateUser } from "services/UserService";
 import styles from './updateuser.module.css'
+import { ThemeContext } from "context/ThemeContext";
+import { ICargo, ICargo_Server, IServer, IUser } from "types";
 
 
 interface IProps {
@@ -14,32 +16,43 @@ interface IProps {
   updateUserInfo()
 }
 
-interface ICargo_Server {
-  cargo_id: number
-  id: number
-  server_id: number
-  cargo: ICargo
-}
-
-const CustomAccordion = withStyles({
-  root: {
+const useStyles = makeStyles({
+  accordion: (props: any) => ({
     '& > *': {
+      color: props.textColor,
+      borderBottomColor: props.borderBottomColor,
       fontFamily: 'Josefin Sans',
     },
-  },
-})(Accordion);
-
-const StyledTextField = withStyles({
-  root: {
+    color: props.textColor,
+    borderBottomColor: props.borderBottomColor,
+    fontFamily: 'Josefin Sans',
+  }),
+  select: (props: any) => ({
     '& > *': {
-      fontFamily: 'Josefin Sans',
-      height: '30px'
+      backgroundColor: `${props.backgroundPrimary} !important`,
+      color: `${props.textColor} !important`
     },
-  },
-})(TextField)
-
+    backgroundColor: `${props.backgroundPrimary} !important`,
+    color: `${props.textColor} !important`
+  }),
+  menuitem: (props: any) => ({
+    minHeight: '25px',
+    fontFamily: 'Josefin Sans',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '&:not(:last-of-type)': {
+      marginBottom: '10px'
+    },
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  })
+})
 
 const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => {
+  const theme = useContext(ThemeContext)
+  const classes = useStyles(theme.data)
   const toast = useContext(ToastContext)
   const [infoData, setInfoData] = useState<IUser | {}>({})
   const [userTypeInput, setUserTypeInput] = useState<any>(0)
@@ -112,16 +125,24 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
     <div style={{display: 'flex', flexDirection: 'column'}}>
       <div style={{marginLeft: '20px', marginTop: '25px'}}>
         <div style={{display: 'flex', alignItems: 'center', height: '20px', marginTop: '15px'}}>
-          <p style={{color: 'blue'}}>Permissões: </p>
+          <p style={{color: theme.data.textAccent}}>Permissões: </p>
           <FormControl style={{display: 'flex', alignItems:'flex-start', marginLeft: '15px'}}>
             <Select
               value={userTypeInput}
               onChange={(event) => setUserTypeInput(event.target.value)}
               style={{fontFamily: 'Josefin Sans', minWidth: '80px'}}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    backgroundColor: theme.data.backgroundPrimary
+                  },
+                },
+              }}
+              className={classes.select}
               >
-              <MenuItem style={{fontFamily: 'Josefin Sans'}} value={0} className={styles.menuitem}>Comum</MenuItem>
-              <MenuItem style={{fontFamily: 'Josefin Sans'}} value={1} className={styles.menuitem}>Admin</MenuItem>
-              <MenuItem style={{fontFamily: 'Josefin Sans'}} value={2} className={styles.menuitem}>Super Admin</MenuItem>
+              <MenuItem style={{color: theme.data.textColor, backgroundColor: theme.data.backgroundPrimary}} className={classes.menuitem}  value={0}>Comum</MenuItem>
+              <MenuItem style={{color: theme.data.textColor, backgroundColor: theme.data.backgroundPrimary}} className={classes.menuitem}  value={1}>Admin</MenuItem>
+              <MenuItem style={{color: theme.data.textColor, backgroundColor: theme.data.backgroundPrimary}} className={classes.menuitem}  value={2}>Super Admin</MenuItem>
             </Select>
           </FormControl>
           <Button onClick={handleUpdateUType} color="primary" variant="contained" style={{height: '26px', width: '80px', fontSize: '14px', marginLeft: '10px'}}>Salvar</Button>
@@ -135,18 +156,19 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
         </p>
         <div style={{marginTop: '20px'}}>
           {cargosAllServers.length > 0 && 
-          <CustomAccordion>
+          <Accordion className={classes.accordion}>
             <AccordionSummary
-              expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
+              expandIcon={<FontAwesomeIcon style={{color: theme.data.textColor}} icon={faCaretDown} />}
+              style={{backgroundColor: theme.data.backgroundPrimary}}
             >
-              <Typography style={{fontFamily: 'Josefin Sans'}}>Todos os servidores</Typography>
+              <Typography style={{fontFamily: 'Josefin Sans', color: theme.data.textAccent}}>Todos os servidores</Typography>
             </AccordionSummary>
-            <AccordionDetails style={{display: 'flex', flexDirection: 'column'}}>
+            <AccordionDetails style={{display: 'flex', flexDirection: 'column', backgroundColor: theme.data.backgroundPrimary}}>
               {cargosAllServers.map((cargo: ICargo) => {
                   return (
                     <div key={cargo.id} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', marginTop: '15px'}}>
                       <>
-                        <p style={{color: 'blue', fontSize: '16px', width: '60px'}}>{cargo.name}</p>
+                        <p style={{color: theme.data.textColor, fontSize: '16px', width: '60px'}}>{cargo.name}</p>
                       </>
                       <>
                         <Button onClick={() => handleAddCargo(cargo, 1, 'all')} variant="contained" color="primary" className={styles.button}>1 dia</Button>
@@ -157,19 +179,20 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
                   )
               })}
             </AccordionDetails>
-          </CustomAccordion>
+          </Accordion>
           }
           {serversWithCargo.length > 0 && 
             <>
               {serversWithCargo.map((server) => {
                 return (
-                  <CustomAccordion key={server.id}>
+                  <Accordion key={server.id} className={classes.accordion}>
                     <AccordionSummary
-                      expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
+                      expandIcon={<FontAwesomeIcon style={{color: theme.data.textColor}} icon={faCaretDown} />}
+                      style={{backgroundColor: theme.data.backgroundPrimary}}
                     >
-                    <Typography style={{fontFamily: 'Josefin Sans'}}>{server.full_name}</Typography>
+                    <Typography style={{fontFamily: 'Josefin Sans', color: theme.data.textAccent}}>{server.full_name}</Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
+                  <AccordionDetails style={{backgroundColor: theme.data.backgroundPrimary}}>
                     {server.cargo_server.length > 0 && 
                       <>
                         {server.cargo_server.map((cargo_sv: ICargo_Server) => {
@@ -185,7 +208,7 @@ const FormUpdateUser:FC<IProps> = ({ selectedData, updateUserInfo }: IProps) => 
                       </>
                     }
                   </AccordionDetails>
-                  </CustomAccordion>
+                  </Accordion>
                 )
               })}
             </>

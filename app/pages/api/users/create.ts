@@ -1,9 +1,10 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import { logInDb } from 'lib/logger'
 import User from 'models/User'
 
 const path = '/api/users/create'
-router.post(path, async(req: any, res: any) => {
+router.post(path, async(req: ApiRequest, res: ApiResponse) => {
   try{
     const createdUser = await User.create({
       data: {

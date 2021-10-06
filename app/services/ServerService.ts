@@ -1,15 +1,5 @@
 import axios from 'axios'
-
-
-export interface IServer {
-  full_name: string
-  name: string
-  ip: string
-  port: string
-  rcon_pass?: string
-  created_at?: string
-  updated_at?: string
-}
+import { IServer } from 'types'
 
 export async function addServer(data: IServer){
   return axios.post('/api/servers/create', data)

@@ -1,0 +1,27 @@
+{
+  "name": "csgo-brpanel",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "scripts": {
+    "start": "npm-run-all --parallel start:bot start:panel",
+    "start:bot": "cd ./bot && npm run start",
+    "start:panel": "cd ./app && npm run start",
+    "build:bot": "cd ./app && npm install && npm run build",
+    "build:panel": "cd ./bot && npm install && npm run build",
+    "build": "npm-run build:bot && build:panel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msmaiaa/csgo-brpanel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msmaiaa/csgo-brpanel/issues"
+  },
+  "homepage": "https://github.com/msmaiaa/csgo-brpanel#readme"
+}

@@ -1,9 +1,10 @@
 import router from "lib/router";
 import Server from "models/Server";
+import { ApiRequest, ApiResponse } from "types"
 
 const path = "/api/servers/";
 
-router.get(path, async(req: any, res: any) => { 
+router.get(path, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     const foundServers = await Server.findAll()
     const filteredServers = foundServers.map((server) => {

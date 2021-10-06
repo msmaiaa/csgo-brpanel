@@ -1,4 +1,5 @@
 import router from "lib/router";
+import { ApiRequest, ApiResponse } from "types"
 import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
 import { logInDb } from "lib/logger";
 import Cargo from "models/Cargo";
@@ -6,7 +7,7 @@ import CargoServer from "models/CargoServer";
 
 const path = "/api/cargos/create";
 
-router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     const createdCargo = await Cargo.createOne({ data:req.body.cargo })
     const parsedData = req.body.servers.map((server) => {

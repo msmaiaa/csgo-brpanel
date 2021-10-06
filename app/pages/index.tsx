@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import router from "lib/router";
 import { getAllServers } from 'services/ServerService'
 import styles from './index.module.css'
@@ -6,8 +6,9 @@ import Layout from "components/Layout";
 import ServerCard from "components/ServerCard/ServerCard";
 import { getUserStatus } from "services/UserService";
 import { ISaleData } from "utils/email";
-import { ISteamApiUser } from "components/SteamSearchForm";
 import { Card } from "@material-ui/core";
+import { ThemeContext } from "context/ThemeContext";
+import { ISteamApiUser } from "types";
 
 interface IUserData {
   cargos: [{
@@ -22,6 +23,8 @@ interface IProps {
 }
 
 const HomePage: FC<any> = (props: IProps) => {
+  
+  const theme = useContext(ThemeContext)
   const [servers, setServers] = useState([])
   const [userData, setUserData] = useState<IUserData>()
 
@@ -49,14 +52,15 @@ const HomePage: FC<any> = (props: IProps) => {
       <Layout user={props.user}>
         <div className={styles.container}>
           {props.user && userData &&
-          <div className={styles.serversContainer}>
+          <div className={styles.serversContainer} style={{color: theme.data.textColor}}>
             <p style={{fontSize: '32px', fontWeight: 300 }}>Status</p>
             <Card style={{marginTop: '15px', 
             width: '450px',
-            height: '180px', 
+            height: '180px',
+            color: theme.data.textColor,
             justifyContent: 'center', 
-            backgroundColor: 'rgba(255, 255, 255, .15)',
-            boxShadow: '0 0 35px 0 rgba(154,161,171,.25)',
+            backgroundColor: theme.data.backgroundPrimary,
+            boxShadow: theme.data.boxShadow,
             backdropFilter: 'blur(5px)',
             flexGrow: 1
             }}>
@@ -65,15 +69,15 @@ const HomePage: FC<any> = (props: IProps) => {
                   <img src={props.user.avatarfull} alt="Avatar" style={{height: '130px'}}/>
                 </div>
                 <div style={{marginLeft: '15px'}}>
-                  <p className={styles.profileItem}>Nome: <span className={styles.profileSubItem}>{props.user.personaname}</span></p>
-                  <p className={styles.profileItem}>SteamID: <span className={styles.profileSubItem}>{props.user.steamid}</span></p>                  
-                  <p className={styles.profileItem}>Você possui <span className={styles.profileSubItem}>{userData.cargos.length}</span> cargos</p>                  
+                  <p className={styles.profileItem}>Nome: <span style={{color: theme.data.textAccent}}>{props.user.personaname}</span></p>
+                  <p className={styles.profileItem}>SteamID: <span style={{color: theme.data.textAccent}}>{props.user.steamid}</span></p>                  
+                  <p className={styles.profileItem}>Você possui <span style={{color: theme.data.textAccent}}>{userData.cargos.length}</span> cargos</p>                  
                 </div>
               </div>
             </Card>
           </div>
           }
-          <div className={styles.serversContainer}>
+          <div className={styles.serversContainer} style={{color: theme.data.textColor}}>
             <p style={{fontSize: '32px', fontWeight: 300, marginTop: '25px' }}>Servidores</p>
             <div style={{display: 'flex', justifyContent: 'flex-start', marginTop: '15px'}}>
               {servers.length > 0 ? 
@@ -83,12 +87,13 @@ const HomePage: FC<any> = (props: IProps) => {
                   height: '220px', 
                   minWidth: '350px',
                   marginLeft: index === 0 ? '0' : '30px', 
-                  backgroundColor: 'rgba(255, 255, 255, .15)', 
-                  backdropFilter: 'blur(5px)'
+                  backgroundColor: theme.data.backgroundPrimary, 
+                  backdropFilter: 'blur(5px)',
+                  color: theme.data.textColor
                 }}/>
                 )
               })
-              : <p style={{fontSize: '22px', fontWeight: 400, marginTop: '25px'}}>Nenhum servidor encontrado :(</p>}
+              : <p style={{fontSize: '22px', fontWeight: 400, marginTop: '25px', color: theme.data.textColor}}>Nenhum servidor encontrado :(</p>}
             </div>
           </div>
         </div>

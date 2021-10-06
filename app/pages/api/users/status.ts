@@ -1,11 +1,12 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import requireAuth from 'middlewares/auth/requireAuth'
 import Sale from 'models/Sale'
 import UserCargo from 'models/UserCargo'
 
 const path = 'api/users/status'
 
-router.get(path, requireAuth, async(req: any, res: any) => {
+router.get(path, requireAuth, async(req: ApiRequest, res: ApiResponse) => {
   try{
     const returnData: any = {
       cargos: [],

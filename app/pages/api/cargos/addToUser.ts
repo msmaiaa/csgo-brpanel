@@ -1,4 +1,5 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import requireAdmin from 'middlewares/auth/requireAdmin'
 import { logInDb } from 'lib/logger'
 import UserCargo from 'models/UserCargo'
@@ -18,7 +19,7 @@ function addDaysToTimestamp(days, timestamp) {
   return BigInt(timestampToDate.getTime() / 1000)
 }
 
-router.post(path, requireAdmin, async(req: any, res: any) => {
+router.post(path, requireAdmin, async(req: ApiRequest, res: ApiResponse) => {
   try{
     const body: any = req.body
     if(body.server === 'all') { 
@@ -30,7 +31,6 @@ router.post(path, requireAdmin, async(req: any, res: any) => {
             steamid: body.user.steamid
           }
         })
-        // user has cargo ? update with new data : insert new user_cargo
         if(foundUserCargo) {
           const daysToAdd = body.days
           const newCargoTimestamp = addDaysToTimestamp(daysToAdd, foundUserCargo.expire_stamp)

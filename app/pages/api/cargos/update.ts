@@ -7,7 +7,7 @@ import UserCargo from "models/UserCargo";
 
 const path = "/api/cargos/update";
 
-router.post(path, requireSuperAdmin, async(req: any, res: any) => { 
+router.post(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     if(!req.body) return res.status(422).json({message: 'Parametros faltando'})
     const oldCargo = await Cargo.findOne({

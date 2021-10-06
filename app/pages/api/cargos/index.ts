@@ -1,9 +1,10 @@
 import router from "lib/router";
+import { ApiRequest, ApiResponse } from "types"
 import Cargo from "models/Cargo";
 
 const path = "/api/cargos/";
 
-router.get(path, async(req: any, res: any) => { 
+router.get(path, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     let foundCargos;
     if(req.query.all) {

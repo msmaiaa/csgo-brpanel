@@ -3,52 +3,49 @@ import Layout from "components/Layout";
 import ToastContext from "context/ToastContext";
 import router from "lib/router";
 import styles from './managecargos.module.css'
-import { addCargo, deleteCargo, getAllCargos, ICargo, updateCargo } from "services/CargoService";
+import { addCargo, deleteCargo, getAllCargos,updateCargo } from "services/CargoService";
 import { getAllServers } from "services/ServerService";
 
 import { FC, useContext, useEffect, useState } from "react";
-import { withStyles, TextField, Button, Checkbox, AccordionSummary, Typography, Accordion, AccordionDetails, CircularProgress } from '@material-ui/core'
+import { TextField, Button, Checkbox, AccordionSummary, Typography, Accordion, AccordionDetails, CircularProgress, makeStyles } from '@material-ui/core'
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ThemeContext } from "context/ThemeContext";
+import { ICargo } from "types";
 
-const CustomTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: 'black',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'black',
-    },
-    '& .MuiInputBase-root': { 
-      color: 'black',
-      fontFamily: 'Josefin Sans',
-    },
+const useStyles = makeStyles({
+  textField: (props: any) => ({
     '& > *': {
-      color: 'black',
-      borderBottomColor: 'black',
+      color: props.textColor,
       fontFamily: 'Josefin Sans',
     },
-    marginBottom: 10
-  },
-})(TextField);
-
-const CustomAccordion = withStyles({
-  root: {
+    '& > .MuiFormLabel-root ': {
+      color: props.textSecondary,
+    },
+    '& > *::before': {
+      borderBottomColor: `${props.textSecondary}`,
+    },
+    marginBottom: '10px',
+    marginLeft: '25px',
+    marginRight: '25px',
+    
+  }),
+  accordion: (props: any) => ({
     '& > *': {
-      color: 'black',
-      borderBottomColor: 'black',
+      color: props.textColor,
+      borderBottomColor: props.borderBottomColor,
       fontFamily: 'Josefin Sans',
     },
-    color: 'black',
-    borderBottomColor: 'black',
+    color: props.textColor,
+    borderBottomColor: props.borderBottomColor,
     fontFamily: 'Josefin Sans',
-  },
-})(Accordion);
-
+  })
+})
 
 const ManageCargos: FC<any> = (props) => {
   const toast = useContext(ToastContext)
-
+  const theme = useContext(ThemeContext)
+  const classes = useStyles(theme.data)
   const [addInputs, setAddInputs] = useState<any>({});
   const handleAddChange = e => setAddInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   const [updateInputs, setUpdateInputs] = useState({});
@@ -182,16 +179,15 @@ const ManageCargos: FC<any> = (props) => {
     <>
       <Layout user={props.user}>
 
-      <div className={styles.cardsContainer}>
+      <div className={styles.cardsContainer} style={{color: theme.data.textColor}}>
           <div className={styles.cardWrapper}>
             <p className={styles.cardTitle}>Adicionar cargo</p>
-            <Card style={{width:'100%'}}>
+            <Card style={{width:'100%', backgroundColor: theme.data.backgroundPrimary}}>
               <form className={styles.inputGroup}>
-                <CustomTextField inputProps={{ maxLength: 100}} name="name" placeholder="Cargo legal" onChange={handleAddChange} required label="Nome do cargo"/>
-                <CustomTextField inputProps={{ maxLength: 100}} name="price" placeholder="15" onChange={handleAddChange} required label="Preço"/>
-                <CustomTextField inputProps={{ maxLength: 100}} name="duration" placeholder="30" onChange={handleAddChange} required label="Tempo de duração (dias)"/>
-                <CustomTextField inputProps={{ maxLength: 100}} name="flags" placeholder="100:z" onChange={handleAddChange} required label="Flags"/>
-                {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" placeholder="price_xxxxxxxxxxxxxxxx" onChange={handleAddChange} required label="ID do produto (stripe)"/> */}
+                <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="name" placeholder="Cargo legal" onChange={handleAddChange} required label="Nome do cargo"/>
+                <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="price" placeholder="15" onChange={handleAddChange} required label="Preço"/>
+                <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="duration" placeholder="30" onChange={handleAddChange} required label="Tempo de duração (dias)"/>
+                <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="flags" placeholder="100:z" onChange={handleAddChange} required label="Flags"/>
                 {isLoadingServers ? 
                 <CircularProgress style={{height: '100px', width: '100px'}}/> 
                 :
@@ -200,7 +196,7 @@ const ManageCargos: FC<any> = (props) => {
                   <Checkbox
                     checked={isAllServers}
                     onChange={(event) => setAllServers(event.target.checked)}
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    style={{color: theme.data.textAccent}}
                   />
                   <p>Todos os servidores</p>
                 </div>
@@ -214,7 +210,7 @@ const ManageCargos: FC<any> = (props) => {
                           <Checkbox
                             checked={serversChecked[index].checked}
                             onChange={(event) => handleCheckboxChange(event, index)}
-                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                            style={{color: theme.data.textAccent}}
                           />
                           <p>{serverInfo.full_name}</p>
                         </div>
@@ -225,14 +221,14 @@ const ManageCargos: FC<any> = (props) => {
                   </div>
                 </>
                 }
-                <Button style={{width: '100px'}} variant="contained" color="secondary" className={styles.inputButton} onClick={handleAddCargo}>Adicionar</Button>
+                <Button style={{width: '100px'}} variant="contained" color="primary" className={styles.inputButton} onClick={handleAddCargo}>Adicionar</Button>
               </form>
             </Card>
           </div>
 
           <div className={styles.cardWrapper}>
-            <p className={styles.cardTitle}>Alterar cargos</p>
-            <Card style={{width:'100%'}}>
+            <p className={styles.cardTitle} style={{color: theme.data.textColor}}>Alterar cargos</p>
+            <Card style={{width:'100%', backgroundColor: theme.data.backgroundPrimary}}>
               {isLoadingCargos ? 
               <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
                 <CircularProgress style={{height: '100px', width: '100px'}}/> 
@@ -240,21 +236,19 @@ const ManageCargos: FC<any> = (props) => {
                :
                <>
               {cargosFromDb.length > 0 ? cargosFromDb.map((cargo) => {
-                if (updateInputs[cargo.name]) return <CustomAccordion key={cargo.id}>
+                if (updateInputs[cargo.name]) return <Accordion key={cargo.id} className={classes.accordion}>
                 <AccordionSummary
                   expandIcon={<FontAwesomeIcon icon={faCaretDown} />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+                  style={{backgroundColor: theme.data.backgroundPrimary}}
                 >
-                  <Typography style={{fontFamily: 'Josefin Sans'}}>{cargo.name}</Typography>
+                  <Typography style={{fontFamily: 'Josefin Sans', color: theme.data.textAccent}}>{cargo.name}</Typography>
                 </AccordionSummary>
-                <AccordionDetails>
+                <AccordionDetails style={{backgroundColor: theme.data.backgroundPrimary}}>
                   <form className={styles.inputGroup} onSubmit={(event) => handleUpdateCargo(event, cargo)} style={{width: '100%'}}>
-                    <CustomTextField inputProps={{ maxLength: 100}} name="name" value={updateInputs[cargo.name].name} onChange={(event) => handleUpdateChange(event, cargo)} required label="Nome do cargo" />
-                    <CustomTextField inputProps={{ maxLength: 100}} name="price" value={updateInputs[cargo.name].price} onChange={(event) => handleUpdateChange(event, cargo)} required label="Preço" />
-                    <CustomTextField inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
-                    <CustomTextField inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
-                    {/* <CustomTextField inputProps={{ maxLength: 100}} name="stripe_id" value={updateInputs[cargo.name].stripe_id} onChange={(event) => handleUpdateChange(event, cargo)} required label="Id do produto (stripe)" /> */}
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="name" value={updateInputs[cargo.name].name} onChange={(event) => handleUpdateChange(event, cargo)} required label="Nome do cargo" />
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="price" value={updateInputs[cargo.name].price} onChange={(event) => handleUpdateChange(event, cargo)} required label="Preço" />
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="duration" value={updateInputs[cargo.name].duration} onChange={(event) => handleUpdateChange(event, cargo)} required label="Tempo de duração (dias)" />
+                    <TextField className={classes.textField} inputProps={{ maxLength: 100}} name="flags" value={updateInputs[cargo.name].flags} onChange={(event) => handleUpdateChange(event, cargo)} required label="Flags" />
                       {isLoadingServers  || isLoadingCargos ? 
                       <CircularProgress style={{height: '100px', width: '100px'}}/> 
                       :
@@ -265,7 +259,7 @@ const ManageCargos: FC<any> = (props) => {
                         name="individual"
                         checked={!updateInputs[cargo.name].individual}
                         onChange={(event) => handleUpdateChange(event, cargo, true)}
-                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                        style={{color: theme.data.textAccent}}
                       />
                       <p>Todos os servidores</p>
                     </div>
@@ -279,7 +273,7 @@ const ManageCargos: FC<any> = (props) => {
                                   value={JSON.stringify({allServers: false, serverInfo})}
                                   checked={updateInputs[cargo.name].servers.find((sv) => sv.id == serverInfo.id) ? true : false}
                                   onChange={(event) => handleUpdateChange(event, cargo, true, true)}
-                                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                                  style={{color: theme.data.textAccent}}
                                 />
                                 <p>{serverInfo.full_name}</p>
                               </div>
@@ -295,7 +289,7 @@ const ManageCargos: FC<any> = (props) => {
                         </div>
                   </form>
                 </AccordionDetails>
-              </CustomAccordion>
+              </Accordion>
               }) : 
                 <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px'}}>
                   <p style={{fontSize: '30px', fontWeight: 300}}>Nenhum cargo encontrado.</p> 

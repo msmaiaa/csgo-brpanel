@@ -57,17 +57,7 @@ div#__next {
 }
 
 
-.pro-sidebar-inner {
-	background-color: white !important;
-	border-right: 1px solid lightgray;
-}
-
-.pro-sidebar .pro-menu a {
-	color: black !important;
-}
-
 .pro-icon, .pro-icon-wrapper {
-	background-color: white !important;
 	height: 25px !important;
 	width: 25px !important;
 }
@@ -79,17 +69,13 @@ div#__next {
 
 .pro-item-content {
 	user-select: none;
-  color: black !important;
 }
 
 .pro-inner-list-item {
-	background-color: #F9FAFD !important;
 	transition: all .2s;
 }
 
 .pro-inner-list-item > div > ul > *:hover {
-	background-color: rgba(160, 170, 255, .25);
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
-	box-shadow: 0 0 35px 0 rgba(160, 170, 255,.25);
 }

@@ -1,11 +1,12 @@
 import router from "lib/router";
+import { ApiRequest, ApiResponse } from "types"
 import requireSuperAdmin from "middlewares/auth/requireSuperAdmin";
 import { logInDb } from "lib/logger";
 import Server from "models/Server";
 
 const path = "/api/servers/delete";
 
-router.delete(path, requireSuperAdmin, async(req: any, res: any) => { 
+router.delete(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => { 
   try{
     if(!req.body) return res.status(422).json({message: '?'})
     const deletedServer = await Server.delete({

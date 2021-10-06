@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 
 import { useEffect } from 'react';
 import ToastContext, { success, error, warn } from 'context/ToastContext'
+import { ThemeProvider } from 'context/ThemeContext';
 
 export default function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -13,9 +14,11 @@ export default function MyApp({ Component, pageProps }) {
     }
   }, [])
   return <>
-  <ToastContext.Provider value={{success, error, warn}}>
-    <Component {...pageProps} />
-    <ToastContainer/>
-  </ToastContext.Provider>
+  <ThemeProvider>
+    <ToastContext.Provider value={{success, error, warn}}>
+      <Component {...pageProps} />
+      <ToastContainer/>
+    </ToastContext.Provider>
+  </ThemeProvider>
   </>
 }

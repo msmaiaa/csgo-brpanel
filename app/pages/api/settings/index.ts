@@ -1,9 +1,10 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import requireSuperAdmin from 'middlewares/auth/requireSuperAdmin';
 import NotificationSettings from 'models/settings/NotificationSettings';
 
 const path = '/api/settings'
-router.get(path, requireSuperAdmin, async(req: any, res: any) => {
+router.get(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => {
   try{
     let foundSettings;
     switch(req.query.scope) {

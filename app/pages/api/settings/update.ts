@@ -1,10 +1,11 @@
 import router from 'lib/router'
+import { ApiRequest, ApiResponse } from "types"
 import requireSuperAdmin from 'middlewares/auth/requireSuperAdmin';
 import { logInDb } from 'lib/logger';
 import NotificationSettings from 'models/settings/NotificationSettings';
 
 const path = '/api/settings/update'
-router.post(path, requireSuperAdmin, async(req: any, res: any) => {
+router.post(path, requireSuperAdmin, async(req: ApiRequest, res: ApiResponse) => {
   try{
     let updatedSettings;
     switch(req.body.scope) {

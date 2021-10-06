@@ -1,12 +1,10 @@
 .menu_icon {
-  color: black;
   width: 25px;
   height: 25px;
 }
 
 .menulink {
   font-size: 15px;
-  color: black;
   user-select: none;
 }
 

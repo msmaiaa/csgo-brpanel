@@ -1,12 +1,46 @@
-import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { CircularProgress, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Layout from "components/Layout";
 import router from "lib/router";
 import { getAllSales } from "services/SalesService";
 import styles from './salesrecord.module.css'
+import { ThemeContext } from "context/ThemeContext";
+
+const useStyles = makeStyles({
+  paginator: (props: any) => ({
+    '& > li > .Mui-selected': {
+      color: `${props.textColor}`,
+      backgroundColor: props.backgroundSecondary
+    },
+    '& > li > .Mui-selected:hover': {
+    },
+    '& > li > button:not(.Mui-selected)': {
+      color: props.textSecondary
+    },
+    '& > li > button:not(.Mui-selected):hover': {
+      backgroundColor: props.backgroundSecondary
+    }
+  }),
+  table_row: (props: any) => ({
+    '& > .MuiTableCell-root': {
+      borderBottom: `1px solid ${props.borderBottomColor}`
+    }
+  }),
+  tableHeadText: (props: any) => ({
+    fontFamily: 'Josefin Sans !important',
+    fontSize: '20px !important',
+    color: props.textColor
+  }),
+  tableBodyText: (props: any) => ({
+    fontFamily: 'Josefin Sans !important',
+    color: props.textColor
+  })
+})
 
 const SalesRecord: FC<any> = (props) => {
+  const theme = useContext(ThemeContext)
+  const classes = useStyles(theme.data)
   const [actualPage, setActualPage] = useState(1)
   const [totalPagesCount, setTotalPagesCount] = useState(0)
   const [rows, setRows] = useState([])
@@ -46,8 +80,8 @@ const SalesRecord: FC<any> = (props) => {
       <Layout user={props.user}>
       <div className={styles.container}>
           <div className={styles.sales_container}>
-            <p className={styles.salesTitle}>Vendas</p>
-            <TableContainer component={Paper} className={styles.tableContainer}>
+            <p className={styles.salesTitle} style={{color: theme.data.textColor}}>Vendas</p>
+            <TableContainer component={Paper} className={styles.tableContainer} style={{backgroundColor: theme.data.backgroundPrimary, boxShadow: theme.data.boxShadowCard}}>
               {isLoading ?
                 <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '50px', minHeight: '200px'}}>
                   <CircularProgress style={{height: '100px', width: '100px'}}/> 
@@ -55,32 +89,32 @@ const SalesRecord: FC<any> = (props) => {
               :
               <Table  size="small" aria-label="a dense table">
                 <TableHead>
-                  <TableRow>
-                    <TableCell align="center" className={styles.tableHeadText}>ID</TableCell>
-                    <TableCell align="center" className={styles.tableHeadText}>Usuário</TableCell>
-                    <TableCell align="center" className={styles.tableHeadText}>Email do usuário</TableCell>
-                    <TableCell align="center" className={styles.tableHeadText}>Valor</TableCell>
-                    <TableCell align="center" className={styles.tableHeadText}>Moeda</TableCell>
-                    <TableCell align="center" className={styles.tableHeadText}>Gateway</TableCell>
-                    <TableCell align="center" className={styles.tableHeadText}>Data</TableCell>
+                  <TableRow className={classes.table_row}>
+                    <TableCell align="center" className={classes.tableHeadText}>ID</TableCell>
+                    <TableCell align="center" className={classes.tableHeadText}>Usuário</TableCell>
+                    <TableCell align="center" className={classes.tableHeadText}>Email do usuário</TableCell>
+                    <TableCell align="center" className={classes.tableHeadText}>Valor</TableCell>
+                    <TableCell align="center" className={classes.tableHeadText}>Moeda</TableCell>
+                    <TableCell align="center" className={classes.tableHeadText}>Gateway</TableCell>
+                    <TableCell align="center" className={classes.tableHeadText}>Data</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => (
-                    <TableRow key={row.id}>
-                      <TableCell align="center" className={styles.tableBodyText}>{row.id}</TableCell>
-                      <TableCell align="center" className={styles.tableBodyText} style={{color: 'blue'}}>{row.customer_steamid}</TableCell>
-                      <TableCell align="center" className={styles.tableBodyText}>{row.customer_email}</TableCell>
-                      <TableCell align="center" className={styles.tableBodyText} style={{color: 'green'}}>{row.amount}</TableCell>
-                      <TableCell align="center" className={styles.tableBodyText}>{row.currency}</TableCell>
-                      <TableCell align="center" className={styles.tableBodyText}>{row.gateway}</TableCell>
-                      <TableCell align="center" className={styles.tableBodyText}>{parseDate(row.created_at)}</TableCell>
+                    <TableRow key={row.id} className={classes.table_row}>
+                      <TableCell align="center" className={classes.tableBodyText}>{row.id}</TableCell>
+                      <TableCell align="center" className={classes.tableBodyText} style={{color: theme.data.textAccent}}>{row.customer_steamid}</TableCell>
+                      <TableCell align="center" className={classes.tableBodyText}>{row.customer_email}</TableCell>
+                      <TableCell align="center" className={classes.tableBodyText} style={{color: 'green'}}>{row.amount}</TableCell>
+                      <TableCell align="center" className={classes.tableBodyText}>{row.currency}</TableCell>
+                      <TableCell align="center" className={classes.tableBodyText}>{row.gateway}</TableCell>
+                      <TableCell align="center" className={classes.tableBodyText}>{parseDate(row.created_at)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
               }
-              <Pagination count={totalPagesCount} style={{float: 'right'}} onChange={handleChangePage} page={actualPage}/>
+              <Pagination classes={{ul: classes.paginator}} count={totalPagesCount} style={{float: 'right'}} onChange={handleChangePage} page={actualPage}/>
             </TableContainer>
           </div>
         </div>

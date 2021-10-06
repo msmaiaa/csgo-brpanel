@@ -14,10 +14,6 @@
   font-size: 18px;
 }
 
-.profileSubItem {
-  color: blue;
-}
-
 .profileItem:not(:first-of-type) {
   margin-top: 10px;
 }

@@ -1,45 +1,57 @@
-import { Button, CircularProgress, FormControl, Select, TextField, withStyles } from '@material-ui/core'
+import { Button, CircularProgress, FormControl, makeStyles, Select, TextField, withStyles } from '@material-ui/core'
 import { useContext, useEffect, useState } from 'react'
 import { MenuItem } from 'react-pro-sidebar'
 import ToastContext from 'context/ToastContext'
 import { getSteamUserData } from 'services/SteamService'
 import { createUser } from 'services/UserService'
 import styles from './steamform.module.css'
+import { ThemeContext } from 'context/ThemeContext'
+import { ISteamApiUser } from 'types'
 
-export interface ISteamApiUser {
-  avatar: string
-  avatarfull: string
-  avatarhash: string
-  avatarmedium: string
-  commentpermission?: number
-  communityvisibilitystate?: number
-  lastlogoff: number
-  loccountrycode?: string
-  personaname: string
-  personastate: number
-  personastateflags: number
-  primaryclanid: string
-  profilestate: number
-  profileurl: string
-  realname?: string
-  steamid: string
-  steamid64: string
-  timecreated: number
-}
-
-
-const StyledTextField = withStyles({
-  root: {
+const useStyles = makeStyles({
+  textField: (props: any) => ({
     '& > *': {
+      color: props.textColor,
       fontFamily: 'Josefin Sans',
-      height: '30px'
     },
-  },
-  
-})(TextField)
+    '& > .MuiFormLabel-root ': {
+      color: props.textSecondary,
+    },
+    '& > *::before': {
+      borderBottomColor: `${props.textSecondary}`,
+    },
+    marginBottom: '10px',
+    marginLeft: '25px',
+    marginRight: '25px',
+  }),
+  select: (props: any) => ({
+    '& > *': {
+      backgroundColor: `${props.backgroundPrimary} !important`,
+      color: `${props.textColor} !important`
+    },
+    backgroundColor: `${props.backgroundPrimary} !important`,
+    color: `${props.textColor} !important`
+  }),
+  menuitem: (props: any) => ({
+    minHeight: '25px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: props.textColor,
+    backgroundColor: props.backgroundPrimary,
+    '&:not(:last-of-type)': {
+      marginBottom: '10px'
+    },
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  })
+})
 
 export default function SteamSearchForm({ onAddUser }) {
   const toast = useContext(ToastContext)
+  const theme = useContext(ThemeContext)
+  const classes = useStyles(theme.data)
   const [steamInput, setSteamInput] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
   const [userData, setUserData] = useState<ISteamApiUser>()
@@ -82,8 +94,9 @@ export default function SteamSearchForm({ onAddUser }) {
   return (
     <div style={{height: '100%', width: '100%', borderRadius: '10px'}}>
       <form onSubmit={(event) => handleSearch(event)} className={styles.form}>
-        <StyledTextField 
+        <TextField 
         onChange={(event) => setSteamInput(event.target.value)} 
+        className={classes.textField}
         style={{fontFamily: 'Josefin Sans', width: '50%', marginRight: '20px' }} 
         label="SteamID/SteamID3/SteamID64/Url"
         />
@@ -102,30 +115,38 @@ export default function SteamSearchForm({ onAddUser }) {
             </div>
             <div style={{display: 'flex', alignItems: 'center', height: '100%'}}>
               <div style={{height: '170px', marginLeft: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-                <p className={styles.info_key}>
-                  Nome: <span  className={styles.info_value}>{userData.personaname}</span>
+                <p style={{color: theme.data.textAccent}}>
+                  Nome: <span style={{color: theme.data.textColor}}>{userData.personaname}</span>
                 </p>
-                <p className={styles.info_key}>
-                  SteamID: <span className={styles.info_value}>{userData.steamid}</span>
+                <p style={{color: theme.data.textAccent}}>
+                  SteamID: <span style={{color: theme.data.textColor}}>{userData.steamid}</span>
                 </p>
-                <p className={styles.info_key}>
-                  SteamID64: <span className={styles.info_value}>{userData.steamid64}</span>
+                <p style={{color: theme.data.textAccent}}>
+                  SteamID64: <span style={{color: theme.data.textColor}}>{userData.steamid64}</span>
                 </p>
                 <div style={{display: 'flex', alignItems: 'center', height: '20px'}}>
-                  <p style={{color: 'blue'}}>Permissões: </p>
+                  <p style={{color: theme.data.textAccent}}>Permissões: </p>
                   <FormControl style={{display: 'flex', alignItems:'flex-start', height: '20px', marginLeft: '15px'}}>
                     <Select
                       value={userTypeInput}
                       onChange={(event) => handleSelectChange(event.target.value)}
+                      className={classes.select}
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            backgroundColor: theme.data.backgroundPrimary
+                          },
+                        },
+                      }}
                       style={{fontFamily: 'Josefin Sans', minWidth: '80px', height: '20px'}}
                       >
-                      <MenuItem value={0} className={styles.menuitem}>Comum</MenuItem>
-                      <MenuItem value={1} className={styles.menuitem}>Admin</MenuItem>
-                      <MenuItem value={2} className={styles.menuitem}>Super Admin</MenuItem>
+                      <MenuItem value={0} className={classes.menuitem}>Comum</MenuItem>
+                      <MenuItem value={1} className={classes.menuitem}>Admin</MenuItem>
+                      <MenuItem value={2} className={classes.menuitem}>Super Admin</MenuItem>
                     </Select>
                   </FormControl>
                 </div>
-              <Button onClick={handleAddUser} variant="contained" color="primary" style={{height: '30px', width: '90px'}}>Adicionar</Button>
+              <Button onClick={handleAddUser} variant="contained" color="primary" style={{height: '30px', width: '90px', fontFamily: 'Josefin Sans', fontSize: '12px'}}>Adicionar</Button>
               </div>
             </div>
           </div>

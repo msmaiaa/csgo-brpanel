@@ -33,11 +33,6 @@ public void OnConfigsExecuted() {
   PrintToServer("[BRP] Database connection available, refeshing Cargos now.");
 }
 
-// Function called for all clients once on entring in server
-// public OnClientPostAdminCheck(client) {
-//   CreateTimer(GetConVarInt(gC_VMP_alerttimer), handler_onclientconnecttimer, client);
-// }
-
 //Function to connect to the database
 void DB_Connect() {
   PrintToServer("[BRP] Creating database connection");
@@ -98,7 +93,7 @@ public void refreshCargosCallback(Database db, DBResultSet result, char[] error,
 
   CloseHandle(FileHandle);
 
-  PrintToServer("***[VMP] Cargos updated, refreshing the admins on the server.");
+  PrintToServer("***[BRP] Cargos updated, refreshing the admins on the server.");
   ServerCommand("sm_reloadadmins");
   //ServerCommand("sm_reloadtags"); //to update player tag for hextags plugin
 }
