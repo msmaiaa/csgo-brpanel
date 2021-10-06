@@ -40,7 +40,7 @@ const registerCommandsInGroups = async() => {
 }
 
 const main = async () => {
-
+  await registerCommandsInGroups()
   const client = new ClientWithCommands({ intents: [Intents.FLAGS.GUILDS] })
   try {
     await botDatabase('servers')
