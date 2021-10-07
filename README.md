@@ -1,5 +1,13 @@
 # BRPanel  
 Painel de gerenciamento de servidores de __csgo__
+#### Tecnologias utilizadas:
+```
+NextJS
+NodeJS
+Prisma
+MySQL
+SourcePawn
+```
 
 ## Funcionalidades do painel (em desenvolvimento)
 - Sistema de login e autorização através da steam
@@ -104,3 +112,9 @@ Para configurar o plugin no servidor você deve inserir esses campos no database
 	}
 ```
 Ao executar o plugin pela primeira vez o arquivo de configuração na pasta cfg/sourcemod/ será criado e você deverá colocar o nome do servidor no campo "sm_serverName" (igual ao nome único que você irá criar ao adicionar um servidor no painel, sem espaços)
+	
+## Contribuições
+Pull requests são bem vindos. Para grandes mudanças por favor abra uma issue para discutir o que você gostaria de mudar.
+	
+## Licença
+[aqui](https://github.com/msmaiaa/csgo-brpanel/blob/main/LICENSE)
