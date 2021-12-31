@@ -1,13 +1,5 @@
 # BRPanel  
 Painel de gerenciamento de servidores de __csgo__
-#### Tecnologias utilizadas:
-```
-NextJS
-NodeJS
-Prisma
-MySQL
-SourcePawn
-```
 
 ## Funcionalidades do painel (em desenvolvimento)
 - Sistema de login e autorização através da steam
