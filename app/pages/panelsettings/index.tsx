@@ -3,55 +3,68 @@ import { FC, useContext, useState } from "react";
 import Layout from "components/Layout";
 import NotificationSettings from "components/Settings/NotificationSettings";
 import router from "lib/router";
-import styles from './panelsettings.module.css'
+import styles from "./panelsettings.module.css";
 import { ThemeContext } from "context/ThemeContext";
 
 const renderSwitch = (param) => {
-  switch(param) {
-    case 'notifications': {
-      return <NotificationSettings/>
+  switch (param) {
+    case "notifications": {
+      return <NotificationSettings />;
     }
   }
-}
+};
 
-const PanelSettings: FC<any> = (props) => {
-  const theme = useContext(ThemeContext)
-  const [selectedScope, setSelectedScope] = useState<string>('notifications')
+const PanelSettings = (props) => {
+  const theme = useContext(ThemeContext);
+  const [selectedScope, setSelectedScope] = useState<string>("notifications");
 
   const handleScopeChange = (scope) => {
-    setSelectedScope(scope)
-  }
+    setSelectedScope(scope);
+  };
 
   return (
     <>
       <Layout user={props.user}>
         <div className={styles.container}>
-          <p className={styles.title} style={{color: theme.data.textColor}}>Configurações do painel</p>
+          <p className={styles.title} style={{ color: theme.data.textColor }}>
+            Configurações do painel
+          </p>
           <div className={styles.buttonsContainer}>
-            <Button onClick={() => handleScopeChange('notifications')} color="primary" variant="contained" className={styles.button}>
+            <Button
+              onClick={() => handleScopeChange("notifications")}
+              color="primary"
+              variant="contained"
+              className={styles.button}
+            >
               Notificações
             </Button>
           </div>
-          <div className={styles.content} style={{backgroundColor: theme.data.backgroundPrimary, boxShadow: theme.data.boxShadowCard}}>
+          <div
+            className={styles.content}
+            style={{
+              backgroundColor: theme.data.backgroundPrimary,
+              boxShadow: theme.data.boxShadowCard,
+            }}
+          >
             {renderSwitch(selectedScope)}
           </div>
         </div>
       </Layout>
     </>
-  )
-}
+  );
+};
 
-export default PanelSettings
+export default PanelSettings;
 
-export async function getServerSideProps({ req, res}) {
-	await router.run(req, res);
-  if(!req.user || req.user.user_type < 2) {
+export async function getServerSideProps({ req, res }) {
+  await router.run(req, res);
+  if (!req.user || req.user.user_type < 2) {
     return {
       redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
-	return { props: { user: req.user || null } };
+  return { props: { user: req.user || null } };
 }

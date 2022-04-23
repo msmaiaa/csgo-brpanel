@@ -19,7 +19,8 @@
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",

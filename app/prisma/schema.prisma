@@ -8,6 +8,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output = "./diagram.png"
+}
+
 model User {
   id  Int @default(autoincrement()) @id
   name String
