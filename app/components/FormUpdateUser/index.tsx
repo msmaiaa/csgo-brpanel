@@ -9,12 +9,11 @@ import {
   makeStyles,
   MenuItem,
   Select,
-  TextField,
   Typography,
-  withStyles,
 } from "@material-ui/core";
-import { FC, useContext, useEffect, useState } from "react";
+import { ThemeContext } from "context/ThemeContext";
 import ToastContext from "context/ToastContext";
+import { FC, useContext, useEffect, useState } from "react";
 import {
   addCargosToUser,
   getNonIndividualCargos,
@@ -22,14 +21,8 @@ import {
 } from "services/CargoService";
 import { getAllServersWithCargo } from "services/ServerService";
 import { updateUser } from "services/UserService";
-import styles from "./updateuser.module.css";
-import { ThemeContext } from "context/ThemeContext";
 import { ICargo, ICargo_Server, IServer, IUser } from "types";
-
-interface Props {
-  selectedData: IUser;
-  updateUserInfo();
-}
+import styles from "./updateuser.module.css";
 
 const useStyles = makeStyles({
   accordion: (props: any) => ({
@@ -65,7 +58,12 @@ const useStyles = makeStyles({
   }),
 });
 
-const FormUpdateUser: FC<Props> = ({ selectedData, updateUserInfo }) => {
+interface Props {
+  selectedData: IUser;
+  updateUserInfo: () => void;
+}
+
+const FormUpdateUser = ({ selectedData, updateUserInfo }: Props) => {
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme.data);
   const toast = useContext(ToastContext);

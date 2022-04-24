@@ -5,7 +5,6 @@ import {
   makeStyles,
   Select,
   TextField,
-  withStyles,
 } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
 import { MenuItem } from "react-pro-sidebar";
@@ -56,7 +55,10 @@ const useStyles = makeStyles({
   }),
 });
 
-const SteamSearchForm = ({ onAddUser }) => {
+interface Props {
+  onAddUser: () => void;
+}
+const SteamSearchForm = ({ onAddUser }: Props) => {
   const toast = useContext(ToastContext);
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme.data);

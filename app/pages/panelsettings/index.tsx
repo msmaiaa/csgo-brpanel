@@ -5,6 +5,7 @@ import NotificationSettings from "components/Settings/NotificationSettings";
 import router from "lib/router";
 import styles from "./panelsettings.module.css";
 import { ThemeContext } from "context/ThemeContext";
+import { IUser } from "types";
 
 const renderSwitch = (param) => {
   switch (param) {
@@ -14,7 +15,11 @@ const renderSwitch = (param) => {
   }
 };
 
-const PanelSettings = (props) => {
+interface Props {
+  user: IUser;
+}
+
+const PanelSettings = ({ user }: Props) => {
   const theme = useContext(ThemeContext);
   const [selectedScope, setSelectedScope] = useState<string>("notifications");
 
@@ -24,7 +29,7 @@ const PanelSettings = (props) => {
 
   return (
     <>
-      <Layout user={props.user}>
+      <Layout user={user}>
         <div className={styles.container}>
           <p className={styles.title} style={{ color: theme.data.textColor }}>
             Configurações do painel

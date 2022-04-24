@@ -8,7 +8,11 @@ import styles from "./manageusers.module.css";
 import { ThemeContext } from "context/ThemeContext";
 import { IUser } from "types";
 
-const ManageUsers = (props) => {
+interface Props {
+  user: IUser;
+}
+
+const ManageUsers = ({ user }: Props) => {
   const theme = useContext(ThemeContext);
   const [userEditInfo, setUserEditInfo] = useState<IUser>();
   const [updateData, setUpdateData] = useState<boolean>();
@@ -23,7 +27,7 @@ const ManageUsers = (props) => {
 
   return (
     <>
-      <Layout user={props.user}>
+      <Layout user={user}>
         <div
           className={styles.container}
           style={{ color: theme.data.textColor }}

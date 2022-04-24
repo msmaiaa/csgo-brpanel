@@ -27,6 +27,7 @@ import {
 } from "services/ServerService";
 import { ThemeContext } from "context/ThemeContext";
 import { makeStyles } from "@material-ui/styles";
+import { IUser } from "types";
 
 const useStyles = makeStyles({
   textField: (props: any) => ({
@@ -56,7 +57,10 @@ const useStyles = makeStyles({
   }),
 });
 
-const ManageServers = (props) => {
+interface Props {
+  user: IUser;
+}
+const ManageServers = ({ user }: Props) => {
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme.data);
   const toast = useContext(ToastContext);
@@ -134,7 +138,7 @@ const ManageServers = (props) => {
 
   return (
     <>
-      <Layout user={props.user}>
+      <Layout user={user}>
         <div
           className={styles.cardsContainer}
           style={{ color: theme.data.textColor }}

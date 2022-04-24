@@ -26,7 +26,7 @@ import {
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ThemeContext } from "context/ThemeContext";
-import { ICargo } from "types";
+import { ICargo, IUser } from "types";
 
 const useStyles = makeStyles({
   textField: (props: any) => ({
@@ -56,7 +56,10 @@ const useStyles = makeStyles({
   }),
 });
 
-const ManageCargos = (props) => {
+interface Props {
+  user: IUser;
+}
+const ManageCargos = ({ user }: Props) => {
   const toast = useContext(ToastContext);
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme.data);
@@ -206,7 +209,7 @@ const ManageCargos = (props) => {
 
   return (
     <>
-      <Layout user={props.user}>
+      <Layout user={user}>
         <div
           className={styles.cardsContainer}
           style={{ color: theme.data.textColor }}

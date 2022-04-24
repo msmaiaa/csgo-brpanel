@@ -6,7 +6,7 @@ import Link from "next/link";
 import styles from "./ServerCard.module.css";
 import { getServerStatus } from "services/ServerService";
 import { ThemeContext } from "context/ThemeContext";
-import { IServerQueryResponse } from "types";
+import { IServer, IServerQueryResponse } from "types";
 
 const useStyles = makeStyles({
   card: (props: any) => ({
@@ -14,7 +14,11 @@ const useStyles = makeStyles({
   }),
 });
 
-const ServerCard = ({ server, style }) => {
+interface Props {
+  server: IServer;
+  [x: string]: any;
+}
+const ServerCard = ({ server, ...rest }: Props) => {
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,8 +54,8 @@ const ServerCard = ({ server, style }) => {
   if (isLoading) {
     return (
       <div
+        {...rest}
         style={{
-          ...style,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -66,8 +70,8 @@ const ServerCard = ({ server, style }) => {
   }
   return (
     <div
+      {...rest}
       style={{
-        ...style,
         borderRadius: "10px",
         boxShadow: theme.data.boxShadowCard,
       }}

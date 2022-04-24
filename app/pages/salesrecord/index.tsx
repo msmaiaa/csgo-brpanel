@@ -10,12 +10,13 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
-import { FC, useContext, useEffect, useState } from "react";
 import Layout from "components/Layout";
-import router from "lib/router";
-import { getAllSales } from "services/SalesService";
-import styles from "./salesrecord.module.css";
 import { ThemeContext } from "context/ThemeContext";
+import router from "lib/router";
+import { useContext, useEffect, useState } from "react";
+import { getAllSales } from "services/SalesService";
+import { IUser } from "types";
+import styles from "./salesrecord.module.css";
 
 const useStyles = makeStyles({
   paginator: (props: any) => ({
@@ -47,19 +48,23 @@ const useStyles = makeStyles({
   }),
 });
 
-const SalesRecord = (props) => {
+interface Props {
+  user: IUser;
+}
+
+const SalesRecord = ({ user }: Props) => {
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme.data);
-  const [actualPage, setActualPage] = useState(1);
-  const [totalPagesCount, setTotalPagesCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const updateSales = async () => {
     try {
       setIsLoading(true);
-      const sales = await getAllSales(actualPage);
-      setTotalPagesCount(Math.ceil(sales.data.body[0] / 10));
+      const sales = await getAllSales(currentPage);
+      setTotalPages(Math.ceil(sales.data.body[0] / 10));
       setRows(sales.data.body[1]);
       setIsLoading(false);
     } catch (e) {
@@ -76,12 +81,12 @@ const SalesRecord = (props) => {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setActualPage(value);
+    setCurrentPage(value);
   };
 
   useEffect(() => {
     updateSales();
-  }, [actualPage]);
+  }, [currentPage]);
 
   useEffect(() => {
     updateSales();
@@ -89,7 +94,7 @@ const SalesRecord = (props) => {
 
   return (
     <>
-      <Layout user={props.user}>
+      <Layout user={user}>
         <div className={styles.container}>
           <div className={styles.sales_container}>
             <p
@@ -222,10 +227,10 @@ const SalesRecord = (props) => {
               )}
               <Pagination
                 classes={{ ul: classes.paginator }}
-                count={totalPagesCount}
+                count={totalPages}
                 style={{ float: "right" }}
                 onChange={handleChangePage}
-                page={actualPage}
+                page={currentPage}
               />
             </TableContainer>
           </div>

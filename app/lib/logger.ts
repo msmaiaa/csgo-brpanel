@@ -1,28 +1,34 @@
-import Log from 'models/Log'
-import NotificationSettings from 'models/settings/NotificationSettings'
-import { IPanelUpdate, sendDiscordNotification } from 'utils/notifications'
+import Log from "models/Log";
+import NotificationSettings from "models/settings/NotificationSettings";
+import { IPanelUpdate, sendDiscordNotification } from "utils/notifications";
 
-export async function logInDb (activity, additionalInfo, createdBy) {
-  try{
+export async function logInDb(
+  activity: string,
+  additionalInfo: string,
+  createdBy: string
+) {
+  try {
     await Log.create({
       data: {
         activity,
         additional_info: additionalInfo,
-        created_by: createdBy
-      }
-    })
+        created_by: createdBy,
+      },
+    });
     const data: IPanelUpdate = {
       activity,
       additionalInfo,
-      createdBy
+      createdBy,
+    };
+    const nSettings = await NotificationSettings.findOne();
+    if (
+      nSettings.send_discord_notifications &&
+      nSettings.send_disc_on_modification
+    ) {
+      sendDiscordNotification({ data, action: "modify", settings: nSettings });
     }
-    const nSettings = await NotificationSettings.findOne()
-    if(nSettings.send_discord_notifications && nSettings.send_disc_on_modification) {
-      sendDiscordNotification({ data, action: "modify", settings: nSettings})
-    }
-  }catch(e) {
-    console.error('Error while trying to log data')
-    console.error(e)
+  } catch (e) {
+    console.error("Error while trying to log data");
+    console.error(e);
   }
 }
-

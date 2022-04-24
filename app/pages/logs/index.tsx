@@ -14,6 +14,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { CircularProgress } from "@material-ui/core";
 import { ThemeContext } from "context/ThemeContext";
 import { makeStyles } from "@material-ui/styles";
+import { IUser } from "types";
 
 const useStyles = makeStyles({
   paginator: (props: any) => ({
@@ -36,7 +37,10 @@ const useStyles = makeStyles({
   }),
 });
 
-const LogsPage = (props) => {
+interface Props {
+  user: IUser;
+}
+const LogsPage = ({ user }: Props) => {
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme.data);
   const [actualPage, setActualPage] = useState(1);
@@ -78,7 +82,7 @@ const LogsPage = (props) => {
 
   return (
     <>
-      <Layout user={props.user}>
+      <Layout user={user}>
         <div className={styles.container}>
           <div className={styles.logs_container}>
             <p

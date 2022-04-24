@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CircularProgress, FormControl, Select } from "@material-ui/core";
 import router from "lib/router";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import { buyCargo, getNonIndividualCargos } from "services/CargoService";
 import styles from "./store.module.css";
 import { getAllServersWithCargo } from "services/ServerService";
 import { ThemeContext } from "context/ThemeContext";
+import { IUser } from "types";
 
 const useStyles = makeStyles({
   select: (props: any) => ({
@@ -38,7 +39,10 @@ const useStyles = makeStyles({
   }),
 });
 
-const StorePage = (props) => {
+interface Props {
+  user: IUser;
+}
+const StorePage = ({ user }: Props) => {
   const router = useRouter();
   const theme = useContext(ThemeContext);
   const classes = useStyles(theme.data);
@@ -92,7 +96,7 @@ const StorePage = (props) => {
 
   return (
     <>
-      <Layout user={props.user}>
+      <Layout user={user}>
         <div
           className={styles.container}
           style={{ color: theme.data.textColor }}

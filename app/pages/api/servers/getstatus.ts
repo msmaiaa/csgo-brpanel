@@ -1,23 +1,23 @@
 import router from "lib/router";
-import { ApiRequest, ApiResponse } from "types"
+import { ApiRequest, ApiResponse } from "types";
 
-import Gamedig from 'gamedig'
+import Gamedig from "gamedig";
 const path = "/api/servers/getstatus";
 
-router.post(path, async(req: ApiRequest, res: ApiResponse) => { 
-  try{
-    Gamedig.query({
-      type: 'csgo',
-      host: req.body.server.ip,
-      port: req.body.server.port
-    }).then((state) => {
-      return res.status(200).json({body: state}) 
-    }).catch((error) => {
-      return res.status(500).json({body: error.message}) 
+router.post(path, async (req: ApiRequest, res: ApiResponse) => {
+  try {
+    const { ip: host, port } = req.body.server;
+    const response = await Gamedig.query({
+      type: "csgo",
+      host,
+      port,
     });
-  }catch(e) {
-    return res.status(500).json({message: 'Não foi possível encontrar os servidores'}) 
+    return res.status(200).json({ body: response });
+  } catch (e) {
+    return res
+      .status(500)
+      .json({ message: "Não foi possível encontrar os servidores" });
   }
 });
 
-export default router
+export default router;
