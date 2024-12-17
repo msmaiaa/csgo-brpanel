@@ -1,5 +1,5 @@
 # BRPanel  
-Painel de gerenciamento de servidores de __csgo__
+Problema: gerenciar a permissão dos jogadores de servidores de CSGO. O sistema padrão via MySQL do sourcemod é muito limitado, então uma das soluções é gerenciar em um banco de dados externo e alterar os próprios arquivos do servidor programáticamente.
 
 ## Funcionalidades do painel (em desenvolvimento)
 - Sistema de login e autorização através da steam
